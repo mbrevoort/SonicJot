@@ -8,18 +8,19 @@
 
 /* Begin PBXBuildFile section */
 		BEECD96B2A81FB08000D6833 /* QuickScribeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEECD96A2A81FB08000D6833 /* QuickScribeApp.swift */; };
-		BEECD96D2A81FB08000D6833 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEECD96C2A81FB08000D6833 /* ContentView.swift */; };
 		BEECD96F2A81FB09000D6833 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BEECD96E2A81FB09000D6833 /* Assets.xcassets */; };
 		BEECD9722A81FB09000D6833 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BEECD9712A81FB09000D6833 /* Preview Assets.xcassets */; };
+		BEECD97A2A820232000D6833 /* HotKeyHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEECD9792A820232000D6833 /* HotKeyHandler.swift */; };
+		BEECD97D2A820D94000D6833 /* HotKey in Frameworks */ = {isa = PBXBuildFile; productRef = BEECD97C2A820D94000D6833 /* HotKey */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		BEECD9672A81FB08000D6833 /* QuickScribe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QuickScribe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BEECD96A2A81FB08000D6833 /* QuickScribeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickScribeApp.swift; sourceTree = "<group>"; };
-		BEECD96C2A81FB08000D6833 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		BEECD96E2A81FB09000D6833 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BEECD9712A81FB09000D6833 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		BEECD9732A81FB09000D6833 /* QuickScribe.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = QuickScribe.entitlements; sourceTree = "<group>"; };
+		BEECD9792A820232000D6833 /* HotKeyHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotKeyHandler.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -27,6 +28,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BEECD97D2A820D94000D6833 /* HotKey in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -52,8 +54,8 @@
 		BEECD9692A81FB08000D6833 /* QuickScribe */ = {
 			isa = PBXGroup;
 			children = (
+				BEECD9792A820232000D6833 /* HotKeyHandler.swift */,
 				BEECD96A2A81FB08000D6833 /* QuickScribeApp.swift */,
-				BEECD96C2A81FB08000D6833 /* ContentView.swift */,
 				BEECD96E2A81FB09000D6833 /* Assets.xcassets */,
 				BEECD9732A81FB09000D6833 /* QuickScribe.entitlements */,
 				BEECD9702A81FB09000D6833 /* Preview Content */,
@@ -85,6 +87,9 @@
 			dependencies = (
 			);
 			name = QuickScribe;
+			packageProductDependencies = (
+				BEECD97C2A820D94000D6833 /* HotKey */,
+			);
 			productName = QuickScribe;
 			productReference = BEECD9672A81FB08000D6833 /* QuickScribe.app */;
 			productType = "com.apple.product-type.application";
@@ -113,6 +118,9 @@
 				Base,
 			);
 			mainGroup = BEECD95E2A81FB08000D6833;
+			packageReferences = (
+				BEECD97B2A820D94000D6833 /* XCRemoteSwiftPackageReference "HotKey" */,
+			);
 			productRefGroup = BEECD9682A81FB08000D6833 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -139,7 +147,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BEECD96D2A81FB08000D6833 /* ContentView.swift in Sources */,
+				BEECD97A2A820232000D6833 /* HotKeyHandler.swift in Sources */,
 				BEECD96B2A81FB08000D6833 /* QuickScribeApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -274,6 +282,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -301,6 +310,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -336,6 +346,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		BEECD97B2A820D94000D6833 /* XCRemoteSwiftPackageReference "HotKey" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/soffes/HotKey";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		BEECD97C2A820D94000D6833 /* HotKey */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BEECD97B2A820D94000D6833 /* XCRemoteSwiftPackageReference "HotKey" */;
+			productName = HotKey;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = BEECD95F2A81FB08000D6833 /* Project object */;
 }
