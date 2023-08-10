@@ -12,32 +12,29 @@ struct SettingsScreen: View {
     @ObservedObject var currentState: AppState = AppState.instance()
     @State private var apiToken: String = ""
     @Environment(\.dismiss) var dismiss
-
+    
     var body: some View {
         VStack(alignment: .leading) {
             Form {
                 Section {
                     TextField("OpenAI API Key:", text: $apiToken)
                         .onAppear {
-                             self.apiToken = currentState.apiToken
-                        }
-                    KeyboardShortcuts.Recorder("Toggle Recording Mode:", name: .toggleRecordMode)
-                }
-                Section {
-                    HStack {
-                        Button("Cancel") {
                             self.apiToken = currentState.apiToken
-                            dismiss()
                         }
-                        Spacer()
-                        Button("Save") {
-                            self.currentState.apiToken = self.apiToken
-                            dismiss()
-                        }
-                    }
+                    Text("Provide your OpenAI API key from \nhttps://platform.openai.com/account/api-keys").font(.caption)
+                    KeyboardShortcuts.Recorder("Recording Mode Toggle:", name: .toggleRecordMode)
+                }
+                HStack(alignment: .firstTextBaseline) {
+                    Button("Cancel") {
+                        self.apiToken = currentState.apiToken
+                        dismiss()
+                    }.buttonStyle(.bordered)
+                    Button("Save") {
+                        self.currentState.apiToken = self.apiToken
+                        dismiss()
+                    }.buttonStyle(.borderedProminent)
                 }
             }
-            .frame(width: 400, height: 400)
             .padding()
         }
     }
