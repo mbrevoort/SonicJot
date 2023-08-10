@@ -6,58 +6,46 @@
 //
 
 import SwiftUI
-import HotKey
-
-let recording = "record.circle.fill"
-let stopped = "record.circle"
 
 @main
 struct swiftui_menu_barApp: App {
-    @State var isRecording = false
-    @State var currentState: String = stopped
-    let hotkey = HotKey(key: .f12, modifiers: [])
-    
-    private func startRecording() {
-        isRecording = true
-        currentState = recording
-        print("start")
-    }
-    
-    private func stopRecording() {
-        isRecording = false
-        currentState = stopped
-        print("stop")
-    }
-
+    @ObservedObject var currentState: AppState = AppState.instance()
     
     var body: some Scene {
-        MenuBarExtra(currentState, systemImage: currentState) {
-            Button("Start") {
-                startRecording()
+        MenuBarExtra("QuickScribe", systemImage: currentState.state) {
+            Button("Start Recording") {
+                currentState.startRecording()
             }
             .keyboardShortcut("S")
-            .disabled(isRecording)
+            .disabled(currentState.state != stopped)
 
-            Button("Stop") {
-                stopRecording()
+            Button("Stop Recording") {
+                currentState.stopRecording()
             }
             .keyboardShortcut("X")
-            .disabled(!isRecording)
+            .disabled(currentState.state == stopped)
             
             Divider()
-
+            
+            Button("Preferences") {
+                NSApp.activate(ignoringOtherApps: true)
+                NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
+            }
+            
             Button("Quit") {
                 NSApplication.shared.terminate(nil)
             }.keyboardShortcut("q")
             
         }
+        Settings {
+            SettingsScreen()
+        }
     }
     
     init() {
-        hotkey.keyDownHandler = startRecording
-        hotkey.keyUpHandler = stopRecording
-        print("init")
+        NSApplication.shared.activate(ignoringOtherApps: true)
     }
-    
 
 }
+
+
