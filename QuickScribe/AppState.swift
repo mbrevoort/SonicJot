@@ -88,7 +88,8 @@ final class AppState: ObservableObject {
      
     func setClipboard(_ text: String) {
         let pasteboard = NSPasteboard.general
-        pasteboard.declareTypes([NSPasteboard.PasteboardType.string], owner: nil)
-        pasteboard.setString(text, forType: NSPasteboard.PasteboardType.string)
+        pasteboard.clearContents()
+        pasteboard.declareTypes([.string], owner: nil)
+        pasteboard.setString(text, forType: .string)
     }
 }

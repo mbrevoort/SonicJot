@@ -42,12 +42,22 @@ final class KeychainHelper {
             kSecAttrAccount: account,
         ] as [CFString : Any] as CFDictionary
         
-        // Add data in query to keychain
-        let status = SecItemAdd(query, nil)
+        let attributes: [String: AnyObject] = [
+            kSecValueData as String: data as AnyObject
+        ]
         
-        if status != errSecSuccess {
-            // Print out the error
-            print("Error: \(status)")
+        // Add data in query to keychain
+        DispatchQueue.global(qos: .userInitiated).async {
+            var status = SecItemUpdate(query, attributes as CFDictionary)
+            
+            if status == errSecItemNotFound {
+                status = SecItemAdd(query, nil)
+            }
+            
+            if status != errSecSuccess {
+                // Print out the error
+                print("Error: \(SecCopyErrorMessageString(status, nil)!)")
+            }
         }
     }
     
