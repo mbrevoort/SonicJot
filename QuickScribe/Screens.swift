@@ -23,12 +23,13 @@ struct SettingsScreen: View {
     
     var body: some View {
         VStack(alignment: .leading) {
+            Spacer()
             Form {
                 Section {
                     TextField("OpenAI API Key:", text: $apiToken)
                     Text("Provide your OpenAI API key from \nhttps://platform.openai.com/account/api-keys").font(.caption)
                     
-                    Picker("Language", selection: $language) {
+                    Picker("Language:", selection: $language) {
                         Text("English").tag("en")
                         Text("German").tag("de")
                         Text("Russian").tag("ru")
@@ -37,15 +38,18 @@ struct SettingsScreen: View {
                     .pickerStyle(MenuPickerStyle())
                     Text("Which language will you be speaking?").font(.caption)
                     
-                    TextField("Speech Hints", text: $prompt, axis: .vertical)
+                    TextField("Speech Hints:", text: $prompt, axis: .vertical)
                         .lineLimit(10)
                     Text("Provide a sample of something you would normally say and \nhow you would format it or some technical terms").font(.caption)
 
                     KeyboardShortcuts.Recorder("Recording Mode Toggle:", name: .toggleRecordMode)
                 }
+                Spacer()
                 HStack(alignment: .firstTextBaseline) {
                     Button("Cancel") {
                         self.apiToken = currentState.apiToken
+                        self.language = currentState.language
+                        self.prompt = currentState.prompt
                         dismiss()
                     }.buttonStyle(.bordered)
                     Button("Save") {
