@@ -7,20 +7,34 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BE03136B2A83306E00432945 /* KeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE03136A2A83306E00432945 /* KeychainHelper.swift */; };
+		BED2FBCE2A83C4A000ACF6FC /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED2FBCD2A83C4A000ACF6FC /* Constants.swift */; };
+		BED2FBD12A83C54800ACF6FC /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = BED2FBD02A83C54800ACF6FC /* KeyboardShortcuts */; };
+		BED2FBD32A848C1900ACF6FC /* Screens.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED2FBD22A848C1900ACF6FC /* Screens.swift */; };
+		BED2FBD52A855A8400ACF6FC /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED2FBD42A855A8400ACF6FC /* AppState.swift */; };
+		BED2FBD72A8665C200ACF6FC /* HistoryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED2FBD62A8665C200ACF6FC /* HistoryScreen.swift */; };
+		BED2FBDD2A86AFBF00ACF6FC /* error.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BED2FBDC2A86AFBF00ACF6FC /* error.mp3 */; };
 		BEECD96B2A81FB08000D6833 /* QuickScribeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEECD96A2A81FB08000D6833 /* QuickScribeApp.swift */; };
 		BEECD96F2A81FB09000D6833 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BEECD96E2A81FB09000D6833 /* Assets.xcassets */; };
 		BEECD9722A81FB09000D6833 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BEECD9712A81FB09000D6833 /* Preview Assets.xcassets */; };
-		BEECD97A2A820232000D6833 /* HotKeyHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEECD9792A820232000D6833 /* HotKeyHandler.swift */; };
-		BEECD97D2A820D94000D6833 /* HotKey in Frameworks */ = {isa = PBXBuildFile; productRef = BEECD97C2A820D94000D6833 /* HotKey */; };
+		BEECD9802A82955E000D6833 /* OpenAI in Frameworks */ = {isa = PBXBuildFile; productRef = BEECD97F2A82955E000D6833 /* OpenAI */; };
+		BEECD9822A82A510000D6833 /* Recording.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEECD9812A82A510000D6833 /* Recording.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BE03136A2A83306E00432945 /* KeychainHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainHelper.swift; sourceTree = "<group>"; };
+		BED2FBCD2A83C4A000ACF6FC /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		BED2FBD22A848C1900ACF6FC /* Screens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screens.swift; sourceTree = "<group>"; };
+		BED2FBD42A855A8400ACF6FC /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		BED2FBD62A8665C200ACF6FC /* HistoryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryScreen.swift; sourceTree = "<group>"; };
+		BED2FBDC2A86AFBF00ACF6FC /* error.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = error.mp3; sourceTree = "<group>"; };
 		BEECD9672A81FB08000D6833 /* QuickScribe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QuickScribe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BEECD96A2A81FB08000D6833 /* QuickScribeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickScribeApp.swift; sourceTree = "<group>"; };
 		BEECD96E2A81FB09000D6833 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BEECD9712A81FB09000D6833 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		BEECD9732A81FB09000D6833 /* QuickScribe.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = QuickScribe.entitlements; sourceTree = "<group>"; };
-		BEECD9792A820232000D6833 /* HotKeyHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotKeyHandler.swift; sourceTree = "<group>"; };
+		BEECD9812A82A510000D6833 /* Recording.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recording.swift; sourceTree = "<group>"; };
+		BEECD9832A82DD8A000D6833 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -28,7 +42,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BEECD97D2A820D94000D6833 /* HotKey in Frameworks */,
+				BEECD9802A82955E000D6833 /* OpenAI in Frameworks */,
+				BED2FBD12A83C54800ACF6FC /* KeyboardShortcuts in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -54,10 +69,17 @@
 		BEECD9692A81FB08000D6833 /* QuickScribe */ = {
 			isa = PBXGroup;
 			children = (
-				BEECD9792A820232000D6833 /* HotKeyHandler.swift */,
+				BEECD9832A82DD8A000D6833 /* Info.plist */,
 				BEECD96A2A81FB08000D6833 /* QuickScribeApp.swift */,
+				BED2FBD42A855A8400ACF6FC /* AppState.swift */,
+				BED2FBD22A848C1900ACF6FC /* Screens.swift */,
+				BEECD9812A82A510000D6833 /* Recording.swift */,
+				BE03136A2A83306E00432945 /* KeychainHelper.swift */,
 				BEECD96E2A81FB09000D6833 /* Assets.xcassets */,
 				BEECD9732A81FB09000D6833 /* QuickScribe.entitlements */,
+				BED2FBD62A8665C200ACF6FC /* HistoryScreen.swift */,
+				BED2FBCD2A83C4A000ACF6FC /* Constants.swift */,
+				BED2FBDC2A86AFBF00ACF6FC /* error.mp3 */,
 				BEECD9702A81FB09000D6833 /* Preview Content */,
 			);
 			path = QuickScribe;
@@ -88,7 +110,8 @@
 			);
 			name = QuickScribe;
 			packageProductDependencies = (
-				BEECD97C2A820D94000D6833 /* HotKey */,
+				BEECD97F2A82955E000D6833 /* OpenAI */,
+				BED2FBD02A83C54800ACF6FC /* KeyboardShortcuts */,
 			);
 			productName = QuickScribe;
 			productReference = BEECD9672A81FB08000D6833 /* QuickScribe.app */;
@@ -120,6 +143,8 @@
 			mainGroup = BEECD95E2A81FB08000D6833;
 			packageReferences = (
 				BEECD97B2A820D94000D6833 /* XCRemoteSwiftPackageReference "HotKey" */,
+				BEECD97E2A82955E000D6833 /* XCRemoteSwiftPackageReference "OpenAI" */,
+				BED2FBCF2A83C54800ACF6FC /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */,
 			);
 			productRefGroup = BEECD9682A81FB08000D6833 /* Products */;
 			projectDirPath = "";
@@ -137,6 +162,7 @@
 			files = (
 				BEECD9722A81FB09000D6833 /* Preview Assets.xcassets in Resources */,
 				BEECD96F2A81FB09000D6833 /* Assets.xcassets in Resources */,
+				BED2FBDD2A86AFBF00ACF6FC /* error.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -147,8 +173,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BEECD97A2A820232000D6833 /* HotKeyHandler.swift in Sources */,
+				BEECD9822A82A510000D6833 /* Recording.swift in Sources */,
+				BE03136B2A83306E00432945 /* KeychainHelper.swift in Sources */,
 				BEECD96B2A81FB08000D6833 /* QuickScribeApp.swift in Sources */,
+				BED2FBD52A855A8400ACF6FC /* AppState.swift in Sources */,
+				BED2FBD32A848C1900ACF6FC /* Screens.swift in Sources */,
+				BED2FBCE2A83C4A000ACF6FC /* Constants.swift in Sources */,
+				BED2FBD72A8665C200ACF6FC /* HistoryScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -273,7 +304,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = QuickScribe/QuickScribe.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -282,6 +315,9 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = QuickScribe/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Quick Scribe";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -289,7 +325,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = come.brevoort.QuickScribe;
+				PRODUCT_BUNDLE_IDENTIFIER = com.brevoort.QuickScribe;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -301,7 +337,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = QuickScribe/QuickScribe.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -310,6 +348,9 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = QuickScribe/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Quick Scribe";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -317,7 +358,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = come.brevoort.QuickScribe;
+				PRODUCT_BUNDLE_IDENTIFIER = com.brevoort.QuickScribe;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -348,6 +389,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		BED2FBCF2A83C54800ACF6FC /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sindresorhus/KeyboardShortcuts";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 		BEECD97B2A820D94000D6833 /* XCRemoteSwiftPackageReference "HotKey" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/soffes/HotKey";
@@ -356,13 +405,26 @@
 				kind = branch;
 			};
 		};
+		BEECD97E2A82955E000D6833 /* XCRemoteSwiftPackageReference "OpenAI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/MacPaw/OpenAI.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.2.3;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		BEECD97C2A820D94000D6833 /* HotKey */ = {
+		BED2FBD02A83C54800ACF6FC /* KeyboardShortcuts */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = BEECD97B2A820D94000D6833 /* XCRemoteSwiftPackageReference "HotKey" */;
-			productName = HotKey;
+			package = BED2FBCF2A83C54800ACF6FC /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */;
+			productName = KeyboardShortcuts;
+		};
+		BEECD97F2A82955E000D6833 /* OpenAI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BEECD97E2A82955E000D6833 /* XCRemoteSwiftPackageReference "OpenAI" */;
+			productName = OpenAI;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
