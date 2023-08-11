@@ -19,6 +19,8 @@ final class AppState: ObservableObject {
         return _instance
     }
     
+    var language: String = "en"
+    var prompt: String = "Hello, nice to see you today!"
     @Published var recordingState = stopped
     // TODO: can use @AppStorage?
     var history: FixedQueue<HistoryItem> = FixedQueue<HistoryItem>()
@@ -69,7 +71,7 @@ final class AppState: ObservableObject {
             
             // handle transcription
             let data = try Data(contentsOf: url as URL)
-            let query = AudioTranscriptionQuery(file: data, fileName: "audio.m4a", model: .whisper_1)
+            let query = AudioTranscriptionQuery(file: data, fileName: "audio.m4a", model: .whisper_1, prompt: self.prompt, language: self.language)
             
             self.openAI.audioTranscriptions(query: query) { result in
                 print("result: \(result)")
