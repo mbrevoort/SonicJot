@@ -31,7 +31,7 @@ final class AppState: ObservableObject {
     }
     lazy public var openAI: OpenAI = OpenAI(apiToken: apiToken)
     let rec = Recording()
-
+    
     init() {
         
         KeyboardShortcuts.onKeyUp(for: .toggleRecordMode) { [weak self] in
@@ -54,6 +54,7 @@ final class AppState: ObservableObject {
         recordingState = recording
         do {
             try rec.record()
+            playOKSound()
         } catch {
             self.showError(error)
         }
@@ -72,14 +73,14 @@ final class AppState: ObservableObject {
             
             self.openAI.audioTranscriptions(query: query) { result in
                 print("result: \(result)")
-
+                
                 
                 switch result {
                 case .success(let data):
                     logger.info("result: \(data.text)")
                     self.setClipboard(data.text)
                     self.history.enqueue(HistoryItem(data.text))
-                    NSSound.beep()
+                    playOKSound()
                 case .failure(let error):
                     self.showError(error)
                 }
@@ -92,7 +93,14 @@ final class AppState: ObservableObject {
             recordingState = stopped
         }
     }
-     
+    
+    public func cancelRecording() {
+        print("CANCEL RECORDING")
+        recordingState = stopped
+        let url = rec.stop()
+    }
+    
+    
     func setClipboard(_ text: String) {
         let pasteboard = NSPasteboard.general
         pasteboard.clearContents()
@@ -101,10 +109,12 @@ final class AppState: ObservableObject {
     }
     
     func showError(_ err: any Error) {
+        playErrorSound()
         print("error: \(err)")
         logger.error("error: \(err)")
         self.history.enqueue(HistoryItem(body: "\(err)", type: HistoryItemType.error))
     }
+    
 }
 
 struct FixedQueue<T>: CustomStringConvertible{
@@ -152,7 +162,7 @@ struct FixedQueue<T>: CustomStringConvertible{
 }
 
 enum HistoryItemType {
-  case error, transcription
+    case error, transcription
 }
 
 class HistoryItem: Identifiable {

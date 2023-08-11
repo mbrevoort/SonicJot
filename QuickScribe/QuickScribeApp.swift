@@ -25,6 +25,12 @@ struct swiftui_menu_barApp: App {
             }
             .keyboardShortcut("X")
             .disabled(currentState.recordingState == stopped)
+
+            Button("Cancel Recording") {
+                currentState.cancelRecording()
+            }
+            .disabled(currentState.recordingState == stopped)
+
             
             Button("History") {
                 NSApp.activate(ignoringOtherApps: true)

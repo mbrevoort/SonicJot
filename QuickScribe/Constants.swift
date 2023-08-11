@@ -7,6 +7,7 @@
 
 import KeyboardShortcuts
 import os
+import Cocoa
 
 
 // Keyboard shortcut registration
@@ -21,3 +22,14 @@ let stopped = "record.circle"
 
 // Global logger
 let logger = Logger(subsystem: "com.brevoort.quickscribe", category: "general")
+
+
+// Sounds
+
+func playErrorSound() {
+    NSSound(named: "error.mp3")?.play()
+}
+
+func playOKSound() {
+    NSSound.beep()
+}
