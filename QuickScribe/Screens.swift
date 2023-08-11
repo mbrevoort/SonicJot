@@ -38,5 +38,5 @@ struct SettingsScreen: View {
             .padding()
         }
     }
-    
 }
+
