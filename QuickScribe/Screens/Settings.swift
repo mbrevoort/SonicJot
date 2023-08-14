@@ -15,12 +15,6 @@ struct SettingsScreen: View {
     @State private var prompt: String = ""
     @Environment(\.dismiss) var dismiss
     
-    let labels = [
-        "en" : "🇺🇸 EN",
-        "de" : "🇩🇪 DE",
-        "ru" : "🇷🇺 RU"
-    ]
-    
     var body: some View {
         VStack(alignment: .leading) {
             Spacer()
@@ -38,10 +32,15 @@ struct SettingsScreen: View {
                     .pickerStyle(MenuPickerStyle())
                     Text("Which language will you be speaking?").font(.caption)
                     
-                    TextField("Speech Hints:", text: $prompt, axis: .vertical)
-                        .lineLimit(10)
-                    Text("Provide a sample of something you would normally say and \nhow you would format it or some technical terms").font(.caption)
-
+                    LabeledContent {
+                        TextEditor(text: $prompt)
+                            .lineLimit(3...20)
+                            .disableAutocorrection(true)
+                    } label: {
+                        Text("Speech Hints:")
+                    }
+                    Text("Provide a sample of something you would normally say and how you would format \nit or some technical terms").font(.caption)
+                    
                     KeyboardShortcuts.Recorder("Recording Mode Toggle:", name: .toggleRecordMode)
                 }
                 Spacer()
@@ -67,6 +66,8 @@ struct SettingsScreen: View {
                 self.prompt = currentState.prompt
             }
         }
+        .frame(width: 600, height: 325)
     }
 }
+
 

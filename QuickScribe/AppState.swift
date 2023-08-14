@@ -170,18 +170,35 @@ enum HistoryItemType {
 class HistoryItem: Identifiable {
     var type: HistoryItemType = HistoryItemType.transcription
     var body: String
+    var time: Date
     
     var description: String {
         "\(type): \(body)"
     }
     
+    var friendlyType: String {
+        switch self.type {
+        case HistoryItemType.error:
+            return "Error"
+        case HistoryItemType.transcription:
+            return "Transcription"
+        }
+    }
+    
     init(_ body: String) {
         self.body = body
         self.type = HistoryItemType.transcription
+        self.time = Date()
     }
     
     init(body: String, type: HistoryItemType) {
         self.body = body
         self.type = type
+        self.time = Date()
+    }
+    init(body: String, type: HistoryItemType, time: Date) {
+        self.body = body
+        self.type = type
+        self.time = time
     }
 }

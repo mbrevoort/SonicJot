@@ -14,37 +14,54 @@ struct swiftui_menu_barApp: App {
         
     var body: some Scene {
         MenuBarExtra("QuickScribe", systemImage: currentState.recordingState) {
-            Button("Start Recording") {
+            Button{
                 currentState.startRecording()
+            } label: {
+                Image(systemName: recording)
+                Text("Start Recording")
             }
             .keyboardShortcut("S")
             .disabled(currentState.recordingState != stopped)
 
-            Button("Stop Recording") {
+            Button{
                 currentState.stopRecording()
+            } label: {
+                Image(systemName: "stop")
+                Text("Stop Recording")
             }
             .keyboardShortcut("X")
             .disabled(currentState.recordingState == stopped)
 
-            Button("Cancel Recording") {
+            Button {
                 currentState.cancelRecording()
+            } label: {
+                Image(systemName: "xmark.square")
+                Text("Cancel Recording")
             }
             .disabled(currentState.recordingState == stopped)
 
             
-            Button("History") {
+            Button {
                 NSApp.activate(ignoringOtherApps: true)
                 openWindow(id: "history")
+            } label: {
+                Image(systemName: "clock")
+                Text("History")
             }
             .keyboardShortcut("H")
 
             Divider()
             
-            Button("Preferences") {
+            Button("Settings") {
                 NSApp.activate(ignoringOtherApps: true)
                 NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
             }
 
+            Button("About") {
+                NSApp.activate(ignoringOtherApps: true)
+                openWindow(id: "about")
+            }
+            
             Button("Quit") {
                 NSApplication.shared.terminate(nil)
             }.keyboardShortcut("q")
@@ -53,9 +70,14 @@ struct swiftui_menu_barApp: App {
         Settings {
             SettingsScreen()
         }
+        .windowResizabilityContentSize()
         Window("History", id:"history") {
             HistoryScreen()
         }
+        Window("About", id:"about") {
+            AboutScreen()
+        }
+        .windowResizabilityContentSize()
     }
     
     func showError(_ text: String) {
@@ -71,3 +93,12 @@ struct swiftui_menu_barApp: App {
 }
 
 
+extension Scene {
+    func windowResizabilityContentSize() -> some Scene {
+        if #available(macOS 13.0, *) {
+            return windowResizability(.contentSize)
+        } else {
+            return self
+        }
+    }
+}

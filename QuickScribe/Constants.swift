@@ -18,7 +18,7 @@ extension KeyboardShortcuts.Name {
 // Recording statuses
 let recording = "record.circle.fill"
 let working = "hourglass.circle"
-let stopped = "record.circle"
+let stopped = "waveform"
 
 // Global logger
 let logger = Logger(subsystem: "com.brevoort.quickscribe", category: "general")
