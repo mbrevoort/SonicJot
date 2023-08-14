@@ -20,23 +20,21 @@ struct swiftui_menu_barApp: App {
                 Image(systemName: recording)
                 Text("Start Recording")
             }
-            .keyboardShortcut("S")
             .disabled(currentState.recordingState != stopped)
 
             Button{
                 currentState.stopRecording()
             } label: {
                 Image(systemName: "stop")
-                Text("Stop Recording")
+                Text("Stop and Transcribe")
             }
-            .keyboardShortcut("X")
             .disabled(currentState.recordingState == stopped)
 
             Button {
                 currentState.cancelRecording()
             } label: {
                 Image(systemName: "xmark.square")
-                Text("Cancel Recording")
+                Text("Abandon Recording")
             }
             .disabled(currentState.recordingState == stopped)
 
@@ -48,7 +46,6 @@ struct swiftui_menu_barApp: App {
                 Image(systemName: "clock")
                 Text("History")
             }
-            .keyboardShortcut("H")
 
             Divider()
             
