@@ -11,7 +11,7 @@ struct HistoryScreen: View {
     @ObservedObject var currentState: AppState = AppState.instance()
     var body: some View {
         Spacer()
-        Text("👋 History cleared on restart").italic()
+        Text("The \(currentState.history.size) most recent transcriptions or errors").italic()
         List {
             ForEach(currentState.history.list()) { item in
                 VStack {

@@ -11,6 +11,8 @@ import KeyboardShortcuts
 import Cocoa
 import SwiftUI
 
+let jsonEncoder = JSONEncoder()
+let jsonDecoder = JSONDecoder()
 
 @MainActor
 final class AppState: ObservableObject {
@@ -18,14 +20,31 @@ final class AppState: ObservableObject {
     public static func instance() -> AppState {
         return _instance
     }
+
+    @Published var recordingState = stopped
     
     @AppStorage("language") var language: String = "en"
     @AppStorage("translateResultToEnglish") var translateResultToEnglish: Bool = false
-    var prompt: String = "Hello, nice to see you today!"
-    @Published var recordingState = stopped
-    // TODO: can use @AppStorage?
-    var history: FixedQueue<HistoryItem> = FixedQueue<HistoryItem>()
-    
+    @AppStorage("prompt") var prompt: String = "Hello, nice to see you today!"
+
+    // history is serialized into serializedHistory and put in AppStorage so that it can survive restarts
+    @AppStorage("serializedHistory") private var serializedHistory: String = ""
+    var history: History = History(size: 25) {
+        didSet {
+            do {
+                let jsonData = try jsonEncoder.encode(history)
+                let updatedSerializedHistory = String(data: jsonData, encoding: String.Encoding.utf8)!
+                DispatchQueue.main.async {
+                    self.serializedHistory = updatedSerializedHistory
+                }
+
+            } catch {
+                self.showError(error)
+            }
+        }
+    }
+        
+
     var apiToken: String = KeychainHelper.getOpenAIToken() {
         didSet {
             KeychainHelper.setOpenAIToken(apiToken)
@@ -37,11 +56,23 @@ final class AppState: ObservableObject {
     
     init() {
         
+        // Register keyboard shortcuts
         KeyboardShortcuts.onKeyUp(for: .toggleRecordMode) { [weak self] in
             if self?.recordingState == stopped {
                 self?.startRecording()
             } else if self?.recordingState == recording {
                 self?.stopRecording()
+            }
+        }
+        
+        // Hydrade saved history
+        if !self.serializedHistory.isEmpty {
+            do {
+                let jsonData = self.serializedHistory.data(using: .utf8)!
+                let restoredHistory = try jsonDecoder.decode(History.self, from: jsonData)
+                self.history.replace(restoredHistory)
+            } catch {
+                self.showError(error)
             }
         }
     }
@@ -120,7 +151,7 @@ final class AppState: ObservableObject {
     public func cancelRecording() {
         print("CANCEL RECORDING")
         recordingState = stopped
-        let url = rec.stop()
+        _ = rec.stop()
     }
     
     
@@ -140,86 +171,3 @@ final class AppState: ObservableObject {
     
 }
 
-struct FixedQueue<T>: CustomStringConvertible{
-    
-    private var elements: [T] = []
-    private var size: Int = 10
-    
-    var isEmpty: Bool {
-        elements.isEmpty
-    }
-    
-    var peek: T? {
-        elements.first
-    }
-    
-    var description: String {
-        if isEmpty { return "FixedQueue of \(size) is empty ..."}
-        return "---- Queue of length \(size) start ----\n"
-        + elements.map({"\($0)"}).joined(separator: " -> ")
-        + "\n---- Queue End ----"
-    }
-    
-    mutating func enqueue(_ value: T) {
-        if elements.count == self.size {
-            _ = self.dequeue()
-        }
-        elements.append(value)
-    }
-    
-    mutating func dequeue() -> T? {
-        isEmpty ? nil : elements.removeFirst()
-    }
-    
-    func list() -> [T] {
-        elements.reversed()
-    }
-    
-    init(size: Int) {
-        self.size = size
-    }
-    
-    init() {
-        self.size = 10
-    }
-}
-
-enum HistoryItemType {
-    case error, transcription
-}
-
-class HistoryItem: Identifiable {
-    var type: HistoryItemType = HistoryItemType.transcription
-    var body: String
-    var time: Date
-    
-    var description: String {
-        "\(type): \(body)"
-    }
-    
-    var friendlyType: String {
-        switch self.type {
-        case HistoryItemType.error:
-            return "Error"
-        case HistoryItemType.transcription:
-            return "Transcription"
-        }
-    }
-    
-    init(_ body: String) {
-        self.body = body
-        self.type = HistoryItemType.transcription
-        self.time = Date()
-    }
-    
-    init(body: String, type: HistoryItemType) {
-        self.body = body
-        self.type = type
-        self.time = Date()
-    }
-    init(body: String, type: HistoryItemType, time: Date) {
-        self.body = body
-        self.type = type
-        self.time = time
-    }
-}
