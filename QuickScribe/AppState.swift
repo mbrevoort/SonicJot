@@ -19,7 +19,8 @@ final class AppState: ObservableObject {
         return _instance
     }
     
-    var language: String = "en"
+    @AppStorage("language") var language: String = "en"
+    @AppStorage("translateResultToEnglish") var translateResultToEnglish: Bool = false
     var prompt: String = "Hello, nice to see you today!"
     @Published var recordingState = stopped
     // TODO: can use @AppStorage?
@@ -62,38 +63,58 @@ final class AppState: ObservableObject {
         }
     }
     
+    // TODO: reflactor
     public func stopRecording() {
         print("STOP RECORDING")
         do {
             recordingState = working
             let url = rec.stop()
-            
-            
-            // handle transcription
             let data = try Data(contentsOf: url as URL)
-            let query = AudioTranscriptionQuery(file: data, fileName: "audio.m4a", model: .whisper_1, prompt: self.prompt, language: self.language)
             
-            self.openAI.audioTranscriptions(query: query) { result in
-                print("result: \(result)")
-                
-                
-                switch result {
-                case .success(let data):
-                    logger.info("result: \(data.text)")
-                    self.setClipboard(data.text)
-                    self.history.enqueue(HistoryItem(data.text))
-                    playOKSound()
-                case .failure(let error):
-                    self.showError(error)
+            if self.translateResultToEnglish {
+                // handle tranlation transcription
+                let query = AudioTranslationQuery(file: data, fileName: "audio.m4a", model: .whisper_1, prompt: self.prompt)
+                self.openAI.audioTranslations(query: query) { result in
+                    print("Translation result: \(result)")
+                    switch result {
+                    case .success(let data):
+                        self.handleTranscriptionSuccess(data.text)
+                    case .failure(let error):
+                        self.showError(error)
+                    }
+                    
+                    DispatchQueue.main.async {
+                        self.recordingState = stopped
+                    }
                 }
-                DispatchQueue.main.async {
-                    self.recordingState = stopped
-                }
+            } else {
+                // handle transcription
+                let query = AudioTranscriptionQuery(file: data, fileName: "audio.m4a", model: .whisper_1, prompt: self.prompt, language: self.language)
+                self.openAI.audioTranscriptions(query: query) { result in
+                    print("Transcription result: \(result)")
+                    switch result {
+                    case .success(let data):
+                        self.handleTranscriptionSuccess(data.text)
+                    case .failure(let error):
+                        self.showError(error)
+                    }
+                    
+                    DispatchQueue.main.async {
+                        self.recordingState = stopped
+                    }
+                }                
             }
         } catch {
             self.showError(error)
             recordingState = stopped
         }
+    }
+    
+    private func handleTranscriptionSuccess(_ text: String) {
+        logger.info("result: \(text)")
+        self.setClipboard(text)
+        self.history.enqueue(HistoryItem(text))
+        playOKSound()
     }
     
     public func cancelRecording() {

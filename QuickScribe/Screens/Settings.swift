@@ -13,6 +13,7 @@ struct SettingsScreen: View {
     @State private var apiToken: String = ""
     @State private var language: String = ""
     @State private var prompt: String = ""
+    @State private var translateResultToEnglish: Bool = false;
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
@@ -23,7 +24,7 @@ struct SettingsScreen: View {
                     TextField("OpenAI API Key:", text: $apiToken)
                     Text("Provide your OpenAI API key from \nhttps://platform.openai.com/account/api-keys").font(.caption)
                     
-                    Picker("Language:", selection: $language) {
+                    Picker("Speaking Language:", selection: $language) {
                         Text("English").tag("en")
                         Text("German").tag("de")
                         Text("Russian").tag("ru")
@@ -31,6 +32,16 @@ struct SettingsScreen: View {
                     }
                     .pickerStyle(MenuPickerStyle())
                     Text("Which language will you be speaking?").font(.caption)
+                    
+                    LabeledContent {
+                        Toggle(isOn: $translateResultToEnglish) {
+                            Text("Translate to English")
+                        }
+                        .toggleStyle(.checkbox)
+                    } label: {
+                        Text("Translation:")
+                    }
+                    Text("If speaking in a language other than English, the result can be translated to \nEnglish automatically. Translating from English to English sounds fun but pointless.").font(.caption)
                     
                     LabeledContent {
                         TextEditor(text: $prompt)
@@ -49,12 +60,14 @@ struct SettingsScreen: View {
                         self.apiToken = currentState.apiToken
                         self.language = currentState.language
                         self.prompt = currentState.prompt
+                        self.translateResultToEnglish = currentState.translateResultToEnglish
                         dismiss()
                     }.buttonStyle(.bordered)
                     Button("Save") {
                         self.currentState.apiToken = self.apiToken
                         self.currentState.language = self.language
                         self.currentState.prompt = self.prompt
+                        self.currentState.translateResultToEnglish = self.translateResultToEnglish
                         dismiss()
                     }.buttonStyle(.borderedProminent)
                 }
@@ -64,9 +77,10 @@ struct SettingsScreen: View {
                 self.apiToken = currentState.apiToken
                 self.language = currentState.language
                 self.prompt = currentState.prompt
+                self.translateResultToEnglish = currentState.translateResultToEnglish
             }
         }
-        .frame(width: 600, height: 325)
+        .frame(width: 600, height: 350)
     }
 }
 
