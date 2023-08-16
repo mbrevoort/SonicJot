@@ -21,7 +21,7 @@ struct SettingsScreen: View {
             Spacer()
             Form {
                 Section {
-                    TextField("OpenAI API Key:", text: $apiToken)
+                    SecureField("OpenAI API Key:", text: $apiToken)
                     Text("Provide your OpenAI API key from \nhttps://platform.openai.com/account/api-keys").font(.caption)
                     
                     Picker("Speaking Language:", selection: $language) {
@@ -44,9 +44,14 @@ struct SettingsScreen: View {
                     Text("If speaking in a language other than English, the result can be translated to \nEnglish automatically. Translating from English to English sounds fun but pointless.").font(.caption)
                     
                     LabeledContent {
-                        TextEditor(text: $prompt)
-                            .lineLimit(3...20)
-                            .disableAutocorrection(true)
+                        ZStack {
+                            TextEditor(text: $prompt)
+                                .lineLimit(3...20)
+                                .disableAutocorrection(true)
+                        }
+                        .padding(EdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 0))
+                        .background(Color.white)
+                        .cornerRadius(5)
                     } label: {
                         Text("Speech Hints:")
                     }
@@ -72,7 +77,7 @@ struct SettingsScreen: View {
                     }.buttonStyle(.borderedProminent)
                 }
             }
-            .padding()
+            .padding(EdgeInsets(top: 10, leading: 20, bottom: 20, trailing: 20))
             .onAppear{
                 self.apiToken = currentState.apiToken
                 self.language = currentState.language

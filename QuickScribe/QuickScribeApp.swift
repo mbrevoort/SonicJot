@@ -18,7 +18,7 @@ struct swiftui_menu_barApp: App {
                 currentState.startRecording()
             } label: {
                 Image(systemName: recording)
-                Text("Start Recording")
+                Text("Start Transcription")
             }
             .disabled(currentState.recordingState != stopped)
 
@@ -26,7 +26,7 @@ struct swiftui_menu_barApp: App {
                 currentState.stopRecording()
             } label: {
                 Image(systemName: "stop")
-                Text("Stop and Transcribe")
+                Text("Complete Transcription")
             }
             .disabled(currentState.recordingState == stopped)
 
@@ -34,7 +34,7 @@ struct swiftui_menu_barApp: App {
                 currentState.cancelRecording()
             } label: {
                 Image(systemName: "xmark.square")
-                Text("Abandon Recording")
+                Text("Cancel")
             }
             .disabled(currentState.recordingState == stopped)
 

@@ -42,6 +42,10 @@ struct History: CustomStringConvertible, Codable {
         self.elements = ref.elements
     }
     
+    mutating func delete(_ item: HistoryItem) {
+        self.elements = self.elements.filter{ $0.time != item.time && $0.body != item.body}
+    }
+    
     func list() -> [HistoryItem] {
         elements.reversed()
     }

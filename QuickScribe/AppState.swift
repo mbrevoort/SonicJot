@@ -143,7 +143,7 @@ final class AppState: ObservableObject {
     
     private func handleTranscriptionSuccess(_ text: String) {
         logger.info("result: \(text)")
-        self.setClipboard(text)
+        AppState.setClipboard(text)
         self.history.enqueue(HistoryItem(text))
         playOKSound()
     }
@@ -155,7 +155,7 @@ final class AppState: ObservableObject {
     }
     
     
-    func setClipboard(_ text: String) {
+    static func setClipboard(_ text: String) {
         let pasteboard = NSPasteboard.general
         pasteboard.clearContents()
         pasteboard.declareTypes([.string], owner: nil)
