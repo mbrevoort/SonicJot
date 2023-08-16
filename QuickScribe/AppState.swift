@@ -20,13 +20,14 @@ final class AppState: ObservableObject {
     public static func instance() -> AppState {
         return _instance
     }
-
+    
     @Published var recordingState = stopped
     
     @AppStorage("language") var language: String = "en"
     @AppStorage("translateResultToEnglish") var translateResultToEnglish: Bool = false
+    @AppStorage("enableAutoPaste") var enableAutoPaste: Bool = false
     @AppStorage("prompt") var prompt: String = "Hello, nice to see you today!"
-
+    
     // history is serialized into serializedHistory and put in AppStorage so that it can survive restarts
     @AppStorage("serializedHistory") private var serializedHistory: String = ""
     var history: History = History(size: 25) {
@@ -37,14 +38,14 @@ final class AppState: ObservableObject {
                 DispatchQueue.main.async {
                     self.serializedHistory = updatedSerializedHistory
                 }
-
+                
             } catch {
                 self.showError(error)
             }
         }
     }
-        
-
+    
+    
     var apiToken: String = KeychainHelper.getOpenAIToken() {
         didSet {
             KeychainHelper.setOpenAIToken(apiToken)
@@ -133,7 +134,7 @@ final class AppState: ObservableObject {
                     DispatchQueue.main.async {
                         self.recordingState = stopped
                     }
-                }                
+                }
             }
         } catch {
             self.showError(error)
@@ -146,6 +147,10 @@ final class AppState: ObservableObject {
         AppState.setClipboard(text)
         self.history.enqueue(HistoryItem(text))
         playOKSound()
+        
+        if self.enableAutoPaste {
+            paste()
+        }
     }
     
     public func cancelRecording() {
@@ -169,5 +174,53 @@ final class AppState: ObservableObject {
         self.history.enqueue(HistoryItem(body: "\(err)", type: HistoryItemType.error))
     }
     
+    // Based on https://github.com/p0deje/Maccy/blob/master/Maccy/Clipboard.swift
+    func paste() {
+        guard accessibilityAllowed else {
+            // Show accessibility window async to allow menu to close.
+            DispatchQueue.main.async{
+                self.showAccessibilityWindow()
+            }
+            return
+        }
+                
+        DispatchQueue.main.async {
+            let source = CGEventSource(stateID: .combinedSessionState)
+            // Press Command + V
+            let keyVDown = CGEvent(keyboardEventSource: source, virtualKey: vKeyCode, keyDown: true)
+            keyVDown?.flags = .maskCommand
+            // Release Command + V
+            let keyVUp = CGEvent(keyboardEventSource: source, virtualKey: vKeyCode, keyDown: false)
+            keyVUp?.flags = .maskCommand
+            // Post Paste Command
+            keyVDown?.post(tap: .cgAnnotatedSessionEventTap)
+            keyVUp?.post(tap: .cgAnnotatedSessionEventTap)
+        }
+    }
+    
+    public func showAccessibilityWindow() {
+        if accessibilityAlert.runModal() == NSApplication.ModalResponse.alertSecondButtonReturn {
+            if let url = accessibilityURL {
+                NSWorkspace.shared.open(url)
+            }
+        }
+    }
+    
+    
+    private var accessibilityAlert: NSAlert {
+        let alert = NSAlert()
+        alert.alertStyle = .warning
+        alert.messageText = "QuickScribe” would like to control this computer using accessibility features."
+        alert.informativeText = "Grant access to this application in Security & Privacy preferences, located in System Preferences.\n\nClick + button, select QuickScribe and toggle on the checkbox next to it."
+        alert.addButton(withTitle: "Deny")
+        alert.addButton(withTitle: "Open System Preferences")
+        alert.icon = NSImage(named: "NSSecurity")
+        return alert
+    }
+    private var accessibilityAllowed: Bool { AXIsProcessTrustedWithOptions(nil) }
+    private let accessibilityURL = URL(
+        string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility"
+    )
 }
+
 

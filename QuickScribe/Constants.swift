@@ -8,12 +8,15 @@
 import KeyboardShortcuts
 import os
 import Cocoa
+import Carbon
 
 
 // Keyboard shortcut registration
 extension KeyboardShortcuts.Name {
     static let toggleRecordMode = Self("toggleRecordMode", default: .init(.x, modifiers: [.control, .command]))
 }
+
+let vKeyCode = UInt16(kVK_ANSI_V)
 
 // Recording statuses
 let recording = "record.circle.fill"

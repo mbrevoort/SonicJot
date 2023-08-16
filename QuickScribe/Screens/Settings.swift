@@ -14,6 +14,7 @@ struct SettingsScreen: View {
     @State private var language: String = ""
     @State private var prompt: String = ""
     @State private var translateResultToEnglish: Bool = false;
+    @State private var enableAutoPaste: Bool = false;
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
@@ -35,13 +36,22 @@ struct SettingsScreen: View {
                     
                     LabeledContent {
                         Toggle(isOn: $translateResultToEnglish) {
-                            Text("Translate to English")
+                            Text("Translate to English if speaking another language")
                         }
                         .toggleStyle(.checkbox)
                     } label: {
                         Text("Translation:")
                     }
-                    Text("If speaking in a language other than English, the result can be translated to \nEnglish automatically. Translating from English to English sounds fun but pointless.").font(.caption)
+
+                    LabeledContent {
+                        Toggle(isOn: $enableAutoPaste) {
+                            Text("Enable autotype of text")
+                        }
+                        .toggleStyle(.checkbox)
+                    } label: {
+                        Text("Autotype:")
+                    }
+
                     
                     LabeledContent {
                         ZStack {
@@ -57,7 +67,10 @@ struct SettingsScreen: View {
                     }
                     Text("Provide a sample of something you would normally say and how you would format \nit or some technical terms").font(.caption)
                     
+
                     KeyboardShortcuts.Recorder("Recording Mode Toggle:", name: .toggleRecordMode)
+
+
                 }
                 Spacer()
                 HStack(alignment: .firstTextBaseline) {
@@ -66,14 +79,21 @@ struct SettingsScreen: View {
                         self.language = currentState.language
                         self.prompt = currentState.prompt
                         self.translateResultToEnglish = currentState.translateResultToEnglish
+                        self.enableAutoPaste = currentState.enableAutoPaste
                         dismiss()
                     }.buttonStyle(.bordered)
                     Button("Save") {
+                        let autoPasteJustEnabled: Bool = !self.currentState.enableAutoPaste && self.enableAutoPaste
                         self.currentState.apiToken = self.apiToken
                         self.currentState.language = self.language
                         self.currentState.prompt = self.prompt
                         self.currentState.translateResultToEnglish = self.translateResultToEnglish
+                        self.currentState.enableAutoPaste = self.enableAutoPaste
                         dismiss()
+
+                        if autoPasteJustEnabled {
+                            self.currentState.showAccessibilityWindow()
+                        }
                     }.buttonStyle(.borderedProminent)
                 }
             }
@@ -83,9 +103,10 @@ struct SettingsScreen: View {
                 self.language = currentState.language
                 self.prompt = currentState.prompt
                 self.translateResultToEnglish = currentState.translateResultToEnglish
+                self.enableAutoPaste = currentState.enableAutoPaste
             }
         }
-        .frame(width: 600, height: 350)
+        .frame(width: 600, height: 450)
     }
 }
 
