@@ -21,8 +21,11 @@ final class AppState: ObservableObject {
         return _instance
     }
     
+    private let localTranscription = LocalTranscription()
+    
     @Published var recordingState = stopped
     
+    @AppStorage("useOpenAI") var useOpenAI: Bool = true
     @AppStorage("language") var language: String = "en"
     @AppStorage("translateResultToEnglish") var translateResultToEnglish: Bool = false
     @AppStorage("enableAutoPaste") var enableAutoPaste: Bool = false
@@ -66,7 +69,7 @@ final class AppState: ObservableObject {
             }
         }
         
-        // Hydrade saved history
+        // Hydrate saved history
         if !self.serializedHistory.isEmpty {
             do {
                 let jsonData = self.serializedHistory.data(using: .utf8)!
@@ -76,10 +79,12 @@ final class AppState: ObservableObject {
                 self.showError(error)
             }
         }
+        
     }
     
     public func startRecording() {
-        if apiToken == "" {
+        if useOpenAI && apiToken == "" {
+            playErrorSound()
             NSApp.activate(ignoringOtherApps: true)
             NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
             return
@@ -95,57 +100,104 @@ final class AppState: ObservableObject {
         }
     }
     
-    // TODO: reflactor
     public func stopRecording() {
         print("STOP RECORDING")
-        do {
-            recordingState = working
-            let url = rec.stop()
-            let data = try Data(contentsOf: url as URL)
-            
-            if self.translateResultToEnglish {
-                // handle tranlation transcription
-                let query = AudioTranslationQuery(file: data, fileName: "audio.m4a", model: .whisper_1, prompt: self.prompt)
-                self.openAI.audioTranslations(query: query) { result in
-                    print("Translation result: \(result)")
-                    switch result {
-                    case .success(let data):
-                        self.handleTranscriptionSuccess(data.text)
-                    case .failure(let error):
-                        self.showError(error)
-                    }
-                    
-                    DispatchQueue.main.async {
-                        self.recordingState = stopped
-                    }
-                }
-            } else {
-                // handle transcription
-                let query = AudioTranscriptionQuery(file: data, fileName: "audio.m4a", model: .whisper_1, prompt: self.prompt, language: self.language)
-                self.openAI.audioTranscriptions(query: query) { result in
-                    print("Transcription result: \(result)")
-                    switch result {
-                    case .success(let data):
-                        self.handleTranscriptionSuccess(data.text)
-                    case .failure(let error):
-                        self.showError(error)
-                    }
-                    
-                    DispatchQueue.main.async {
-                        self.recordingState = stopped
-                    }
-                }
-            }
-        } catch {
-            self.showError(error)
-            recordingState = stopped
+        recordingState = working
+        let url = rec.stop()
+        
+        Task {
+            await self.transcribe(url: url as URL)
         }
     }
     
-    private func handleTranscriptionSuccess(_ text: String) {
+    private func transcribe(url: URL) async -> Void  {
+        let timer = ParkBenchTimer()
+        var text = ""
+        do {
+            if useOpenAI && translateResultToEnglish {
+                text = try await self.translateOpenAI(url: url)
+            } else if useOpenAI {
+                text = try await self.transcribeOpenAI(url: url)
+            } else {
+                text = try await self.transcribeLocal(url: url)
+            }
+                        
+            print("Transcription result: \(text)")
+            self.handleTranscriptionSuccess(text, duration: timer.stop())
+
+        } catch {
+            self.showError(error)
+        }
+
+        DispatchQueue.main.async {
+            self.recordingState = stopped
+        }
+    }
+
+
+    private func transcribeOpenAI(url: URL) async throws -> String {
+        return try await withCheckedThrowingContinuation { continuation in
+            do {
+                let data = try Data(contentsOf: url as URL)
+                let query = AudioTranscriptionQuery(file: data, fileName: "audio.m4a", model: .whisper_1, prompt: self.prompt, language: self.language)
+                self.openAI.audioTranscriptions(query: query) { result in
+                    switch result {
+                    case .success(let data):
+                        continuation.resume(returning: data.text)
+                    case .failure(let error):
+                        continuation.resume(throwing: error)
+                    }
+                }
+            } catch {
+                continuation.resume(throwing: error)
+            }
+        }
+    }
+
+    private func translateOpenAI(url: URL) async throws -> String {
+        return try await withCheckedThrowingContinuation { continuation in
+            do {
+                let data = try Data(contentsOf: url as URL)
+                let query = AudioTranslationQuery(file: data, fileName: "audio.m4a", model: .whisper_1, prompt: self.prompt)
+                self.openAI.audioTranslations(query: query) { result in
+                    switch result {
+                    case .success(let data):
+                        continuation.resume(returning: data.text)
+                    case .failure(let error):
+                        continuation.resume(throwing: error)
+                    }
+                }
+            } catch {
+                continuation.resume(throwing: error)
+            }
+        }
+    }
+        
+    private func transcribeLocal(url: URL) async throws -> String {
+        await localTranscription.initModel()
+        localTranscription.language = language
+        localTranscription.translateToEnglish = translateResultToEnglish
+        localTranscription.prompt = "The sentence may be cut off, do not make up words to fill in the rest of the sentence. Don't make up anything that wasn't clearly spoken. Don't include any noises. " + prompt
+        return try await withCheckedThrowingContinuation { continuation in
+            localTranscription.translateToEnglish = self.translateResultToEnglish
+            localTranscription.language = self.language
+            localTranscription.transcribe(fileURL: url) { result in
+                switch result {
+                case .success(let text):
+                    continuation.resume(returning: text)
+                case .failure(let error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    
+    private func handleTranscriptionSuccess(_ text: String, duration: Double) {
         logger.info("result: \(text)")
         AppState.setClipboard(text)
-        self.history.enqueue(HistoryItem(text))
+        let item = HistoryItem(text)
+        item.duration = duration
+        self.history.enqueue(item)
         playOKSound()
         
         if self.enableAutoPaste {

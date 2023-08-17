@@ -53,7 +53,7 @@ public class Recording : NSObject, AVAudioRecorderDelegate {
     }
 
 
-    public func stop() -> NSURL {
+public func stop() -> NSURL {
         switch state {
         case .Record:
             recorder?.stop()

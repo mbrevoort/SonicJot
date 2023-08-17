@@ -15,6 +15,7 @@ struct SettingsScreen: View {
     @State private var prompt: String = ""
     @State private var translateResultToEnglish: Bool = false;
     @State private var enableAutoPaste: Bool = false;
+    @State private var useOpenAI: Bool = false;
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
@@ -22,8 +23,6 @@ struct SettingsScreen: View {
             Spacer()
             Form {
                 Section {
-                    SecureField("OpenAI API Key:", text: $apiToken)
-                    Text("Provide your OpenAI API key from \nhttps://platform.openai.com/account/api-keys").font(.caption)
                     
                     Picker("Speaking Language:", selection: $language) {
                         Text("English").tag("en")
@@ -67,6 +66,19 @@ struct SettingsScreen: View {
                     }
                     Text("Provide a sample of something you would normally say and how you would format \nit or some technical terms").font(.caption)
                     
+                    LabeledContent {
+                        VStack(alignment: .leading) {
+                            Toggle(isOn: $useOpenAI) {
+                                Text("Enable OpenAI")
+                            }
+                            .toggleStyle(.checkbox)
+                            SecureField("OpenAI API Key", text: $apiToken).disabled(!useOpenAI).labelsHidden()
+                            Text("Provide your OpenAI API key from \nhttps://platform.openai.com/account/api-keys").font(.caption)
+                        }
+                    } label: {
+                        Text("OpenAI Options:")
+                    }
+
 
                     KeyboardShortcuts.Recorder("Recording Mode Toggle:", name: .toggleRecordMode)
 
@@ -80,6 +92,7 @@ struct SettingsScreen: View {
                         self.prompt = currentState.prompt
                         self.translateResultToEnglish = currentState.translateResultToEnglish
                         self.enableAutoPaste = currentState.enableAutoPaste
+                        self.useOpenAI = currentState.useOpenAI
                         dismiss()
                     }.buttonStyle(.bordered)
                     Button("Save") {
@@ -89,6 +102,7 @@ struct SettingsScreen: View {
                         self.currentState.prompt = self.prompt
                         self.currentState.translateResultToEnglish = self.translateResultToEnglish
                         self.currentState.enableAutoPaste = self.enableAutoPaste
+                        self.currentState.useOpenAI = self.useOpenAI
                         dismiss()
 
                         if autoPasteJustEnabled {
@@ -104,6 +118,7 @@ struct SettingsScreen: View {
                 self.prompt = currentState.prompt
                 self.translateResultToEnglish = currentState.translateResultToEnglish
                 self.enableAutoPaste = currentState.enableAutoPaste
+                self.useOpenAI = currentState.useOpenAI
             }
         }
         .frame(width: 600, height: 450)

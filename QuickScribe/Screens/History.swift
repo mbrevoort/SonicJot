@@ -22,7 +22,7 @@ struct HistoryScreen: View {
                         Image(systemName: item.type == HistoryItemType.error ? "x.circle" : "waveform")
                         
                         VStack(alignment: .leading) {
-                            Text("\(item.friendlyType) - \(item.time.formatted())")
+                            Text("\(item.friendlyType) - \(item.time.formatted()) \(item.duration > 0 ? String(format: " %.2fs", item.duration) : "")")
                             Text(item.body).textSelection(.enabled)
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)

@@ -67,6 +67,7 @@ class HistoryItem: Identifiable, Codable {
     var type: HistoryItemType = HistoryItemType.transcription
     var body: String
     var time: Date
+    var duration: CFAbsoluteTime
     
     var description: String {
         "\(type): \(body)"
@@ -85,16 +86,28 @@ class HistoryItem: Identifiable, Codable {
         self.body = body
         self.type = HistoryItemType.transcription
         self.time = Date()
+        self.duration = 0;
     }
     
     init(body: String, type: HistoryItemType) {
         self.body = body
         self.type = type
         self.time = Date()
+        self.duration = 0;
     }
+    
     init(body: String, type: HistoryItemType, time: Date) {
         self.body = body
         self.type = type
         self.time = time
+        self.duration = 0;
     }
+
+    init(body: String, type: HistoryItemType, time: Date, duration: CFAbsoluteTime) {
+        self.body = body
+        self.type = type
+        self.time = time
+        self.duration = duration;
+    }
+
 }
