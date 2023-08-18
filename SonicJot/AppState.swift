@@ -52,7 +52,7 @@ final class AppState: ObservableObject {
     }
     
     
-    var apiToken: String = KeychainHelper.getOpenAIToken() {
+    lazy public var apiToken: String = KeychainHelper.getOpenAIToken() {
         didSet {
             KeychainHelper.setOpenAIToken(apiToken)
             self.openAI = OpenAI(apiToken: apiToken)

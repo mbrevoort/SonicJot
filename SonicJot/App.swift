@@ -28,7 +28,7 @@ struct swiftui_menu_barApp: App {
                 Image(systemName: "stop")
                 Text("Complete Transcription")
             }
-            .disabled(currentState.recordingState == stopped)
+            .disabled(currentState.recordingState != recording)
 
             Button {
                 currentState.cancelRecording()
@@ -36,7 +36,7 @@ struct swiftui_menu_barApp: App {
                 Image(systemName: "xmark.square")
                 Text("Cancel")
             }
-            .disabled(currentState.recordingState == stopped)
+            .disabled(currentState.recordingState != recording)
 
             
             Button {
@@ -62,7 +62,6 @@ struct swiftui_menu_barApp: App {
             Button("Quit") {
                 NSApplication.shared.terminate(nil)
             }.keyboardShortcut("q")
-                        
         }
         Settings {
             SettingsScreen()
