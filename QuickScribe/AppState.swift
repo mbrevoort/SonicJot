@@ -23,6 +23,9 @@ final class AppState: ObservableObject {
     
     private let localTranscription = LocalTranscription()
     
+    private var lastKeyDownTime: Date?
+    private var shouldAutoPasteIfEnabled: Bool = false
+    
     @Published var recordingState = stopped
     
     @AppStorage("useOpenAI") var useOpenAI: Bool = true
@@ -61,12 +64,12 @@ final class AppState: ObservableObject {
     init() {
         
         // Register keyboard shortcuts
+        KeyboardShortcuts.onKeyDown(for: .toggleRecordMode) { [weak self] in
+            self?.keyDown()
+        }
+        
         KeyboardShortcuts.onKeyUp(for: .toggleRecordMode) { [weak self] in
-            if self?.recordingState == stopped {
-                self?.startRecording()
-            } else if self?.recordingState == recording {
-                self?.stopRecording()
-            }
+            self?.keyUp()
         }
         
         // Hydrate saved history
@@ -81,6 +84,33 @@ final class AppState: ObservableObject {
         }
         
     }
+    
+    
+    private func keyDown() {
+        self.lastKeyDownTime = Date()
+        self.shouldAutoPasteIfEnabled = false
+        
+        if self.recordingState == stopped {
+            self.startRecording()
+        } else if self.recordingState == recording {
+            self.stopRecording()
+        }
+        
+    }
+    
+    private func keyUp() {
+        let sinceLastKeyDown = abs(self.lastKeyDownTime?.timeIntervalSinceNow ?? 0)
+        print("sinceLastKeyDown: \(sinceLastKeyDown)")
+        let wasHeldDown: Bool = sinceLastKeyDown > 2 //seconds
+        if wasHeldDown {
+            if self.recordingState == recording {
+                self.shouldAutoPasteIfEnabled = true
+                self.stopRecording()
+            }
+        }
+    }
+    
+    
     
     public func startRecording() {
         if useOpenAI && apiToken == "" {
@@ -104,6 +134,7 @@ final class AppState: ObservableObject {
         print("STOP RECORDING")
         recordingState = working
         let url = rec.stop()
+        playOKSound()
         
         Task {
             await self.transcribe(url: url as URL)
@@ -121,20 +152,20 @@ final class AppState: ObservableObject {
             } else {
                 text = try await self.transcribeLocal(url: url)
             }
-                        
+            
             print("Transcription result: \(text)")
             self.handleTranscriptionSuccess(text, duration: timer.stop())
-
+            
         } catch {
             self.showError(error)
         }
-
+        
         DispatchQueue.main.async {
             self.recordingState = stopped
         }
     }
-
-
+    
+    
     private func transcribeOpenAI(url: URL) async throws -> String {
         return try await withCheckedThrowingContinuation { continuation in
             do {
@@ -153,7 +184,7 @@ final class AppState: ObservableObject {
             }
         }
     }
-
+    
     private func translateOpenAI(url: URL) async throws -> String {
         return try await withCheckedThrowingContinuation { continuation in
             do {
@@ -172,7 +203,7 @@ final class AppState: ObservableObject {
             }
         }
     }
-        
+    
     private func transcribeLocal(url: URL) async throws -> String {
         await localTranscription.initModel()
         localTranscription.language = language
@@ -198,10 +229,12 @@ final class AppState: ObservableObject {
         let item = HistoryItem(text)
         item.duration = duration
         self.history.enqueue(item)
-        playOKSound()
         
-        if self.enableAutoPaste {
+        if self.enableAutoPaste && self.shouldAutoPasteIfEnabled {
+            playDoneAsyncSound()
             paste()
+        } else {
+            playDoneSound()
         }
     }
     
@@ -235,7 +268,7 @@ final class AppState: ObservableObject {
             }
             return
         }
-                
+        
         DispatchQueue.main.async {
             let source = CGEventSource(stateID: .combinedSessionState)
             // Press Command + V

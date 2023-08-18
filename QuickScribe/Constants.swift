@@ -29,8 +29,21 @@ let logger = Logger(subsystem: "com.brevoort.quickscribe", category: "general")
 
 // Sounds
 
+let errorSound = NSSound(named: "error.mp3")
+let beepSound = NSSound(named: "ok-beep.mp3")
+let pingSound = NSSound(named: "ping.mp3")
+
+
 func playErrorSound() {
-    NSSound(named: "error.mp3")?.play()
+    errorSound?.play()
+}
+
+func playDoneSound() {
+    beepSound?.play()
+}
+
+func playDoneAsyncSound() {
+    pingSound?.play()
 }
 
 func playOKSound() {

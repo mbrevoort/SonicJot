@@ -44,7 +44,7 @@ struct SettingsScreen: View {
 
                     LabeledContent {
                         Toggle(isOn: $enableAutoPaste) {
-                            Text("Enable autotype of text")
+                            Text("Output text at cursor when keyboard shortcut is held")
                         }
                         .toggleStyle(.checkbox)
                     } label: {
@@ -80,7 +80,7 @@ struct SettingsScreen: View {
                     }
 
 
-                    KeyboardShortcuts.Recorder("Recording Mode Toggle:", name: .toggleRecordMode)
+                    KeyboardShortcuts.Recorder("Record Keyboard Shortcut:", name: .toggleRecordMode)
 
 
                 }
