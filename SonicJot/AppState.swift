@@ -16,6 +16,7 @@ let jsonDecoder = JSONDecoder()
 
 @MainActor
 final class AppState: ObservableObject {
+    @Environment(\.openWindow) private var openWindow
     private static var _instance: AppState = AppState()
     public static func instance() -> AppState {
         return _instance

@@ -18,3 +18,5 @@ struct AboutScreen: View {
         }.frame(width: 400, height: 150)
     }
 }
+
+

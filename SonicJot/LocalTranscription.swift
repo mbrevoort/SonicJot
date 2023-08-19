@@ -42,7 +42,7 @@ final class LocalTranscription {
             return ""
         }
     }
-        
+    
     init() {
     }
     
@@ -113,35 +113,36 @@ final class LocalTranscription {
     }
     
     static private func getModelURL() async -> URL? {
-            let hostedModelURL = URL(string: "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-small.bin")!
-            NSHomeDirectory()
-            
-            
-            guard let path = pathForAppSupportDirecotry()?.appendingPathComponent("ggml-small.bin") else { return nil }
-            
-            if FileManager.default.fileExists(atPath: path.path) {
-                return path
-            }
-            
-            do {
-                let url = try await withCheckedThrowingContinuation { (cont: CheckedContinuation<URL, Error>) -> Void in
-                    let urlRequest = URLRequest(url: hostedModelURL)
-                    
-                    URLSession.shared.downloadTask(with: urlRequest) { url, _, error in
-                        if let error {
-                            cont.resume(throwing: error)
-                        }
-                        
-                        cont.resume(returning: url!)
-                    }.resume()
-                }
-                
-                try FileManager.default.copyItem(at: url, to: path)
-            } catch {
-                return nil
-            }
-            
+        let hostedModelURL = URL(string: "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-small.bin")!
+        NSHomeDirectory()
+        
+        
+        guard let path = pathForAppSupportDirecotry()?.appendingPathComponent("ggml-small.bin") else { return nil }
+        print("Local model path is \(path)")
+        
+        if FileManager.default.fileExists(atPath: path.path) {
             return path
+        }
+        
+        do {
+            let url = try await withCheckedThrowingContinuation { (cont: CheckedContinuation<URL, Error>) -> Void in
+                let urlRequest = URLRequest(url: hostedModelURL)
+                
+                URLSession.shared.downloadTask(with: urlRequest) { url, _, error in
+                    if let error {
+                        cont.resume(throwing: error)
+                    }
+                    
+                    cont.resume(returning: url!)
+                }.resume()
+            }
+            
+            try FileManager.default.copyItem(at: url, to: path)
+        } catch {
+            return nil
+        }
+        
+        return path
     }
     
     static private func pathForAppSupportDirecotry() -> URL? {

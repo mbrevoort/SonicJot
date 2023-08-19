@@ -1,6 +1,6 @@
 //
 //  ContentView.swift
-//  QuickScribe
+//  SonicJot
 //
 //  Created by Mike Brevoort on 8/7/23.
 //
