@@ -1,0 +1,50 @@
+{
+  "pins" : [
+    {
+      "identity" : "audiokit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/AudioKit/AudioKit",
+      "state" : {
+        "revision" : "c30a151fea40696ad0a45c60c2bba29112bb4279",
+        "version" : "5.6.1"
+      }
+    },
+    {
+      "identity" : "hotkey",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/soffes/HotKey",
+      "state" : {
+        "branch" : "main",
+        "revision" : "4d02d80de143d69b7eeb5962729591a157a57ede"
+      }
+    },
+    {
+      "identity" : "keyboardshortcuts",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/sindresorhus/KeyboardShortcuts",
+      "state" : {
+        "revision" : "8b1a9ce78c2f35c8a55dcc95897573abd2cc4f6e",
+        "version" : "1.13.0"
+      }
+    },
+    {
+      "identity" : "openai",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/MacPaw/OpenAI.git",
+      "state" : {
+        "revision" : "a51a7fde78173e57b9166d38d1f665d17a3c4383",
+        "version" : "0.2.3"
+      }
+    },
+    {
+      "identity" : "swiftwhisper",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/exPHAT/SwiftWhisper",
+      "state" : {
+        "revision" : "f7604884e09e97d8e45455608f7326233d30b66e",
+        "version" : "1.1.0"
+      }
+    }
+  ],
+  "version" : 2
+}
