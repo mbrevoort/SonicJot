@@ -9,7 +9,8 @@ import Foundation
 import SwiftWhisper
 import AudioKit
 
-final class LocalTranscription {
+final class LocalTranscription: ObservableObject {
+    @Published var isInitialized: Bool = false
     var whisper: Whisper?
     var translateToEnglish: Bool {
         set {
@@ -54,6 +55,7 @@ final class LocalTranscription {
             self.whisper?.params.beam_search.beam_size = 5
             self.whisper?.params.entropy_thold = 2.4
             self.whisper?.params.temperature = 0
+            isInitialized = true
         }
     }
     

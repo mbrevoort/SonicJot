@@ -25,67 +25,8 @@ struct Menu: View {
         
         VStack(alignment: .leading) {
             
-            Spacer().frame(height: 5)
-            
-            if !isSummary {
-                VStack(alignment: .leading, spacing: 0) {
-                    Button(action: {
-                        currentState.startRecording()
-                    }, label: {})
-                    .buttonStyle(MenuStyle(title: "Start"))
-                    .disabled(currentState.recordingState != RecordingStates.stopped || currentState.isKeyDown)
-                    
-                    Button(action: {
-                        currentState.stopRecording(autoPaste: false)
-                    }, label: {})
-                    .buttonStyle(MenuStyle(title: "Stop"))
-                    .disabled(currentState.recordingState != RecordingStates.recording || currentState.isKeyDown)
-                    
-                    Button(action: {
-                        currentState.cancelRecording()
-                    }, label: {})
-                    .buttonStyle(MenuStyle(title: "Cancel"))
-                    .disabled(currentState.recordingState != RecordingStates.recording || currentState.isKeyDown)
-                }
-                
-                
-                Divider()
-                
-                VStack(alignment: .leading, spacing: 0) {
-                    Button(action: {
-                        NSApp.activate(ignoringOtherApps: true)
-                        openWindow(id: "history")
-                    }, label: {})
-                    .buttonStyle(MenuStyle(title: "History"))
-                    
-                    Button(action: {
-                        NSApp.activate(ignoringOtherApps: true)
-                        openWindow(id: "settings")
-                    }, label: {})
-                    .buttonStyle(MenuStyle(title: "Settings"))
-                    
-                    Button(action: {
-                        NSApp.activate(ignoringOtherApps: true)
-                        openWindow(id: "about")
-                    }, label: {})
-                    .buttonStyle(MenuStyle(title: "About"))
-                    
-                    Button(action: {
-                        NSApplication.shared.terminate(nil)
-                    }, label: {})
-                    .buttonStyle(MenuStyle(title: "Quit"))
-                }
-                Divider()
-                
-            } else {
-                Button(action: {
-                    self.isSummary = false
-                }, label: {})
-                .buttonStyle(MenuStyle(title: "Reveal Options"))
-                
-            }
-            
-            
+            Spacer().frame(height: 10)
+
             HStack {
                 Spacer().frame(width:10)
                 Image(systemName: "info.circle")
@@ -181,6 +122,67 @@ struct Menu: View {
                 
             }
 
+            
+            Divider()
+            
+            if !isSummary {
+                VStack(alignment: .leading, spacing: 0) {
+                    Button(action: {
+                        currentState.startRecording()
+                    }, label: {})
+                    .buttonStyle(MenuStyle(title: "Start"))
+                    .disabled(currentState.recordingState != RecordingStates.stopped || currentState.isKeyDown)
+                    
+                    Button(action: {
+                        currentState.stopRecording(autoPaste: false)
+                    }, label: {})
+                    .buttonStyle(MenuStyle(title: "Stop"))
+                    .disabled(currentState.recordingState != RecordingStates.recording || currentState.isKeyDown)
+                    
+                    Button(action: {
+                        currentState.cancelRecording()
+                    }, label: {})
+                    .buttonStyle(MenuStyle(title: "Cancel"))
+                    .disabled(currentState.recordingState != RecordingStates.recording || currentState.isKeyDown)
+                }
+                
+                
+                Divider()
+                
+                VStack(alignment: .leading, spacing: 0) {
+                    Button(action: {
+                        NSApp.activate(ignoringOtherApps: true)
+                        openWindow(id: "history")
+                    }, label: {})
+                    .buttonStyle(MenuStyle(title: "History"))
+                    
+                    Button(action: {
+                        NSApp.activate(ignoringOtherApps: true)
+                        openWindow(id: "settings")
+                    }, label: {})
+                    .buttonStyle(MenuStyle(title: "Settings"))
+                    
+                    Button(action: {
+                        NSApp.activate(ignoringOtherApps: true)
+                        openWindow(id: "about")
+                    }, label: {})
+                    .buttonStyle(MenuStyle(title: "About"))
+                    
+                    Button(action: {
+                        NSApplication.shared.terminate(nil)
+                    }, label: {})
+                    .buttonStyle(MenuStyle(title: "Quit"))
+                }
+                Divider()
+                
+            } else {
+                Button(action: {
+                    self.isSummary = false
+                }, label: {})
+                .buttonStyle(MenuStyle(title: "Reveal Options"))
+                
+            }
+            
             
         }.padding(EdgeInsets(top:0, leading: 5, bottom: 5, trailing: 10))
     }

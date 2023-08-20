@@ -22,7 +22,7 @@ final class AppState: ObservableObject {
         return _instance
     }
     
-    private let localTranscription = LocalTranscription()
+    @ObservedObject private var localTranscription = LocalTranscription()
     
     private var lastKeyDownTime: Date?
     @Published public var isKeyDown: Bool = false
@@ -34,6 +34,8 @@ final class AppState: ObservableObject {
     public var runningStatus: String {
         get {
             switch recordingState {
+            case RecordingStates.initializing:
+                return "Initializing..."
             case RecordingStates.stopped:
                 return "Ready..."
             case RecordingStates.recording:
@@ -45,7 +47,7 @@ final class AppState: ObservableObject {
     }
     
     
-    @AppStorage("useOpenAI") var useOpenAI: Bool = true
+    @AppStorage("useOpenAI") var useOpenAI: Bool = false
     @AppStorage("language") var language: String = "en"
     @AppStorage("translateResultToEnglish") var translateResultToEnglish: Bool = false
     @AppStorage("enableAutoPaste") var enableAutoPaste: Bool = false
@@ -96,6 +98,14 @@ final class AppState: ObservableObject {
                 self.history.replace(restoredHistory)
             } catch {
                 self.showError(error)
+            }
+        }
+        
+        if !self.useOpenAI {
+            self.recordingState = RecordingStates.initializing
+            Task {
+                await self.localTranscription.initModel()
+                self.recordingState = RecordingStates.stopped
             }
         }
     }

@@ -23,6 +23,7 @@ enum RecordingStates: String {
     case recording = "waveform.circle.fill"
     case working = "hourglass.circle"
     case stopped = "waveform"
+    case initializing = "waveform.slash"
 }
 
 // Global logger
