@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		BE03136B2A83306E00432945 /* KeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE03136A2A83306E00432945 /* KeychainHelper.swift */; };
+		BE934FC72A91C52E000B3841 /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE934FC62A91C52E000B3841 /* Menu.swift */; };
+		BE934FCA2A928CF2000B3841 /* MenuBarExtraAccess in Frameworks */ = {isa = PBXBuildFile; productRef = BE934FC92A928CF2000B3841 /* MenuBarExtraAccess */; };
 		BED2FBCE2A83C4A000ACF6FC /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED2FBCD2A83C4A000ACF6FC /* Constants.swift */; };
 		BED2FBD12A83C54800ACF6FC /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = BED2FBD02A83C54800ACF6FC /* KeyboardShortcuts */; };
 		BED2FBD32A848C1900ACF6FC /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED2FBD22A848C1900ACF6FC /* Settings.swift */; };
@@ -32,6 +34,7 @@
 
 /* Begin PBXFileReference section */
 		BE03136A2A83306E00432945 /* KeychainHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainHelper.swift; sourceTree = "<group>"; };
+		BE934FC62A91C52E000B3841 /* Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
 		BED2FBCD2A83C4A000ACF6FC /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		BED2FBD22A848C1900ACF6FC /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		BED2FBD42A855A8400ACF6FC /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
@@ -61,6 +64,7 @@
 				BEECD9802A82955E000D6833 /* OpenAI in Frameworks */,
 				BED2FBF72A8D50D600ACF6FC /* AudioKit in Frameworks */,
 				BED2FBD12A83C54800ACF6FC /* KeyboardShortcuts in Frameworks */,
+				BE934FCA2A928CF2000B3841 /* MenuBarExtraAccess in Frameworks */,
 				BED2FBEF2A8D4D1200ACF6FC /* SwiftWhisper in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -75,6 +79,7 @@
 				BED2FBD62A8665C200ACF6FC /* History.swift */,
 				BED2FBDF2A89D01500ACF6FC /* About.swift */,
 				BED2FC052A90106C00ACF6FC /* RecordingStatus.swift */,
+				BE934FC62A91C52E000B3841 /* Menu.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -163,6 +168,7 @@
 				BED2FBD02A83C54800ACF6FC /* KeyboardShortcuts */,
 				BED2FBEE2A8D4D1200ACF6FC /* SwiftWhisper */,
 				BED2FBF62A8D50D600ACF6FC /* AudioKit */,
+				BE934FC92A928CF2000B3841 /* MenuBarExtraAccess */,
 			);
 			productName = QuickScribe;
 			productReference = BEECD9672A81FB08000D6833 /* SonicJot.app */;
@@ -198,6 +204,7 @@
 				BED2FBCF2A83C54800ACF6FC /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */,
 				BED2FBED2A8D4D1200ACF6FC /* XCRemoteSwiftPackageReference "SwiftWhisper" */,
 				BED2FBF52A8D50D600ACF6FC /* XCRemoteSwiftPackageReference "AudioKit" */,
+				BE934FC82A928CF2000B3841 /* XCRemoteSwiftPackageReference "MenuBarExtraAccess" */,
 			);
 			productRefGroup = BEECD9682A81FB08000D6833 /* Products */;
 			projectDirPath = "";
@@ -237,6 +244,7 @@
 				BED2FBD52A855A8400ACF6FC /* AppState.swift in Sources */,
 				BED2FBD32A848C1900ACF6FC /* Settings.swift in Sources */,
 				BED2FBCE2A83C4A000ACF6FC /* Constants.swift in Sources */,
+				BE934FC72A91C52E000B3841 /* Menu.swift in Sources */,
 				BED2FBFC2A8D682500ACF6FC /* ParkBenchTimer.swift in Sources */,
 				BED2FBF12A8D4DDD00ACF6FC /* LocalTranscription.swift in Sources */,
 				BED2FBD72A8665C200ACF6FC /* History.swift in Sources */,
@@ -456,6 +464,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		BE934FC82A928CF2000B3841 /* XCRemoteSwiftPackageReference "MenuBarExtraAccess" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/orchetect/MenuBarExtraAccess";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 		BED2FBCF2A83C54800ACF6FC /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/sindresorhus/KeyboardShortcuts";
@@ -499,6 +515,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		BE934FC92A928CF2000B3841 /* MenuBarExtraAccess */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BE934FC82A928CF2000B3841 /* XCRemoteSwiftPackageReference "MenuBarExtraAccess" */;
+			productName = MenuBarExtraAccess;
+		};
 		BED2FBD02A83C54800ACF6FC /* KeyboardShortcuts */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = BED2FBCF2A83C54800ACF6FC /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */;

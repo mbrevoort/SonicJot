@@ -19,9 +19,11 @@ extension KeyboardShortcuts.Name {
 let vKeyCode = UInt16(kVK_ANSI_V)
 
 // Recording statuses
-let recording = "waveform.circle.fill"
-let working = "hourglass.circle"
-let stopped = "waveform"
+enum RecordingStates: String {
+    case recording = "waveform.circle.fill"
+    case working = "hourglass.circle"
+    case stopped = "waveform"
+}
 
 // Global logger
 let logger = Logger(subsystem: "com.brevoort.sonicjot", category: "general")

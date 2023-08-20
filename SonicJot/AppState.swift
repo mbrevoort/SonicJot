@@ -25,9 +25,25 @@ final class AppState: ObservableObject {
     private let localTranscription = LocalTranscription()
     
     private var lastKeyDownTime: Date?
-    private var shouldAutoPasteIfEnabled: Bool = false
+    @Published public var isKeyDown: Bool = false
+    @Published var recordingState = RecordingStates.stopped
+    @Published var isMenuPresented: Bool = false
+    @Published var isMenuSummary: Bool = false
+
+
+    public var runningStatus: String {
+        get {
+            switch recordingState {
+            case RecordingStates.stopped:
+                return "Ready..."
+            case RecordingStates.recording:
+                return "Recording..."
+            case RecordingStates.working:
+                return "Transcribing..."
+            }
+        }
+    }
     
-    @Published var recordingState = stopped
     
     @AppStorage("useOpenAI") var useOpenAI: Bool = true
     @AppStorage("language") var language: String = "en"
@@ -63,7 +79,6 @@ final class AppState: ObservableObject {
     let rec = Recording()
     
     init() {
-        
         // Register keyboard shortcuts
         KeyboardShortcuts.onKeyDown(for: .toggleRecordMode) { [weak self] in
             self?.keyDown()
@@ -83,37 +98,47 @@ final class AppState: ObservableObject {
                 self.showError(error)
             }
         }
-        
     }
     
     
     private func keyDown() {
-        self.lastKeyDownTime = Date()
-        self.shouldAutoPasteIfEnabled = false
-        
-        if self.recordingState == stopped {
-            self.startRecording()
-        } else if self.recordingState == recording {
-            self.stopRecording()
+        print("DOWN")
+        if recordingState == RecordingStates.working {
+            return
         }
         
+        self.isKeyDown = true
+        lastKeyDownTime = Date()
+        
+        if recordingState == RecordingStates.stopped {
+            self.isMenuSummary = true
+            startRecording()
+        } else if recordingState == RecordingStates.recording {
+            stopRecording()
+        }
     }
     
     private func keyUp() {
+        print("UP")
+        self.isKeyDown = false
         let sinceLastKeyDown = abs(self.lastKeyDownTime?.timeIntervalSinceNow ?? 0)
         print("sinceLastKeyDown: \(sinceLastKeyDown)")
         let wasHeldDown: Bool = sinceLastKeyDown > 2 //seconds
-        if wasHeldDown {
-            if self.recordingState == recording {
-                self.shouldAutoPasteIfEnabled = true
-                self.stopRecording()
-            }
+        let isRecording: Bool = self.recordingState == RecordingStates.recording
+        if wasHeldDown && isRecording {
+            self.stopRecording(autoPaste: true)
         }
     }
     
-    
+    public func hideMenu() {
+        self.isMenuPresented = false
+        DispatchQueue.main.async {
+            self.isMenuSummary = false
+        }
+    }
     
     public func startRecording() {
+        self.isMenuPresented = true
         if useOpenAI && apiToken == "" {
             playErrorSound()
             NSApp.activate(ignoringOtherApps: true)
@@ -121,8 +146,7 @@ final class AppState: ObservableObject {
             return
         }
         
-        print("START RECORDING")
-        recordingState = recording
+        recordingState = RecordingStates.recording
         do {
             try rec.record()
             playOKSound()
@@ -131,18 +155,17 @@ final class AppState: ObservableObject {
         }
     }
     
-    public func stopRecording() {
-        print("STOP RECORDING")
-        recordingState = working
+    public func stopRecording(autoPaste: Bool = false) {
+        recordingState = RecordingStates.working
         let url = rec.stop()
         playOKSound()
         
         Task {
-            await self.transcribe(url: url as URL)
+            await self.transcribe(url: url as URL, autoPaste: autoPaste)
         }
     }
     
-    private func transcribe(url: URL) async -> Void  {
+    private func transcribe(url: URL, autoPaste: Bool = false) async -> Void  {
         let timer = ParkBenchTimer()
         var text = ""
         do {
@@ -155,14 +178,24 @@ final class AppState: ObservableObject {
             }
             
             print("Transcription result: \(text)")
-            self.handleTranscriptionSuccess(text, duration: timer.stop())
+            let item = HistoryItem(text)
+            item.duration = timer.stop()
+            AppState.setClipboard(text)
+            self.history.enqueue(item)
             
+            if self.enableAutoPaste && autoPaste {
+                playDoneAsyncSound()
+                paste()
+            } else {
+                playDoneSound()
+            }
+            hideMenu()
         } catch {
             self.showError(error)
         }
         
         DispatchQueue.main.async {
-            self.recordingState = stopped
+            self.recordingState = RecordingStates.stopped
         }
     }
     
@@ -223,26 +256,12 @@ final class AppState: ObservableObject {
             }
         }
     }
-    
-    private func handleTranscriptionSuccess(_ text: String, duration: Double) {
-        logger.info("result: \(text)")
-        AppState.setClipboard(text)
-        let item = HistoryItem(text)
-        item.duration = duration
-        self.history.enqueue(item)
         
-        if self.enableAutoPaste && self.shouldAutoPasteIfEnabled {
-            playDoneAsyncSound()
-            paste()
-        } else {
-            playDoneSound()
-        }
-    }
-    
     public func cancelRecording() {
         print("CANCEL RECORDING")
-        recordingState = stopped
+        recordingState = RecordingStates.stopped
         _ = rec.stop()
+        hideMenu()
     }
     
     

@@ -28,6 +28,15 @@
       }
     },
     {
+      "identity" : "menubarextraaccess",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/orchetect/MenuBarExtraAccess",
+      "state" : {
+        "revision" : "f5896b47e15e114975897354c7e1082c51a2bffd",
+        "version" : "1.0.5"
+      }
+    },
+    {
       "identity" : "openai",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/MacPaw/OpenAI.git",
