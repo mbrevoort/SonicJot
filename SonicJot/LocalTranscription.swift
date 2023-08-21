@@ -55,6 +55,8 @@ final class LocalTranscription: ObservableObject {
             self.whisper?.params.beam_search.beam_size = 5
             self.whisper?.params.entropy_thold = 2.4
             self.whisper?.params.temperature = 0
+            // https://github.com/ggerganov/whisper.cpp/issues/588
+            self.whisper?.params.temperature_inc = 0
             isInitialized = true
         }
     }
