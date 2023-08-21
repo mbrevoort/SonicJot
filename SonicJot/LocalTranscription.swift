@@ -84,6 +84,7 @@ final class LocalTranscription: ObservableObject {
     }
     
     private func convertAudioFileToPCMArray(fileURL: URL, completionHandler: @escaping (_ result: Result<[Float], Error>) -> Void) {
+        let timer = ParkBenchTimer()
         var options = FormatConverter.Options()
         options.format = .wav
         options.sampleRate = 16000
@@ -110,6 +111,7 @@ final class LocalTranscription: ObservableObject {
             
             try? FileManager.default.removeItem(at: tempURL)
             
+            print("Conversion to PCM Array took \(timer.stop())")
             completionHandler(.success(floats))
         }
     }

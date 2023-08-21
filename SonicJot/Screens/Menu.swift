@@ -13,9 +13,7 @@ struct Menu: View {
     @Binding var isMenuPresented: Bool
     @Binding var isSummary: Bool
     @State var hover: Bool = false
-    @State private var isTranscribing = false
-    @State private var isRecording = false
-
+    
     @State private var isHistoryHovered = false
     @State private var isSettingsHovered = false
     @State private var isAboutHovered = false
@@ -26,7 +24,7 @@ struct Menu: View {
         VStack(alignment: .leading) {
             
             Spacer().frame(height: 10)
-
+            
             HStack {
                 Spacer().frame(width:10)
                 Image(systemName: "info.circle")
@@ -36,92 +34,14 @@ struct Menu: View {
                     .foregroundColor(Color(white:0.3))
                     .font(.system(size: 12))
                 Spacer()
+                if currentState.recordingState == RecordingStates.recording {
+                    recordingAnimation()
+                }
+                if currentState.recordingState == RecordingStates.working {
+                    transcriptionAnimation()
+                }
             }
-
-            if !currentState.history.isEmpty {
-                let entry = currentState.history.list()[0]
-                HStack {
-                    Image(systemName: "clock")
-                        .padding(EdgeInsets(top:0, leading: 10, bottom: 0, trailing: 0))
-                    Text(entry.body)
-                        .truncationMode(.tail)
-                        .italic()
-                        .foregroundColor(Color(white:0.3))
-                        .font(.system(size: 12))
-                        .frame(height: 20)
-                }
-            } else {
-                Spacer().frame(height: 17)
-            }
-
-            if currentState.recordingState == RecordingStates.working {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 3)
-                        .stroke(Color.gray, lineWidth: 3)
-                        .frame(width: 265, height: 3)
-                    
-                    RoundedRectangle(cornerRadius: 3)
-                        .stroke(Color.blue, lineWidth: 3)
-                        .frame(width: 30, height: 3)
-                        .offset(x: isTranscribing ? 110 : -110, y: 0)
-                        .animation(Animation.linear(duration: 1).repeatForever(autoreverses: false), value: isTranscribing)
-                }
-                .onAppear() {
-                    self.isTranscribing = true
-                }
-                .onDisappear() {
-                    self.isTranscribing = false
-                }
-                .padding(EdgeInsets(top:5, leading: 10, bottom: 17, trailing: 0))
-                
-            }
-
-            if currentState.recordingState == RecordingStates.recording {
-                HStack(alignment: .center) {
-                    
-                    Group {
-                        recAnimationItem()
-                        recAnimationItem()
-                        recAnimationItem()
-                        recAnimationItem()
-                        recAnimationItem()
-                        recAnimationItem()
-                        recAnimationItem()
-                        recAnimationItem()
-                        recAnimationItem()
-                    }
-                    Group {
-                        recAnimationItem()
-                        recAnimationItem()
-                        recAnimationItem()
-                        recAnimationItem()
-                        recAnimationItem()
-                        recAnimationItem()
-                        recAnimationItem()
-                        recAnimationItem()
-                        recAnimationItem()
-                    }
-                    Group {
-                        recAnimationItem()
-                        recAnimationItem()
-                        recAnimationItem()
-                        recAnimationItem()
-                        recAnimationItem()
-                        recAnimationItem()
-                        recAnimationItem()
-                    }
-
-                }
-                .onAppear() {
-                    self.isRecording = true
-                }
-                .onDisappear() {
-                    self.isRecording = false
-                }
-                .padding(EdgeInsets(top:5, leading: 10, bottom: 17, trailing: 0))
-                
-            }
-
+            
             
             Divider()
             
@@ -155,6 +75,12 @@ struct Menu: View {
                         openWindow(id: "history")
                     }, label: {})
                     .buttonStyle(MenuStyle(title: "History"))
+                }
+                
+                Divider()
+                
+                VStack(alignment: .leading, spacing: 0) {
+                    
                     
                     Button(action: {
                         NSApp.activate(ignoringOtherApps: true)
@@ -167,13 +93,17 @@ struct Menu: View {
                         openWindow(id: "about")
                     }, label: {})
                     .buttonStyle(MenuStyle(title: "About"))
+                }
+                
+                Divider()
+                
+                VStack(alignment: .leading, spacing: 0) {
                     
                     Button(action: {
                         NSApplication.shared.terminate(nil)
                     }, label: {})
                     .buttonStyle(MenuStyle(title: "Quit"))
                 }
-                Divider()
                 
             } else {
                 Button(action: {
@@ -187,14 +117,72 @@ struct Menu: View {
         }.padding(EdgeInsets(top:0, leading: 5, bottom: 5, trailing: 10))
     }
     
-    private func recAnimationItem() -> some View {
-        let heightA = Int.random(in: 3..<6)
-        let heightB = Int.random(in: 12..<18)
-        let duration = Double.random(in: 0.4..<0.9)
+    @State private var isTranscribing = false
+    
+    private func transcriptionAnimation() -> some View {
+        VStack (alignment: .center, spacing: 1) {
+            rod(width: 6, duration: 1.0)
+            rod(width: 8, duration: 0.8)
+            rod(width: 4, duration: 1.2)
+        }
+        .frame(width:26)
+        .onAppear() {
+            self.isTranscribing = true
+        }
+        .onDisappear() {
+            self.isTranscribing = false
+        }
+    }
+    
+    private func rod(width: CGFloat = 8, duration: CGFloat = 1) -> some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 3)
+                .fill(.gray.gradient)
+                .frame(width: 26, height: 3)
+            
+            RoundedRectangle(cornerRadius: 3)
+                .fill(.indigo.gradient)
+                .frame(width: width, height: 3)
+                .offset(x: isTranscribing ? 13 : -13, y: 0)
+                .animation(Animation.linear(duration: duration).repeatForever(autoreverses: true), value: isTranscribing)
+        }
+    }
+    
+    @State private var isRecording = false
+    
+    private func recordingAnimation() -> some View {
+        HStack(alignment: .center, spacing: 1) {
+            bar(low:0.4)
+                .animation(animateBar.speed(1.5), value: isRecording)
+            bar(low:0.3)
+                .animation(animateBar.speed(1.2), value: isRecording)
+            bar(low:0.4)
+                .animation(animateBar.speed(1.0), value: isRecording)
+            bar(low:0.5)
+                .animation(animateBar.speed(1.5), value: isRecording)
+            bar(low:0.3)
+                .animation(animateBar.speed(1.7), value: isRecording)
+            bar(low:0.5)
+                .animation(animateBar.speed(1.0), value: isRecording)
+        }
+        .frame(width: 26)
+        .onAppear() {
+            self.isRecording = true
+        }
+        .onDisappear() {
+            self.isRecording = false
+        }
+    }
+    
+    private func bar(low: CGFloat = 0.0, high: CGFloat = 1.0) -> some View {
         return RoundedRectangle(cornerRadius: 3)
-            .stroke(Color.blue, lineWidth: 3)
-            .frame(width: 3, height: CGFloat(self.isRecording ? heightA : heightB))
-            .animation(Animation.linear(duration: duration).repeatForever(autoreverses: true), value: isRecording)
+            .fill(.indigo.gradient)
+            .frame(width: 2, height: (isRecording ? high : low) * 16)
+            .frame(height: 16)
+    }
+    
+    var animateBar: Animation {
+        return .linear(duration:0.5).repeatForever()
     }
 }
 
@@ -218,7 +206,7 @@ struct MenuStyle: ButtonStyle {
                     .foregroundColor(isEnabled ? isHovered ? Color(white: 0.97) : Color.black : Color.gray)
             }
             Text(buttonTitle)
-                .foregroundColor(isEnabled ? isHovered ? Color(white: 0.97) : Color.black : Color.gray)
+                .foregroundColor(isEnabled ? isHovered ? Color(white: 0.97) : Color.black : Color(white: 0.5))
             Spacer()
             
         }
