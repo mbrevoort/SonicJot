@@ -11,6 +11,7 @@
 		BE934FC72A91C52E000B3841 /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE934FC62A91C52E000B3841 /* Menu.swift */; };
 		BE934FCA2A928CF2000B3841 /* MenuBarExtraAccess in Frameworks */ = {isa = PBXBuildFile; productRef = BE934FC92A928CF2000B3841 /* MenuBarExtraAccess */; };
 		BE934FCF2A94552D000B3841 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE934FCE2A94552D000B3841 /* AppDelegate.swift */; };
+		BE934FF92A95391B000B3841 /* Mixpanel in Frameworks */ = {isa = PBXBuildFile; productRef = BE934FF82A95391B000B3841 /* Mixpanel */; };
 		BED2FBCE2A83C4A000ACF6FC /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED2FBCD2A83C4A000ACF6FC /* Constants.swift */; };
 		BED2FBD12A83C54800ACF6FC /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = BED2FBD02A83C54800ACF6FC /* KeyboardShortcuts */; };
 		BED2FBD32A848C1900ACF6FC /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED2FBD22A848C1900ACF6FC /* Settings.swift */; };
@@ -37,6 +38,8 @@
 		BE03136A2A83306E00432945 /* KeychainHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainHelper.swift; sourceTree = "<group>"; };
 		BE934FC62A91C52E000B3841 /* Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
 		BE934FCE2A94552D000B3841 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		BE934FFB2A954152000B3841 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		BE934FFD2A9543D1000B3841 /* ci_pre_xcodebuild.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_pre_xcodebuild.sh; sourceTree = "<group>"; };
 		BED2FBCD2A83C4A000ACF6FC /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		BED2FBD22A848C1900ACF6FC /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		BED2FBD42A855A8400ACF6FC /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
@@ -63,6 +66,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE934FF92A95391B000B3841 /* Mixpanel in Frameworks */,
 				BEECD9802A82955E000D6833 /* OpenAI in Frameworks */,
 				BED2FBF72A8D50D600ACF6FC /* AudioKit in Frameworks */,
 				BED2FBD12A83C54800ACF6FC /* KeyboardShortcuts in Frameworks */,
@@ -74,6 +78,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BE934FFC2A9543A1000B3841 /* ci_scripts */ = {
+			isa = PBXGroup;
+			children = (
+				BE934FFD2A9543D1000B3841 /* ci_pre_xcodebuild.sh */,
+			);
+			path = ci_scripts;
+			sourceTree = "<group>";
+		};
 		BED2FBDE2A89CFB800ACF6FC /* Screens */ = {
 			isa = PBXGroup;
 			children = (
@@ -107,6 +119,8 @@
 		BEECD95E2A81FB08000D6833 = {
 			isa = PBXGroup;
 			children = (
+				BE934FFC2A9543A1000B3841 /* ci_scripts */,
+				BE934FFB2A954152000B3841 /* Config.xcconfig */,
 				BEECD9692A81FB08000D6833 /* SonicJot */,
 				BEECD9682A81FB08000D6833 /* Products */,
 			);
@@ -172,6 +186,7 @@
 				BED2FBEE2A8D4D1200ACF6FC /* SwiftWhisper */,
 				BED2FBF62A8D50D600ACF6FC /* AudioKit */,
 				BE934FC92A928CF2000B3841 /* MenuBarExtraAccess */,
+				BE934FF82A95391B000B3841 /* Mixpanel */,
 			);
 			productName = QuickScribe;
 			productReference = BEECD9672A81FB08000D6833 /* SonicJot.app */;
@@ -208,6 +223,7 @@
 				BED2FBED2A8D4D1200ACF6FC /* XCRemoteSwiftPackageReference "SwiftWhisper" */,
 				BED2FBF52A8D50D600ACF6FC /* XCRemoteSwiftPackageReference "AudioKit" */,
 				BE934FC82A928CF2000B3841 /* XCRemoteSwiftPackageReference "MenuBarExtraAccess" */,
+				BE934FF72A95391B000B3841 /* XCRemoteSwiftPackageReference "mixpanel-swift" */,
 			);
 			productRefGroup = BEECD9682A81FB08000D6833 /* Products */;
 			projectDirPath = "";
@@ -260,6 +276,7 @@
 /* Begin XCBuildConfiguration section */
 		BEECD9742A81FB09000D6833 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BE934FFB2A954152000B3841 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -320,6 +337,7 @@
 		};
 		BEECD9752A81FB09000D6833 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BE934FFB2A954152000B3841 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -478,6 +496,14 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		BE934FF72A95391B000B3841 /* XCRemoteSwiftPackageReference "mixpanel-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mixpanel/mixpanel-swift";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		BED2FBCF2A83C54800ACF6FC /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/sindresorhus/KeyboardShortcuts";
@@ -525,6 +551,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = BE934FC82A928CF2000B3841 /* XCRemoteSwiftPackageReference "MenuBarExtraAccess" */;
 			productName = MenuBarExtraAccess;
+		};
+		BE934FF82A95391B000B3841 /* Mixpanel */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BE934FF72A95391B000B3841 /* XCRemoteSwiftPackageReference "mixpanel-swift" */;
+			productName = Mixpanel;
 		};
 		BED2FBD02A83C54800ACF6FC /* KeyboardShortcuts */ = {
 			isa = XCSwiftPackageProductDependency;

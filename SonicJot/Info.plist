@@ -6,5 +6,7 @@
 	<string>To transcribe audio</string>
 	<key>NSAppleEventsUsageDescription</key>
 	<string>Need to write transcribed text to whatever app is in focus</string>
+	<key>MIXPANEL_PROJECT_TOKEN</key>
+	<string>$(MIXPANEL_PROJECT_TOKEN)</string>
 </dict>
 </plist>

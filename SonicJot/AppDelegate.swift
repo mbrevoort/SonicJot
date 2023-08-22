@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Mixpanel
 
 class AppDelegate: NSObject, NSApplicationDelegate {
     @ObservedObject var currentState: AppState = AppState.instance()
@@ -24,5 +25,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // not quite what I want, disbaled for now
         // currentState.openMenu()
     }
+    
+    func applicationWillFinishLaunching(_ notification: Notification) {
+        let mixpanelToken = Bundle.main.infoDictionary?["MIXPANEL_PROJECT_TOKEN"] as? String ?? "UNSET"
+        print("Mixpanel Project Token: \(mixpanelToken.prefix(6))...")
+        Mixpanel.initialize(token: mixpanelToken)
+    }
+    
     
 }
