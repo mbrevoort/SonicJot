@@ -10,6 +10,7 @@
 		BE03136B2A83306E00432945 /* KeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE03136A2A83306E00432945 /* KeychainHelper.swift */; };
 		BE934FC72A91C52E000B3841 /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE934FC62A91C52E000B3841 /* Menu.swift */; };
 		BE934FCA2A928CF2000B3841 /* MenuBarExtraAccess in Frameworks */ = {isa = PBXBuildFile; productRef = BE934FC92A928CF2000B3841 /* MenuBarExtraAccess */; };
+		BE934FCF2A94552D000B3841 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE934FCE2A94552D000B3841 /* AppDelegate.swift */; };
 		BED2FBCE2A83C4A000ACF6FC /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED2FBCD2A83C4A000ACF6FC /* Constants.swift */; };
 		BED2FBD12A83C54800ACF6FC /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = BED2FBD02A83C54800ACF6FC /* KeyboardShortcuts */; };
 		BED2FBD32A848C1900ACF6FC /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED2FBD22A848C1900ACF6FC /* Settings.swift */; };
@@ -35,6 +36,7 @@
 /* Begin PBXFileReference section */
 		BE03136A2A83306E00432945 /* KeychainHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainHelper.swift; sourceTree = "<group>"; };
 		BE934FC62A91C52E000B3841 /* Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
+		BE934FCE2A94552D000B3841 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BED2FBCD2A83C4A000ACF6FC /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		BED2FBD22A848C1900ACF6FC /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		BED2FBD42A855A8400ACF6FC /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
@@ -121,20 +123,21 @@
 		BEECD9692A81FB08000D6833 /* SonicJot */ = {
 			isa = PBXGroup;
 			children = (
-				BED2FBFA2A8D680B00ACF6FC /* util */,
-				BEECD9832A82DD8A000D6833 /* Info.plist */,
 				BEECD96A2A81FB08000D6833 /* App.swift */,
+				BE934FCE2A94552D000B3841 /* AppDelegate.swift */,
 				BED2FBD42A855A8400ACF6FC /* AppState.swift */,
-				BEECD9812A82A510000D6833 /* Recording.swift */,
-				BE03136A2A83306E00432945 /* KeychainHelper.swift */,
-				BED2FBE12A8ABB4A00ACF6FC /* HistoryState.swift */,
 				BEECD96E2A81FB09000D6833 /* Assets.xcassets */,
-				BEECD9732A81FB09000D6833 /* SonicJot.entitlements */,
 				BED2FBCD2A83C4A000ACF6FC /* Constants.swift */,
-				BED2FBDE2A89CFB800ACF6FC /* Screens */,
-				BED2FBFF2A8F080B00ACF6FC /* Sounds */,
-				BEECD9702A81FB09000D6833 /* Preview Content */,
+				BED2FBE12A8ABB4A00ACF6FC /* HistoryState.swift */,
+				BEECD9832A82DD8A000D6833 /* Info.plist */,
+				BE03136A2A83306E00432945 /* KeychainHelper.swift */,
 				BED2FBF02A8D4DDD00ACF6FC /* LocalTranscription.swift */,
+				BEECD9702A81FB09000D6833 /* Preview Content */,
+				BEECD9812A82A510000D6833 /* Recording.swift */,
+				BED2FBDE2A89CFB800ACF6FC /* Screens */,
+				BEECD9732A81FB09000D6833 /* SonicJot.entitlements */,
+				BED2FBFF2A8F080B00ACF6FC /* Sounds */,
+				BED2FBFA2A8D680B00ACF6FC /* util */,
 			);
 			path = SonicJot;
 			sourceTree = "<group>";
@@ -238,6 +241,7 @@
 				BED2FBE22A8ABB4A00ACF6FC /* HistoryState.swift in Sources */,
 				BED2FC062A90106C00ACF6FC /* RecordingStatus.swift in Sources */,
 				BEECD9822A82A510000D6833 /* Recording.swift in Sources */,
+				BE934FCF2A94552D000B3841 /* AppDelegate.swift in Sources */,
 				BED2FBE02A89D01500ACF6FC /* About.swift in Sources */,
 				BE03136B2A83306E00432945 /* KeychainHelper.swift in Sources */,
 				BEECD96B2A81FB08000D6833 /* App.swift in Sources */,
@@ -394,6 +398,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.brevoort.SonicJot;
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
@@ -431,6 +436,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.brevoort.SonicJot;
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";

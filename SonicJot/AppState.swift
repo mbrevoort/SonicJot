@@ -147,6 +147,16 @@ final class AppState: ObservableObject {
         }
     }
     
+    public func openSummaryMenu() {
+        self.isMenuSummary = true
+        self.isMenuPresented = true
+    }
+
+    public func openMenu() {
+        self.isMenuSummary = false
+        self.isMenuPresented = true
+    }
+
     public func startRecording() {
         self.isMenuPresented = true
         if useOpenAI && apiToken == "" {

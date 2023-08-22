@@ -73,6 +73,7 @@ struct Menu: View {
                     Button(action: {
                         NSApp.activate(ignoringOtherApps: true)
                         openWindow(id: "history")
+                        currentState.hideMenu()
                     }, label: {})
                     .buttonStyle(MenuStyle(title: "History"))
                 }
@@ -85,12 +86,14 @@ struct Menu: View {
                     Button(action: {
                         NSApp.activate(ignoringOtherApps: true)
                         openWindow(id: "settings")
+                        currentState.hideMenu()
                     }, label: {})
                     .buttonStyle(MenuStyle(title: "Settings"))
                     
                     Button(action: {
                         NSApp.activate(ignoringOtherApps: true)
                         openWindow(id: "about")
+                        currentState.hideMenu()
                     }, label: {})
                     .buttonStyle(MenuStyle(title: "About"))
                 }

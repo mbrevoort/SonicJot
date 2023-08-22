@@ -10,6 +10,7 @@ import MenuBarExtraAccess
 
 @main
 struct swiftui_menu_barApp: App {
+    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @ObservedObject var currentState: AppState = AppState.instance()
     @Environment(\.openWindow) private var openWindow
         
