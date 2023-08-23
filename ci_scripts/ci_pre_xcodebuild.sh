@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 echo "Stage: PRE-Xcode Build is activated .... "
 
