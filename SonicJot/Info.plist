@@ -8,5 +8,7 @@
 	<string>Need to write transcribed text to whatever app is in focus</string>
 	<key>MIXPANEL_PROJECT_TOKEN</key>
 	<string>$(MIXPANEL_PROJECT_TOKEN)</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 </dict>
 </plist>
