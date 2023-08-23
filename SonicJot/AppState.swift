@@ -24,6 +24,7 @@ final class AppState: ObservableObject {
     
     @ObservedObject private var localTranscription = LocalTranscription()
     
+    private var recordingTimer: ParkBenchTimer?
     private var lastKeyDownTime: Date?
     @Published public var isKeyDown: Bool = false
     @Published var recordingState = RecordingStates.stopped
@@ -158,6 +159,7 @@ final class AppState: ObservableObject {
     }
 
     public func startRecording() {
+        recordingTimer = ParkBenchTimer()
         self.isMenuPresented = true
         if useOpenAI && apiToken == "" {
             playErrorSound()
@@ -176,16 +178,17 @@ final class AppState: ObservableObject {
     }
     
     public func stopRecording(autoPaste: Bool = false) {
+        let recordingDuration = recordingTimer?.stop() ?? 0
         recordingState = RecordingStates.working
         let url = rec.stop()
         playOKSound()
         
         Task {
-            await self.transcribe(url: url as URL, autoPaste: autoPaste)
+            await self.transcribe(url: url as URL, recordingDuration: recordingDuration as Double, autoPaste: autoPaste)
         }
     }
     
-    private func transcribe(url: URL, autoPaste: Bool = false) async -> Void  {
+    private func transcribe(url: URL, recordingDuration: Double, autoPaste: Bool = false) async -> Void  {
         let timer = ParkBenchTimer()
         var text = ""
         do {
@@ -210,6 +213,12 @@ final class AppState: ObservableObject {
                 playDoneSound()
             }
             hideMenu()
+            
+            let components = item.body.components(separatedBy: .whitespacesAndNewlines)
+            let words = components.filter { !$0.isEmpty }
+
+            EventTracking.transcription(provider: self.useOpenAI ? "OpenAI" : "Local", recordingDuration: recordingDuration, transcriptionDuration: item.duration, numWords: words.count)
+
         } catch {
             self.showError(error)
         }
