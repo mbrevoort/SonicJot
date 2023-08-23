@@ -24,6 +24,7 @@ final class AppState: ObservableObject {
     
     @ObservedObject private var localTranscription = LocalTranscription()
     
+    private let obf = Obfuscator()
     private var recordingTimer: ParkBenchTimer?
     private var lastKeyDownTime: Date?
     @Published public var isKeyDown: Bool = false
@@ -53,7 +54,23 @@ final class AppState: ObservableObject {
     @AppStorage("translateResultToEnglish") var translateResultToEnglish: Bool = false
     @AppStorage("enableAutoPaste") var enableAutoPaste: Bool = false
     @AppStorage("prompt") var prompt: String = "Hello, nice to see you today!"
-    
+
+    // Store an obfuscated version of the openaikey in app storage. This is not "secure"
+    // but it will make it a big more challenging to discover. Originally the keychain was
+    // used but it caused users to have to enter their admin creditals which was annoying. On
+    // Mac, there are user credentials strewn all along the file system in dot files and so on.
+    // For now this is acceptable
+    @AppStorage("serializedoaik") private var servializedOpenAIToken: String = ""
+    var openAIToken: String {
+        set {
+            servializedOpenAIToken = obf.stringByObfuscatingString(string: newValue)
+            self.openAI = OpenAI(apiToken: newValue)
+        }
+        get {
+            return obf.revealStringByString(string: servializedOpenAIToken)
+        }
+    }
+
     // history is serialized into serializedHistory and put in AppStorage so that it can survive restarts
     @AppStorage("serializedHistory") private var serializedHistory: String = ""
     var history: History = History(size: 25) {
@@ -70,15 +87,8 @@ final class AppState: ObservableObject {
             }
         }
     }
-    
-    
-    lazy public var apiToken: String = KeychainHelper.getOpenAIToken() {
-        didSet {
-            KeychainHelper.setOpenAIToken(apiToken)
-            self.openAI = OpenAI(apiToken: apiToken)
-        }
-    }
-    lazy public var openAI: OpenAI = OpenAI(apiToken: apiToken)
+        
+    lazy public var openAI: OpenAI = OpenAI(apiToken: openAIToken)
     let rec = Recording()
     
     init() {
@@ -161,7 +171,7 @@ final class AppState: ObservableObject {
     public func startRecording() {
         recordingTimer = ParkBenchTimer()
         self.isMenuPresented = true
-        if useOpenAI && apiToken == "" {
+        if useOpenAI && openAIToken == "" {
             playErrorSound()
             NSApp.activate(ignoringOtherApps: true)
             NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)

@@ -10,7 +10,7 @@ import KeyboardShortcuts
 
 struct SettingsScreen: View {
     @ObservedObject var currentState: AppState = AppState.instance()
-    @State private var apiToken: String = ""
+    @State private var openAIToken: String = ""
     @State private var language: String = ""
     @State private var prompt: String = ""
     @State private var translateResultToEnglish: Bool = false;
@@ -72,7 +72,7 @@ struct SettingsScreen: View {
                                 Text("Enable OpenAI")
                             }
                             .toggleStyle(.checkbox)
-                            SecureField("OpenAI API Key", text: $apiToken).disabled(!useOpenAI).labelsHidden()
+                            SecureField("OpenAI API Key", text: $openAIToken).disabled(!useOpenAI).labelsHidden()
                             Text("Provide your OpenAI API key from \nhttps://platform.openai.com/account/api-keys").font(.caption)
                         }
                     } label: {
@@ -87,7 +87,7 @@ struct SettingsScreen: View {
                 Spacer()
                 HStack(alignment: .firstTextBaseline) {
                     Button("Cancel") {
-                        self.apiToken = currentState.apiToken
+                        self.openAIToken = currentState.openAIToken
                         self.language = currentState.language
                         self.prompt = currentState.prompt
                         self.translateResultToEnglish = currentState.translateResultToEnglish
@@ -97,7 +97,7 @@ struct SettingsScreen: View {
                     }.buttonStyle(.bordered)
                     Button("Save") {
                         let autoPasteJustEnabled: Bool = !self.currentState.enableAutoPaste && self.enableAutoPaste
-                        self.currentState.apiToken = self.apiToken
+                        self.currentState.openAIToken = self.openAIToken
                         self.currentState.language = self.language
                         self.currentState.prompt = self.prompt
                         self.currentState.translateResultToEnglish = self.translateResultToEnglish
@@ -113,7 +113,7 @@ struct SettingsScreen: View {
             }
             .padding(EdgeInsets(top: 10, leading: 20, bottom: 20, trailing: 20))
             .onAppear{
-                self.apiToken = currentState.apiToken
+                self.openAIToken = currentState.openAIToken
                 self.language = currentState.language
                 self.prompt = currentState.prompt
                 self.translateResultToEnglish = currentState.translateResultToEnglish
