@@ -44,7 +44,7 @@ struct SettingsScreen: View {
 
                     LabeledContent {
                         Toggle(isOn: $enableAutoPaste) {
-                            Text("Output text at cursor when keyboard shortcut is held")
+                            Text("Output text directly to your cursor")
                         }
                         .toggleStyle(.checkbox)
                     } label: {

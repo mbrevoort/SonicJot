@@ -54,7 +54,7 @@ struct Menu: View {
                     .disabled(currentState.recordingState != RecordingStates.stopped || currentState.isKeyDown)
                     
                     Button(action: {
-                        currentState.stopRecording(autoPaste: false)
+                        currentState.stopRecording()
                     }, label: {})
                     .buttonStyle(MenuStyle(title: "Stop"))
                     .disabled(currentState.recordingState != RecordingStates.recording || currentState.isKeyDown)

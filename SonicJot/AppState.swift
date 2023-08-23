@@ -147,7 +147,7 @@ final class AppState: ObservableObject {
         let wasHeldDown: Bool = sinceLastKeyDown > 2 //seconds
         let isRecording: Bool = self.recordingState == RecordingStates.recording
         if wasHeldDown && isRecording {
-            self.stopRecording(autoPaste: true)
+            self.stopRecording()
         }
     }
     
@@ -187,18 +187,18 @@ final class AppState: ObservableObject {
         }
     }
     
-    public func stopRecording(autoPaste: Bool = false) {
+    public func stopRecording() {
         let recordingDuration = recordingTimer?.stop() ?? 0
         recordingState = RecordingStates.working
         let url = rec.stop()
         playOKSound()
         
         Task {
-            await self.transcribe(url: url as URL, recordingDuration: recordingDuration as Double, autoPaste: autoPaste)
+            await self.transcribe(url: url as URL, recordingDuration: recordingDuration as Double)
         }
     }
     
-    private func transcribe(url: URL, recordingDuration: Double, autoPaste: Bool = false) async -> Void  {
+    private func transcribe(url: URL, recordingDuration: Double) async -> Void  {
         let timer = ParkBenchTimer()
         var text = ""
         do {
@@ -216,7 +216,7 @@ final class AppState: ObservableObject {
             AppState.setClipboard(text)
             self.history.enqueue(item)
             
-            if self.enableAutoPaste && autoPaste {
+            if self.enableAutoPaste {
                 playDoneAsyncSound()
                 paste()
             } else {
