@@ -31,7 +31,7 @@ struct Menu: View {
                 Text("\(currentState.runningStatus)")
                     .padding(EdgeInsets(top:0, leading: 0, bottom: 0, trailing: 0))
                     .italic()
-                    .foregroundColor(Color(white:0.3))
+                    .foregroundColor(Color(NSColor.labelColor))
                     .font(.system(size: 12))
                 Spacer()
                 if currentState.recordingState == RecordingStates.recording {
@@ -206,15 +206,15 @@ struct MenuStyle: ButtonStyle {
             Spacer().frame(width:10)
             if buttonIcon != nil {
                 buttonIcon
-                    .foregroundColor(isEnabled ? isHovered ? Color(white: 0.97) : Color.black : Color.gray)
+                    .foregroundColor(isEnabled ? isHovered ? Color(NSColor.selectedMenuItemTextColor) : Color(NSColor.labelColor): Color(NSColor.disabledControlTextColor))
             }
             Text(buttonTitle)
-                .foregroundColor(isEnabled ? isHovered ? Color(white: 0.97) : Color.black : Color(white: 0.5))
+                .foregroundColor(isEnabled ? isHovered ? Color(NSColor.selectedMenuItemTextColor) : Color(NSColor.labelColor) : Color(NSColor.disabledControlTextColor))
             Spacer()
             
         }
         .frame(maxWidth:.infinity, minHeight: 25)
-        .background(isEnabled ? isHovered ? Color.blue : Color.clear : Color.clear)
+        .background(isEnabled ? isHovered ? Color(NSColor.selectedContentBackgroundColor) : Color.clear : Color.clear)
         .clipShape(
             RoundedRectangle(
                 cornerRadius: 5,

@@ -29,7 +29,7 @@ struct HistoryScreen: View {
 
                         Image(systemName: "square.on.square")
                             .frame(width: 15, alignment: .trailing)
-                            .background(Color(white: 0.97))
+                            .background(Color(NSColor.controlBackgroundColor))
                             .onTapGesture {
                                 AppState.setClipboard(item.body)
                             }
@@ -40,7 +40,7 @@ struct HistoryScreen: View {
 
                         Image(systemName: "trash")
                             .frame(width: 15, alignment: .trailing)
-                            .background(Color(white: 0.97))
+                            .background(Color(NSColor.controlBackgroundColor))
                             .onTapGesture {
                                 currentState.history.delete(item)
                             }
@@ -52,7 +52,7 @@ struct HistoryScreen: View {
                     .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
                     Spacer()
                 }
-                .background(Color(white: 0.97))
+                .background(Color(NSColor.controlBackgroundColor))
                 .cornerRadius(5)
             }
         }
