@@ -28,12 +28,18 @@ final class LocalTranscription: ObservableObject {
             self.whisper?.params.language.rawValue ?? ""
         }
     }
+    
+    private var initPromptPtr: UnsafeMutablePointer<CChar>?
     var prompt: String {
         set {
-            let cStringArray = Array(newValue.utf8CString) // Array<CChar> with null terminator
-            cStringArray.withUnsafeBufferPointer { buffer in
-                let pointer: UnsafePointer<CChar> = buffer.baseAddress!
-                self.whisper?.params.initial_prompt = pointer
+            // first deallocate an existing value
+            initPromptPtr?.deallocate()
+
+            if let cString = newValue.cString(using: .utf8) {
+                let length = cString.count
+                initPromptPtr = UnsafeMutablePointer<CChar>.allocate(capacity: length)
+                initPromptPtr?.initialize(from: cString, count: length)
+                self.whisper?.params.initial_prompt = UnsafePointer(initPromptPtr)
             }
         }
         get {
