@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct AboutScreen: View {
+struct AboutView: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack(alignment: .top){

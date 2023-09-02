@@ -10,34 +10,40 @@ import MenuBarExtraAccess
 
 @main
 struct swiftui_menu_barApp: App {
+    
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    @ObservedObject var currentState: AppState = AppState.instance()
     @Environment(\.openWindow) private var openWindow
+    
+    @ObservedObject var settingsVM: SettingsViewModel = SettingsViewModel()
+    @ObservedObject var menuVM: MenuViewModel = MenuViewModel()
         
     var body: some Scene {
-        MenuBarExtra("SonicJot", systemImage: currentState.recordingState.rawValue) {
-            Menu(isMenuPresented: $currentState.isMenuPresented, isSummary: $currentState.isMenuSummary)
+        MenuBarExtra("SonicJot", systemImage: menuVM.transcription.recordingState.rawValue) {
+            MenuView(isMenuPresented: $menuVM.isMenuPresented, isSummary: $menuVM.isMenuSummary)
             .introspectMenuBarExtraWindow { window in // <-- the magic ✨
                 window.animationBehavior = .utilityWindow
             }
+            .environmentObject(menuVM)
         }
         .menuBarExtraStyle(.window)
-        .menuBarExtraAccess(isPresented: $currentState.isMenuPresented) { statusItem in // <-- the magic ✨
+        .menuBarExtraAccess(isPresented: $menuVM.isMenuPresented) { statusItem in // <-- the magic ✨
             // access status item or store it in a @State var
         }
         
         
         Window("Settings", id:"settings") {
-            SettingsScreen()
+            SettingsView()
+                .environmentObject(settingsVM)
         }
         .windowResizabilityContentSize()
         
         Window("History", id:"history") {
-            HistoryScreen()
+            HistoryView()
+                .environmentObject(settingsVM)
         }
         
         Window("About", id:"about") {
-            AboutScreen()
+            AboutView()
         }
         .windowResizabilityContentSize()
         .windowStyle(.hiddenTitleBar)

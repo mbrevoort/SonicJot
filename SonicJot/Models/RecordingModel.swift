@@ -8,30 +8,30 @@
 import AVFoundation
 import QuartzCore
 
-public class Recording : NSObject, AVAudioRecorderDelegate {
+public class RecordingModel : NSObject, AVAudioRecorderDelegate {
     
     @objc public enum State: Int {
         case None, Record, Play
     }
-  
+    
     static var directory: String {
         return NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true)[0]
     }
     
     public private(set) var url: NSURL
-        
+    
     public var sampleRate = 44100.0
     public var channels = 1
     private var recorder: AVAudioRecorder?
     private var filename = "sonicjot.m4a"
     private var state: State = State.None
-  
+    
     public override init() {
-        url = NSURL(fileURLWithPath: Recording.directory).appendingPathComponent(filename)! as NSURL
+        url = NSURL(fileURLWithPath: RecordingModel.directory).appendingPathComponent(filename)! as NSURL
     }
     
     private func prepare() throws {
-                
+        
         let settings: [String: Any] = [
             AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
             AVSampleRateKey: sampleRate,
@@ -43,7 +43,7 @@ public class Recording : NSObject, AVAudioRecorderDelegate {
         recorder?.delegate = self
         recorder?.prepareToRecord()
     }
-
+    
     public func record() throws {
         if recorder == nil {
             try prepare()
@@ -51,9 +51,9 @@ public class Recording : NSObject, AVAudioRecorderDelegate {
         recorder?.record()
         state = .Record
     }
-
-
-public func stop() -> NSURL {
+    
+    
+    public func stop() -> NSURL {
         switch state {
         case .Record:
             recorder?.stop()
@@ -64,7 +64,7 @@ public func stop() -> NSURL {
         state = .None
         return url
     }
-
+    
     // MARK: - Delegates
     public func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
         print("audioRecorderDidFinishRecording successful: \(flag)")

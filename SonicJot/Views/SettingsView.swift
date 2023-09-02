@@ -1,22 +1,28 @@
 //
-//  SettingsScreen.swift
+//  SettingsView.swift
 //  SonicJot
 //
-//  Created by Mike Brevoort on 8/9/23.
+//  Created by Mike Brevoort on 8/27/23.
 //
 
 import SwiftUI
+import CloudKit
 import KeyboardShortcuts
 
-struct SettingsScreen: View {
-    @ObservedObject var currentState: AppState = AppState.instance()
-    @State private var openAIToken: String = ""
-    @State private var language: String = ""
-    @State private var prompt: String = ""
-    @State private var translateResultToEnglish: Bool = false;
-    @State private var enableAutoPaste: Bool = false;
-    @State private var useOpenAI: Bool = false;
+
+
+struct SettingsView: View {
+    
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var settingsVM: SettingsViewModel
+    
+    @State var openAIToken: String = ""
+    @State var language: String = ""
+    @State var prompt: String = ""
+    @State var translateResultToEnglish: Bool = false;
+    @State var enableAutoPaste: Bool = false;
+    @State var enableOpenAI: Bool = false;
+
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -68,11 +74,11 @@ struct SettingsScreen: View {
                     
                     LabeledContent {
                         VStack(alignment: .leading) {
-                            Toggle(isOn: $useOpenAI) {
+                            Toggle(isOn: $enableOpenAI) {
                                 Text("Enable OpenAI")
                             }
                             .toggleStyle(.checkbox)
-                            SecureField("OpenAI API Key", text: $openAIToken).disabled(!useOpenAI).labelsHidden()
+                            SecureField("OpenAI API Key", text: $openAIToken).disabled(!enableOpenAI).labelsHidden()
                             Text("Provide your OpenAI API key from \nhttps://platform.openai.com/account/api-keys").font(.caption)
                         }
                     } label: {
@@ -87,42 +93,51 @@ struct SettingsScreen: View {
                 Spacer()
                 HStack(alignment: .firstTextBaseline) {
                     Button("Cancel") {
-                        self.openAIToken = currentState.openAIToken
-                        self.language = currentState.language
-                        self.prompt = currentState.prompt
-                        self.translateResultToEnglish = currentState.translateResultToEnglish
-                        self.enableAutoPaste = currentState.enableAutoPaste
-                        self.useOpenAI = currentState.useOpenAI
+                        reset()
                         dismiss()
                     }.buttonStyle(.bordered)
                     Button("Save") {
-                        let autoPasteJustEnabled: Bool = !self.currentState.enableAutoPaste && self.enableAutoPaste
-                        self.currentState.openAIToken = self.openAIToken
-                        self.currentState.language = self.language
-                        self.currentState.prompt = self.prompt
-                        self.currentState.translateResultToEnglish = self.translateResultToEnglish
-                        self.currentState.enableAutoPaste = self.enableAutoPaste
-                        self.currentState.useOpenAI = self.useOpenAI
+                        save()
                         dismiss()
-
-                        if autoPasteJustEnabled {
-                            self.currentState.showAccessibilityWindow()
-                        }
                     }.buttonStyle(.borderedProminent)
                 }
             }
             .padding(EdgeInsets(top: 10, leading: 20, bottom: 20, trailing: 20))
             .onAppear{
-                self.openAIToken = currentState.openAIToken
-                self.language = currentState.language
-                self.prompt = currentState.prompt
-                self.translateResultToEnglish = currentState.translateResultToEnglish
-                self.enableAutoPaste = currentState.enableAutoPaste
-                self.useOpenAI = currentState.useOpenAI
+                reset()
             }
         }
         .frame(width: 600, height: 450)
+        
+    }
+    
+    private func reset() {
+        self.openAIToken = settingsVM.settings.openAIToken
+        self.language = settingsVM.settings.language
+        self.prompt = settingsVM.settings.prompt
+        self.translateResultToEnglish = settingsVM.settings.translateResultToEnglish
+        self.enableAutoPaste = settingsVM.settings.enableAutoPaste
+        self.enableOpenAI = settingsVM.settings.enableOpenAI
+    }
+    
+    private func save() {
+        let autoPasteJustEnabled: Bool = !settingsVM.settings.enableAutoPaste && enableAutoPaste
+        settingsVM.settings.openAIToken = openAIToken
+        settingsVM.settings.language = self.language
+        settingsVM.settings.prompt = self.prompt
+        settingsVM.settings.translateResultToEnglish = self.translateResultToEnglish
+        settingsVM.settings.enableAutoPaste = self.enableAutoPaste
+        settingsVM.settings.enableOpenAI = self.enableOpenAI
+        dismiss()
+
+        if autoPasteJustEnabled {
+            settingsVM.settings.showAccessibilityWindow()
+        }
     }
 }
 
-
+struct SettingsView_Previews: PreviewProvider {
+    static var previews: some View {
+        SettingsView()
+    }
+}

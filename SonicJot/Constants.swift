@@ -35,6 +35,8 @@ let logger = Logger(subsystem: "com.brevoort.sonicjot", category: "general")
 let errorSound = NSSound(named: "error.mp3")
 let beepSound = NSSound(named: "ok-beep.mp3")
 let pingSound = NSSound(named: "ping.mp3")
+let pianoKey1 = NSSound(named: "g-tone.mp3")
+let pianoKey2 = NSSound(named: "j-tone.mp3")
 
 
 func playErrorSound() {
@@ -47,10 +49,12 @@ func playDoneSound() {
 
 func playDoneAsyncSound() {
     pingSound?.play()
+//    pianoKey2?.play()
 }
 
 func playOKSound() {
     NSSound.beep()
+//    pianoKey1?.play()
 }
 
 

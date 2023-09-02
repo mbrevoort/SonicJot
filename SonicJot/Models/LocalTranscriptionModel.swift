@@ -9,7 +9,7 @@ import Foundation
 import SwiftWhisper
 import AudioKit
 
-final class LocalTranscription: ObservableObject {
+final class LocalTranscriptionModel: ObservableObject {
     @Published var isInitialized: Bool = false
     var whisper: Whisper?
     var translateToEnglish: Bool {
@@ -55,7 +55,7 @@ final class LocalTranscription: ObservableObject {
     
     public func initModel() async {
         if self.whisper == nil {
-            let url = await LocalTranscription.getModelURL()!
+            let url = await LocalTranscriptionModel.getModelURL()!
             print("Model URL: \(url)")
             self.whisper = Whisper(fromFileURL: url)
             self.whisper?.params.beam_search.beam_size = 5

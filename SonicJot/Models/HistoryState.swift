@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct History: CustomStringConvertible, Codable {
+struct HistoryModel: CustomStringConvertible, Codable {
     
     private var elements: [HistoryItem] = []
     public let size: Int
@@ -38,7 +38,7 @@ struct History: CustomStringConvertible, Codable {
         isEmpty ? nil : elements.removeFirst()
     }
     
-    mutating func replace(_ ref: History) {
+    mutating func replace(_ ref: HistoryModel) {
         self.elements = ref.elements
     }
     

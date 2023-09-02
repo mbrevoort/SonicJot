@@ -7,18 +7,21 @@
 
 import SwiftUI
 
-struct Menu: View {
-    @ObservedObject var currentState: AppState = AppState.instance()
-    @Environment(\.openWindow) private var openWindow
+struct MenuView: View {
+    @EnvironmentObject var menuVM: MenuViewModel
+//    @ObservedObject var menuVM: MenuViewModel
+
     @Binding var isMenuPresented: Bool
     @Binding var isSummary: Bool
+    
+    @Environment(\.openWindow) private var openWindow
     @State var hover: Bool = false
     
     @State private var isHistoryHovered = false
     @State private var isSettingsHovered = false
     @State private var isAboutHovered = false
     @State private var isQuitHovered = false
-    
+        
     var body: some View {
         
         VStack(alignment: .leading) {
@@ -28,16 +31,16 @@ struct Menu: View {
             HStack {
                 Spacer().frame(width:10)
                 Image(systemName: "info.circle")
-                Text("\(currentState.runningStatus)")
+                Text("\(menuVM.transcription.runningStatus)")
                     .padding(EdgeInsets(top:0, leading: 0, bottom: 0, trailing: 0))
                     .italic()
                     .foregroundColor(Color(NSColor.labelColor))
                     .font(.system(size: 12))
                 Spacer()
-                if currentState.recordingState == RecordingStates.recording {
+                if menuVM.transcription.recordingState == RecordingStates.recording {
                     recordingAnimation()
                 }
-                if currentState.recordingState == RecordingStates.working {
+                if menuVM.transcription.recordingState == RecordingStates.working {
                     transcriptionAnimation()
                 }
             }
@@ -48,22 +51,22 @@ struct Menu: View {
             if !isSummary {
                 VStack(alignment: .leading, spacing: 0) {
                     Button(action: {
-                        currentState.startRecording()
+                        menuVM.startRecording()
                     }, label: {})
                     .buttonStyle(MenuStyle(title: "Start"))
-                    .disabled(currentState.recordingState != RecordingStates.stopped || currentState.isKeyDown)
+                    .disabled(menuVM.transcription.recordingState != RecordingStates.stopped || menuVM.isKeyDown)
                     
                     Button(action: {
-                        currentState.stopRecording()
+                        menuVM.stopRecording()
                     }, label: {})
                     .buttonStyle(MenuStyle(title: "Stop"))
-                    .disabled(currentState.recordingState != RecordingStates.recording || currentState.isKeyDown)
+                    .disabled(menuVM.transcription.recordingState != RecordingStates.recording || menuVM.isKeyDown)
                     
                     Button(action: {
-                        currentState.cancelRecording()
+                        menuVM.cancelRecording()
                     }, label: {})
                     .buttonStyle(MenuStyle(title: "Cancel"))
-                    .disabled(currentState.recordingState != RecordingStates.recording || currentState.isKeyDown)
+                    .disabled(menuVM.transcription.recordingState != RecordingStates.recording || menuVM.isKeyDown)
                 }
                 
                 
@@ -73,7 +76,7 @@ struct Menu: View {
                     Button(action: {
                         NSApp.activate(ignoringOtherApps: true)
                         openWindow(id: "history")
-                        currentState.hideMenu()
+                        menuVM.hideMenu()
                     }, label: {})
                     .buttonStyle(MenuStyle(title: "History"))
                 }
@@ -86,14 +89,14 @@ struct Menu: View {
                     Button(action: {
                         NSApp.activate(ignoringOtherApps: true)
                         openWindow(id: "settings")
-                        currentState.hideMenu()
+                        menuVM.hideMenu()
                     }, label: {})
                     .buttonStyle(MenuStyle(title: "Settings"))
                     
                     Button(action: {
                         NSApp.activate(ignoringOtherApps: true)
                         openWindow(id: "about")
-                        currentState.hideMenu()
+                        menuVM.hideMenu()
                     }, label: {})
                     .buttonStyle(MenuStyle(title: "About"))
                 }
@@ -110,7 +113,7 @@ struct Menu: View {
                 
             } else {
                 Button(action: {
-                    self.isSummary = false
+                    menuVM.isMenuSummary = false
                 }, label: {})
                 .buttonStyle(MenuStyle(title: "Reveal Options"))
                 

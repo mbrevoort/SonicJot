@@ -7,15 +7,16 @@
 
 import SwiftUI
 
-struct HistoryScreen: View {
-    @ObservedObject var currentState: AppState = AppState.instance()
+struct HistoryView: View {
+    @EnvironmentObject var settingsVM: SettingsViewModel
     @State var hover: Bool = false
+
     
     var body: some View {
         Spacer()
-        Text("Up to \(currentState.history.size) most recent events").italic()
+        Text("Up to \(settingsVM.settings.history.size) most recent events").italic()
         List {
-            ForEach(currentState.history.list()) { item in
+            ForEach(settingsVM.settings.history.list()) { item in
                 VStack {
                     Spacer()
                     HStack(alignment: .top){
@@ -31,7 +32,7 @@ struct HistoryScreen: View {
                             .frame(width: 15, alignment: .trailing)
                             .background(Color(NSColor.controlBackgroundColor))
                             .onTapGesture {
-                                AppState.setClipboard(item.body)
+                                Clipboard.copy(item.body)
                             }
                             .onHover { isHovered in
                                 self.handleHover(isHovered)
@@ -42,7 +43,7 @@ struct HistoryScreen: View {
                             .frame(width: 15, alignment: .trailing)
                             .background(Color(NSColor.controlBackgroundColor))
                             .onTapGesture {
-                                currentState.history.delete(item)
+                                settingsVM.settings.history.delete(item)
                             }
                             .onHover { isHovered in
                                 self.handleHover(isHovered)
@@ -73,7 +74,7 @@ struct HistoryScreen: View {
 
 struct HistoryScreen_Previews: PreviewProvider {
     static var previews: some View {
-        HistoryScreen()
+        HistoryView()
     }
 }
 

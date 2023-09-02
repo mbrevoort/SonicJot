@@ -8,7 +8,6 @@
 import SwiftUI
 
 class AppDelegate: NSObject, NSApplicationDelegate {
-    @ObservedObject var currentState: AppState = AppState.instance()
     
     func applicationDidFinishLaunching(_ notification: Notification) {
         // Uncomment to make the app show in the dock and in cmd-tab
