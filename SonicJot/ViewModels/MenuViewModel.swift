@@ -15,7 +15,21 @@ import Combine
 class MenuViewModel: ObservableObject {
     @Published var settings: SettingsModel = SettingsModel.instance()
     @Published var transcription: TranscriptionModel = TranscriptionModel()
-    @Published var recordingState: RecordingStates = RecordingStates.stopped
+    
+    public var runningStatus: String {
+        get {
+            switch transcription.recordingState {
+            case RecordingStates.initializing:
+                return "Initializing..."
+            case RecordingStates.stopped:
+                return "Ready..."
+            case RecordingStates.recording:
+                return "Recording..."
+            case RecordingStates.working:
+                return "Transcribing..."
+            }
+        }
+    }
     
     @Published var isMenuPresented: Bool = false
     @Published var isMenuSummary: Bool = false
@@ -26,8 +40,6 @@ class MenuViewModel: ObservableObject {
     var settingsChangeSink: AnyCancellable?
 
     init() {
-        recordingState = transcription.recordingState
-
         // Register keyboard shortcuts
         KeyboardShortcuts.onKeyDown(for: .toggleRecordMode) { [weak self] in
             self?.keyDown()
@@ -37,8 +49,8 @@ class MenuViewModel: ObservableObject {
             self?.keyUp()
         }
                 
-        changeSink = transcription.objectWillChange.sink { [weak self] _ in
-            self?.objectWillChange.send()
+        changeSink = transcription.$recordingState.sink { _ in
+            self.objectWillChange.send()
         }
         
         settingsChangeSink = settings.$openAIToken.sink {
@@ -63,10 +75,7 @@ class MenuViewModel: ObservableObject {
                 self.showError(error)
             }
         } else if transcription.recordingState == RecordingStates.recording {
-            Task {
-                await transcription.stopRecording()
-                hideMenu()
-            }
+            self.stopRecording()
         }
     }
     
@@ -74,21 +83,18 @@ class MenuViewModel: ObservableObject {
         self.isKeyDown = false
         let sinceLastKeyDown = abs(self.lastKeyDownTime?.timeIntervalSinceNow ?? 0)
         print("sinceLastKeyDown: \(sinceLastKeyDown)")
-        let wasHeldDown: Bool = sinceLastKeyDown > 2 //seconds
+        let wasHeldDown: Bool = sinceLastKeyDown > 0.7 //seconds
         let isRecording: Bool = transcription.recordingState == RecordingStates.recording
         if wasHeldDown && isRecording {
-            Task {
-                await transcription.stopRecording()
-                hideMenu()
-            }
+            self.stopRecording()
         }
     }
     
     public func hideMenu() {
         isMenuPresented = false
-        DispatchQueue.main.async {
+//        DispatchQueue.main.async {
             self.isMenuSummary = false
-        }
+//        }
     }
     
     public func openSummaryMenu() {
@@ -114,7 +120,9 @@ class MenuViewModel: ObservableObject {
     public func stopRecording() {
         Task {
             await transcription.stopRecording()
-            hideMenu()
+            DispatchQueue.main.async {
+                self.hideMenu()
+            }
         }
     }
     

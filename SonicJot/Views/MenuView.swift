@@ -8,14 +8,11 @@
 import SwiftUI
 
 struct MenuView: View {
+    @Environment(\.openWindow) private var openWindow
     @EnvironmentObject var menuVM: MenuViewModel
-//    @ObservedObject var menuVM: MenuViewModel
 
     @Binding var isMenuPresented: Bool
     @Binding var isSummary: Bool
-    
-    @Environment(\.openWindow) private var openWindow
-    @State var hover: Bool = false
     
     @State private var isHistoryHovered = false
     @State private var isSettingsHovered = false
@@ -31,7 +28,7 @@ struct MenuView: View {
             HStack {
                 Spacer().frame(width:10)
                 Image(systemName: "info.circle")
-                Text("\(menuVM.transcription.runningStatus)")
+                Text("\(menuVM.runningStatus)")
                     .padding(EdgeInsets(top:0, leading: 0, bottom: 0, trailing: 0))
                     .italic()
                     .foregroundColor(Color(NSColor.labelColor))

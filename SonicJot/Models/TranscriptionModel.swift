@@ -19,21 +19,6 @@ class TranscriptionModel: ObservableObject {
     @Published var recordingState = RecordingStates.stopped
     private var recordingTimer: ParkBenchTimer?
 
-
-    public var runningStatus: String {
-        get {
-            switch recordingState {
-            case RecordingStates.initializing:
-                return "Initializing..."
-            case RecordingStates.stopped:
-                return "Ready..."
-            case RecordingStates.recording:
-                return "Recording..."
-            case RecordingStates.working:
-                return "Transcribing..."
-            }
-        }
-    }
     
     public func refreshOpenAI(updatedToken: String) {
         self.openAI = OpenAI(apiToken: updatedToken)
