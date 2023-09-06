@@ -22,92 +22,84 @@ struct SettingsView: View {
     @State var translateResultToEnglish: Bool = false;
     @State var enableAutoPaste: Bool = false;
     @State var enableOpenAI: Bool = false;
-
+    @State var openAIMode: Modes = Modes.transcription
+    
     
     var body: some View {
-        VStack(alignment: .leading) {
-            Spacer()
-            Form {
-                Section {
-                    
-                    Picker("Speaking Language:", selection: $language) {
-                        Text("English").tag("en")
-                        Text("German").tag("de")
-                        Text("Russian").tag("ru")
-                        Text("Spanish").tag("es")
-                    }
-                    .pickerStyle(MenuPickerStyle())
-                    Text("Which language will you be speaking?").font(.caption)
-                    
-                    LabeledContent {
-                        Toggle(isOn: $translateResultToEnglish) {
-                            Text("Translate to English if speaking another language")
-                        }
-                        .toggleStyle(.checkbox)
-                    } label: {
-                        Text("Translation:")
-                    }
-
-                    LabeledContent {
-                        Toggle(isOn: $enableAutoPaste) {
-                            Text("Output text directly to your cursor")
-                        }
-                        .toggleStyle(.checkbox)
-                    } label: {
-                        Text("Autotype:")
-                    }
-
-                    
-                    LabeledContent {
-                        ZStack {
-                            TextEditor(text: $prompt)
-                                .lineLimit(3...20)
-                                .disableAutocorrection(true)
-                        }
-                        .padding(EdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 0))
-                        .background(Color(NSColor.controlBackgroundColor))
-                        .cornerRadius(5)
-                    } label: {
-                        Text("Speech Hints:")
-                    }
-                    Text("Provide a sample of something you would normally say and how you would format \nit or some technical terms").font(.caption)
-                    
-                    LabeledContent {
-                        VStack(alignment: .leading) {
-                            Toggle(isOn: $enableOpenAI) {
-                                Text("Enable OpenAI")
-                            }
-                            .toggleStyle(.checkbox)
-                            SecureField("OpenAI API Key", text: $openAIToken).disabled(!enableOpenAI).labelsHidden()
-                            Text("Provide your OpenAI API key from \nhttps://platform.openai.com/account/api-keys").font(.caption)
-                        }
-                    } label: {
-                        Text("OpenAI Options:")
-                    }
-
-
-                    KeyboardShortcuts.Recorder("Record Keyboard Shortcut:", name: .toggleRecordMode)
-
-
-                }
-                Spacer()
-                HStack(alignment: .firstTextBaseline) {
-                    Button("Cancel") {
-                        reset()
-                        dismiss()
-                    }.buttonStyle(.bordered)
-                    Button("Save") {
-                        save()
-                        dismiss()
-                    }.buttonStyle(.borderedProminent)
-                }
+        Spacer()
+        Form {
+            
+            
+            Picker("Speaking Language:", selection: $language) {
+                Text("English").tag("en")
+                Text("German").tag("de")
+                Text("Russian").tag("ru")
+                Text("Spanish").tag("es")
             }
-            .padding(EdgeInsets(top: 10, leading: 20, bottom: 20, trailing: 20))
-            .onAppear{
-                reset()
+            .pickerStyle(MenuPickerStyle())
+            
+            Toggle(isOn: $translateResultToEnglish) {
+                Text("Translate to English if speaking another language")
+            }
+            .toggleStyle(.checkbox)
+            
+            Toggle(isOn: $enableAutoPaste) {
+                Text("Output text directly to your cursor")
+            }
+            .toggleStyle(.checkbox)
+            
+            
+            LabeledContent {
+                ZStack {
+                    TextEditor(text: $prompt)
+                        .lineLimit(3...20)
+                        .disableAutocorrection(true)
+                }
+                .padding(EdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 0))
+                .background(Color(NSColor.controlBackgroundColor))
+                .cornerRadius(5)
+            } label: {
+                Text("Speech Hints:")
+            }
+            
+            Toggle(isOn: $enableOpenAI) {
+                Text("Enable OpenAI")
+            }
+            .toggleStyle(.checkbox)
+            
+            
+            SecureField("OpenAI API Key", text: $openAIToken)
+                .disabled(!enableOpenAI)
+                .labelStyle(.titleAndIcon)
+            
+            Picker("Mode:", selection: $openAIMode) {
+                Text("Transcription").tag(Modes.transcription)
+                Text("Instruction (experimental)").tag(Modes.instruction)
+                Text("Creative (experimental)").tag(Modes.creative)
+            }
+            .disabled(!enableOpenAI)
+            .pickerStyle(.radioGroup)
+            
+            KeyboardShortcuts.Recorder("Record Keyboard Shortcut:", name: .toggleRecordMode)
+            
+            
+            
+            Spacer()
+            HStack(alignment: .firstTextBaseline) {
+                Button("Cancel") {
+                    reset()
+                    dismiss()
+                }.buttonStyle(.bordered)
+                Button("Save") {
+                    save()
+                    dismiss()
+                }.buttonStyle(.borderedProminent)
             }
         }
-        .frame(width: 600, height: 450)
+        .padding(EdgeInsets(top: 10, leading: 20, bottom: 20, trailing: 20))
+        .onAppear{
+            reset()
+        }
         
     }
     
@@ -118,6 +110,7 @@ struct SettingsView: View {
         self.translateResultToEnglish = settingsVM.settings.translateResultToEnglish
         self.enableAutoPaste = settingsVM.settings.enableAutoPaste
         self.enableOpenAI = settingsVM.settings.enableOpenAI
+        self.openAIMode = settingsVM.settings.openAIMode
     }
     
     private func save() {
@@ -128,8 +121,9 @@ struct SettingsView: View {
         settingsVM.settings.translateResultToEnglish = self.translateResultToEnglish
         settingsVM.settings.enableAutoPaste = self.enableAutoPaste
         settingsVM.settings.enableOpenAI = self.enableOpenAI
+        settingsVM.settings.openAIMode = self.openAIMode
         dismiss()
-
+        
         if autoPasteJustEnabled {
             settingsVM.settings.showAccessibilityWindow()
         }
@@ -138,6 +132,7 @@ struct SettingsView: View {
 
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        SettingsView()
+        @ObservedObject var settingsVM: SettingsViewModel = SettingsViewModel()
+        SettingsView().environmentObject(settingsVM)
     }
 }

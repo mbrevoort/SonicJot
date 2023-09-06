@@ -39,6 +39,7 @@ class SettingsModel: ObservableObject {
     }
     
     @AppStorage("enableOpenAI") var enableOpenAI: Bool = false
+    @AppStorage("openAIMode") var openAIMode: Modes = Modes.transcription
     @AppStorage("language") var language: String = "en"
     @AppStorage("translateResultToEnglish") var translateResultToEnglish: Bool = false
     @AppStorage("enableAutoPaste") var enableAutoPaste: Bool = false

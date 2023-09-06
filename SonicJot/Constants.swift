@@ -29,6 +29,13 @@ enum RecordingStates: String {
 // Global logger
 let logger = Logger(subsystem: "com.brevoort.sonicjot", category: "general")
 
+// Modes
+enum Modes: String {
+    case transcription = "transcription"
+    case instruction = "instruction"
+    case creative = "creative"
+}
+
 
 // Sounds
 

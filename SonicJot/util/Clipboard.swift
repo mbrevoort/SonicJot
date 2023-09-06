@@ -7,6 +7,8 @@
 
 import Foundation
 import Cocoa
+import AppKit
+import Carbon
 
 class Clipboard {
     static func copy(_ text: String) {
@@ -16,6 +18,11 @@ class Clipboard {
         pasteboard.setString(text, forType: .string)
     }
     
+    static func read() -> String {
+        let pasteboard = NSPasteboard.general
+        return pasteboard.pasteboardItems?.first?.string(forType: .string) ?? ""
+    }
+        
     static func paste() {
         let source = CGEventSource(stateID: .combinedSessionState)
         // Press Command + V
@@ -29,3 +36,4 @@ class Clipboard {
         keyVUp?.post(tap: .cgAnnotatedSessionEventTap)
     }
 }
+

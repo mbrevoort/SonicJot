@@ -89,6 +89,22 @@ class TranscriptionModel: ObservableObject {
             }
             
             print("Transcription result: \(text)")
+            
+            if settings.openAIMode == .instruction {
+                let chatPrompts: [Chat] = [Chat(role: .system, content: "Provided is text that was transcribed by the user. Please follow their instruction."), Chat(role: .user, content: text)]
+
+                let chatQuery = ChatQuery(model: "gpt-4", messages: chatPrompts)
+                let result = try await openAI.chats(query: chatQuery)
+                text = result.choices[0].message.content ?? "no response"
+            } else if settings.openAIMode == .creative {
+                let content = Clipboard.read()
+                let chatPrompts: [Chat] = [Chat(role: .system, content: "First is a set of instructions followed by content to apply the instructions to"), Chat(role: .user, content: text), Chat(role: .user, content: content)]
+
+                let chatQuery = ChatQuery(model: "gpt-4", messages: chatPrompts)
+                let result = try await openAI.chats(query: chatQuery)
+                text = result.choices[0].message.content ?? "no response"
+            }                        
+            
             let item = HistoryItem(text)
             item.duration = timer.stop()
             Clipboard.copy(text)

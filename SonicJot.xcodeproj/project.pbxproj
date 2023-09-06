@@ -122,10 +122,10 @@
 		BED2FBDE2A89CFB800ACF6FC /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				BED2FBD62A8665C200ACF6FC /* HistoryView.swift */,
-				BE9350052A9BC8DF000B3841 /* SettingsView.swift */,
 				BED2FBDF2A89D01500ACF6FC /* AboutView.swift */,
+				BED2FBD62A8665C200ACF6FC /* HistoryView.swift */,
 				BE934FC62A91C52E000B3841 /* MenuView.swift */,
+				BE9350052A9BC8DF000B3841 /* SettingsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
