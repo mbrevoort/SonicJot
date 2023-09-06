@@ -43,6 +43,7 @@ class SettingsModel: ObservableObject {
     @AppStorage("language") var language: String = "en"
     @AppStorage("translateResultToEnglish") var translateResultToEnglish: Bool = false
     @AppStorage("enableAutoPaste") var enableAutoPaste: Bool = false
+    @AppStorage("enableSounds") var enableSounds: Bool = true
     @AppStorage("prompt") var prompt: String = "Hello, nice to see you today!"
     
     // Store an obfuscated version of the openaikey in app storage. This is not "secure"

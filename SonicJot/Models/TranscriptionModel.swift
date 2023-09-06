@@ -41,7 +41,9 @@ class TranscriptionModel: ObservableObject {
     public func startRecording() throws  {
         recordingTimer = ParkBenchTimer()
         if settings.enableOpenAI && settings.openAIToken == "" {
-            playErrorSound()
+            if settings.enableSounds {
+                playErrorSound()
+            }
             NSApp.activate(ignoringOtherApps: true)
             NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
             return
@@ -49,14 +51,18 @@ class TranscriptionModel: ObservableObject {
         
         recordingState = RecordingStates.recording
         try rec.record()
-        playOKSound()
+        if settings.enableSounds {
+            playOKSound()
+        }
     }
     
     public func stopRecording() async {
         let recordingDuration = recordingTimer?.stop() ?? 0
         recordingState = RecordingStates.working
         let url = rec.stop()
-        playOKSound()
+        if settings.enableSounds {
+            playOKSound()
+        }
         
         return await self.transcribe(url: url as URL, recordingDuration: recordingDuration as Double)
     }
@@ -96,10 +102,14 @@ class TranscriptionModel: ObservableObject {
             settings.history.enqueue(item)
             
             if settings.enableAutoPaste {
-                playDoneAsyncSound()
+                if settings.enableSounds {
+                    playDoneAsyncSound()
+                }
                 paste()
             } else {
-                playDoneSound()
+                if settings.enableSounds {
+                    playDoneSound()
+                }
             }
             //hideMenu()
             
@@ -182,7 +192,9 @@ class TranscriptionModel: ObservableObject {
     }
     
     func showError(_ err: any Error) {
-        playErrorSound()
+        if settings.enableSounds {
+            playErrorSound()
+        }
         print("error: \(err)")
         logger.error("error: \(err)")
         settings.history.enqueue(HistoryItem(body: "\(err)", type: HistoryItemType.error))

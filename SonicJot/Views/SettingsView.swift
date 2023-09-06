@@ -21,6 +21,7 @@ struct SettingsView: View {
     @State var prompt: String = ""
     @State var translateResultToEnglish: Bool = false;
     @State var enableAutoPaste: Bool = false;
+    @State var enableSounds: Bool = false;
     @State var enableOpenAI: Bool = false;
     @State var openAIMode: Modes = Modes.transcription
     
@@ -38,16 +39,23 @@ struct SettingsView: View {
             }
             .pickerStyle(MenuPickerStyle())
             
-            Toggle(isOn: $translateResultToEnglish) {
-                Text("Translate to English if speaking another language")
+            Group {
+                
+                Toggle(isOn: $translateResultToEnglish) {
+                    Text("Translate to English if speaking another language")
+                }
+                .toggleStyle(.checkbox)
+                
+                Toggle(isOn: $enableAutoPaste) {
+                    Text("Output text directly to your cursor")
+                }
+                .toggleStyle(.checkbox)
+                
+                Toggle(isOn: $enableSounds) {
+                    Text("Enable sounds")
+                }
+                .toggleStyle(.checkbox)
             }
-            .toggleStyle(.checkbox)
-            
-            Toggle(isOn: $enableAutoPaste) {
-                Text("Output text directly to your cursor")
-            }
-            .toggleStyle(.checkbox)
-            
             
             LabeledContent {
                 ZStack {
@@ -109,6 +117,7 @@ struct SettingsView: View {
         self.prompt = settingsVM.settings.prompt
         self.translateResultToEnglish = settingsVM.settings.translateResultToEnglish
         self.enableAutoPaste = settingsVM.settings.enableAutoPaste
+        self.enableSounds = settingsVM.settings.enableSounds
         self.enableOpenAI = settingsVM.settings.enableOpenAI
         self.openAIMode = settingsVM.settings.openAIMode
     }
@@ -120,6 +129,7 @@ struct SettingsView: View {
         settingsVM.settings.prompt = self.prompt
         settingsVM.settings.translateResultToEnglish = self.translateResultToEnglish
         settingsVM.settings.enableAutoPaste = self.enableAutoPaste
+        settingsVM.settings.enableSounds = self.enableSounds
         settingsVM.settings.enableOpenAI = self.enableOpenAI
         settingsVM.settings.openAIMode = self.openAIMode
         dismiss()
