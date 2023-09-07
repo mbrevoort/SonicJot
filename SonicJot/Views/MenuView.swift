@@ -37,8 +37,11 @@ struct MenuView: View {
                 if menuVM.transcription.recordingState == RecordingStates.recording {
                     recordingAnimation()
                 }
-                if menuVM.transcription.recordingState == RecordingStates.working {
+                if menuVM.transcription.recordingState == RecordingStates.transcribing {
                     transcriptionAnimation()
+                }
+                if menuVM.transcription.recordingState == RecordingStates.transforming {
+                    transformationAnimation()
                 }
             }
             
@@ -124,9 +127,9 @@ struct MenuView: View {
     
     private func transcriptionAnimation() -> some View {
         VStack (alignment: .center, spacing: 1) {
-            rod(width: 6, duration: 1.0)
-            rod(width: 8, duration: 0.8)
-            rod(width: 4, duration: 1.2)
+            rod(width: 6, height: 4, duration: 1.0)
+            rod(width: 8, height: 4, duration: 0.8)
+            rod(width: 7, height: 4, duration: 1.2)
         }
         .frame(width:26)
         .onAppear() {
@@ -136,17 +139,37 @@ struct MenuView: View {
             self.isTranscribing = false
         }
     }
+
+    private func transformationAnimation() -> some View {
+        VStack (alignment: .center, spacing: 1) {
+            rod(width: 12I'm sorry if my responses have seemed strange. I'm here to assist you. Please let me know how I can help you., height: 2, duration: 1.0)
+            rod(width: 12, height: 2, duration: 0.8)
+            rod(width: 12, height: 2, duration: 0.6)
+            rod(width: 12, height: 2, duration: 0.7)
+            rod(width: 12, height: 2, duration: 1.2)
+        }
+        .frame(width:26)
+        .onAppear() {
+            self.isTranscribing = true
+        }
+        .onDisappear() {
+            self.isTranscribing = false
+        }
+    }
+
     
-    private func rod(width: CGFloat = 8, duration: CGFloat = 1) -> some View {
-        ZStack {
+    private func rod(width: CGFloat = 8, height: CGFloat = 4, duration: CGFloat = 1) -> some View {
+        let frameWidth: CGFloat = 26
+        let offsetWidth: CGFloat = (frameWidth - width) / 2
+        return ZStack {
             RoundedRectangle(cornerRadius: 3)
-                .fill(.gray.gradient)
-                .frame(width: 26, height: 3)
+                .fill(Color("AnimationBackground"))
+                .frame(width: frameWidth, height: height)
             
             RoundedRectangle(cornerRadius: 3)
-                .fill(.indigo.gradient)
-                .frame(width: width, height: 3)
-                .offset(x: isTranscribing ? 13 : -13, y: 0)
+                .fill(Color("AnimationForeground"))
+                .frame(width: width, height: height)
+                .offset(x: isTranscribing ? offsetWidth : (-1 * offsetWidth), y: 0)
                 .animation(Animation.linear(duration: duration).repeatForever(autoreverses: true), value: isTranscribing)
         }
     }
@@ -179,7 +202,7 @@ struct MenuView: View {
     
     private func bar(low: CGFloat = 0.0, high: CGFloat = 1.0) -> some View {
         return RoundedRectangle(cornerRadius: 3)
-            .fill(.indigo.gradient)
+            .fill(Color("AnimationForeground"))
             .frame(width: 2, height: (isRecording ? high : low) * 16)
             .frame(height: 16)
     }

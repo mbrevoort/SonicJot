@@ -25,8 +25,10 @@ class MenuViewModel: ObservableObject {
                 return "Ready..."
             case RecordingStates.recording:
                 return "Recording..."
-            case RecordingStates.working:
+            case RecordingStates.transcribing:
                 return "Transcribing..."
+            case RecordingStates.transforming:
+                return "Transforming..."
             }
         }
     }
@@ -59,7 +61,7 @@ class MenuViewModel: ObservableObject {
     }
     
     private func keyDown() {
-        if transcription.recordingState == RecordingStates.working {
+        if transcription.recordingState == RecordingStates.transcribing || transcription.recordingState == RecordingStates.transforming {
             return
         }
         
@@ -92,9 +94,9 @@ class MenuViewModel: ObservableObject {
     
     public func hideMenu() {
         isMenuPresented = false
-//        DispatchQueue.main.async {
+        DispatchQueue.main.async {
             self.isMenuSummary = false
-//        }
+        }
     }
     
     public func openSummaryMenu() {
@@ -161,9 +163,5 @@ class MenuViewModel: ObservableObject {
             keyVUp?.post(tap: .cgAnnotatedSessionEventTap)
         }
     }
-    
-
-    
-    
 
 }

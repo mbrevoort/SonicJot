@@ -58,7 +58,7 @@ class TranscriptionModel: ObservableObject {
     
     public func stopRecording() async {
         let recordingDuration = recordingTimer?.stop() ?? 0
-        recordingState = RecordingStates.working
+        recordingState = RecordingStates.transcribing
         let url = rec.stop()
         if settings.enableSounds {
             playOKSound()
@@ -82,12 +82,14 @@ class TranscriptionModel: ObservableObject {
             print("Transcription result: \(text)")
             
             if settings.openAIMode == .instruction {
+                recordingState = RecordingStates.transforming
                 let chatPrompts: [Chat] = [Chat(role: .system, content: "Provided is text that was transcribed by the user. Please follow their instruction."), Chat(role: .user, content: text)]
 
                 let chatQuery = ChatQuery(model: "gpt-4", messages: chatPrompts)
                 let result = try await openAI.chats(query: chatQuery)
                 text = result.choices[0].message.content ?? "no response"
             } else if settings.openAIMode == .creative {
+                recordingState = RecordingStates.transforming
                 let content = Clipboard.read()
                 let chatPrompts: [Chat] = [Chat(role: .system, content: "First is a set of instructions followed by content to apply the instructions to"), Chat(role: .user, content: text), Chat(role: .user, content: content)]
 
@@ -111,7 +113,6 @@ class TranscriptionModel: ObservableObject {
                     playDoneSound()
                 }
             }
-            //hideMenu()
             
             let components = item.body.components(separatedBy: .whitespacesAndNewlines)
             let words = components.filter { !$0.isEmpty }
