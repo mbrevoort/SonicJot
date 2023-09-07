@@ -19,7 +19,7 @@ struct swiftui_menu_barApp: App {
         
     var body: some Scene {
         MenuBarExtra("SonicJot", systemImage: menuVM.transcription.recordingState.rawValue) {
-            MenuView(isMenuPresented: $menuVM.isMenuPresented, isSummary: $menuVM.isMenuSummary)
+            MenuView(isSummary: $menuVM.isMenuSummary)
             .introspectMenuBarExtraWindow { window in // <-- the magic ✨
                 window.animationBehavior = .utilityWindow
             }

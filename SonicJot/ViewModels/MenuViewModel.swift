@@ -12,7 +12,7 @@ import Cocoa
 import SwiftUI
 import Combine
 
-class MenuViewModel: ObservableObject {
+@MainActor class MenuViewModel: ObservableObject {
     @Published var settings: SettingsModel = SettingsModel.instance()
     @Published var transcription: TranscriptionModel = TranscriptionModel()
     
@@ -61,24 +61,26 @@ class MenuViewModel: ObservableObject {
     }
     
     private func keyDown() {
-        if transcription.recordingState == RecordingStates.transcribing || transcription.recordingState == RecordingStates.transforming {
-            return
-        }
-        
-        self.isKeyDown = true
-        lastKeyDownTime = Date()
-        
-        if transcription.recordingState == RecordingStates.stopped {
-            self.isMenuSummary = true
-            do {
-                try transcription.startRecording()
-                isMenuPresented = true
-            } catch {
-                self.showError(error)
+            if self.transcription.recordingState == .transcribing || self.transcription.recordingState == .transforming {
+                return
             }
-        } else if transcription.recordingState == RecordingStates.recording {
-            self.stopRecording()
-        }
+            
+            self.isKeyDown = true
+            lastKeyDownTime = Date()
+            
+            if transcription.recordingState == RecordingStates.stopped {
+                self.isMenuSummary = true
+                do {
+                    try transcription.startRecording()
+                    isMenuPresented = true
+                } catch {
+                    self.showError(error)
+                }
+            } else if transcription.recordingState == RecordingStates.recording {
+                Task(priority: .userInitiated) {
+                    await self.stopRecording()
+                }
+            }
     }
     
     private func keyUp() {
@@ -88,15 +90,15 @@ class MenuViewModel: ObservableObject {
         let wasHeldDown: Bool = sinceLastKeyDown > 0.7 //seconds
         let isRecording: Bool = transcription.recordingState == RecordingStates.recording
         if wasHeldDown && isRecording {
-            self.stopRecording()
+            Task(priority: .userInitiated) {
+                await self.stopRecording()
+            }
         }
     }
     
     public func hideMenu() {
-        isMenuPresented = false
-        DispatchQueue.main.async {
-            self.isMenuSummary = false
-        }
+        self.isMenuSummary = false
+        self.isMenuPresented = false
     }
     
     public func openSummaryMenu() {
@@ -119,13 +121,9 @@ class MenuViewModel: ObservableObject {
         }
     }
     
-    public func stopRecording() {
-        Task {
-            await transcription.stopRecording()
-            DispatchQueue.main.async {
-                self.hideMenu()
-            }
-        }
+    public func stopRecording() async {
+        await transcription.stopRecording()
+        self.hideMenu()
     }
     
     public func cancelRecording() {

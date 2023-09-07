@@ -10,15 +10,14 @@ import SwiftUI
 struct MenuView: View {
     @Environment(\.openWindow) private var openWindow
     @EnvironmentObject var menuVM: MenuViewModel
-
-    @Binding var isMenuPresented: Bool
+    
     @Binding var isSummary: Bool
     
     @State private var isHistoryHovered = false
     @State private var isSettingsHovered = false
     @State private var isAboutHovered = false
     @State private var isQuitHovered = false
-        
+    
     var body: some View {
         
         VStack(alignment: .leading) {
@@ -57,7 +56,10 @@ struct MenuView: View {
                     .disabled(menuVM.transcription.recordingState != RecordingStates.stopped || menuVM.isKeyDown)
                     
                     Button(action: {
-                        menuVM.stopRecording()
+                        Task(priority: .userInitiated) {
+                            await menuVM.stopRecording()
+                        }
+                        
                     }, label: {})
                     .buttonStyle(MenuStyle(title: "Stop"))
                     .disabled(menuVM.transcription.recordingState != RecordingStates.recording || menuVM.isKeyDown)
@@ -139,10 +141,10 @@ struct MenuView: View {
             self.isTranscribing = false
         }
     }
-
+    
     private func transformationAnimation() -> some View {
         VStack (alignment: .center, spacing: 1) {
-            rod(width: 12I'm sorry if my responses have seemed strange. I'm here to assist you. Please let me know how I can help you., height: 2, duration: 1.0)
+            rod(width: 12, height: 2, duration: 1.0)
             rod(width: 12, height: 2, duration: 0.8)
             rod(width: 12, height: 2, duration: 0.6)
             rod(width: 12, height: 2, duration: 0.7)
@@ -156,7 +158,7 @@ struct MenuView: View {
             self.isTranscribing = false
         }
     }
-
+    
     
     private func rod(width: CGFloat = 8, height: CGFloat = 4, duration: CGFloat = 1) -> some View {
         let frameWidth: CGFloat = 26

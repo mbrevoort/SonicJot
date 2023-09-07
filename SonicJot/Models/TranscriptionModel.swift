@@ -62,7 +62,7 @@ class TranscriptionModel: ObservableObject {
         let url = rec.stop()
         if settings.enableSounds {
             playOKSound()
-        }
+        } 
         
         return await self.transcribe(url: url as URL, recordingDuration: recordingDuration as Double)
     }
@@ -123,9 +123,7 @@ class TranscriptionModel: ObservableObject {
             self.showError(error)
         }
         
-        DispatchQueue.main.async {
             self.recordingState = RecordingStates.stopped
-        }
     }
     
     
