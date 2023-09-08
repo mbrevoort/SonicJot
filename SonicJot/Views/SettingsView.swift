@@ -17,6 +17,7 @@ struct SettingsView: View {
     @EnvironmentObject var settingsVM: SettingsViewModel
     
     @State var openAIToken: String = ""
+    @State var temperature: Double = 0.0
     @State var language: String = ""
     @State var prompt: String = ""
     @State var translateResultToEnglish: Bool = false;
@@ -74,11 +75,20 @@ struct SettingsView: View {
             .toggleStyle(.checkbox)
             
             
-            SecureField("OpenAI API Key", text: $openAIToken)
+            SecureField("OpenAI API Key:", text: $openAIToken)
                 .disabled(!enableOpenAI)
                 .labelStyle(.titleAndIcon)
             
-            
+            LabeledContent {
+            VStack {
+                Slider(value: $temperature, in: 0...1)
+                    .disabled(!enableOpenAI)
+                Text("\(formatTemperatureString(val: temperature))")
+            }
+        } label: {
+            Text("Creativity:")
+        }
+
             Group {
                 KeyboardShortcuts.Recorder("Transcription:", name: .toggleRecordMode)
                 
@@ -108,6 +118,7 @@ struct SettingsView: View {
     
     private func reset() {
         self.openAIToken = settingsVM.settings.openAIToken
+        self.temperature = settingsVM.settings.temperature
         self.language = settingsVM.settings.language
         self.prompt = settingsVM.settings.prompt
         self.translateResultToEnglish = settingsVM.settings.translateResultToEnglish
@@ -119,6 +130,7 @@ struct SettingsView: View {
     private func save() {
         let autoPasteJustEnabled: Bool = !settingsVM.settings.enableAutoPaste && enableAutoPaste
         settingsVM.settings.openAIToken = openAIToken
+        settingsVM.settings.temperature = formatTemperature(val: temperature)
         settingsVM.settings.language = self.language
         settingsVM.settings.prompt = self.prompt
         settingsVM.settings.translateResultToEnglish = self.translateResultToEnglish
@@ -130,6 +142,16 @@ struct SettingsView: View {
         if autoPasteJustEnabled {
             settingsVM.settings.showAccessibilityWindow()
         }
+    }
+    
+    private func formatTemperature(val: Double) -> Double {
+        return Double(round(100 * val) / 100)
+    }
+    
+    private func formatTemperatureString(val: Double) -> String {
+        let formatter = NumberFormatter()
+        formatter.maximumFractionDigits = 2
+        return String(Int(round(100 * formatTemperature(val: val)))) + "%"
     }
 }
 
