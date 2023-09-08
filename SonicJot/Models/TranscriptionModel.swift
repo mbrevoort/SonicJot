@@ -56,7 +56,7 @@ class TranscriptionModel: ObservableObject {
         }
     }
     
-    public func stopRecording() async {
+    public func stopRecording(mode: Modes) async {
         let recordingDuration = recordingTimer?.stop() ?? 0
         recordingState = RecordingStates.transcribing
         let url = rec.stop()
@@ -64,10 +64,10 @@ class TranscriptionModel: ObservableObject {
             playOKSound()
         } 
         
-        return await self.transcribe(url: url as URL, recordingDuration: recordingDuration as Double)
+        return await self.transcribe(mode: mode, url: url as URL, recordingDuration: recordingDuration as Double)
     }
     
-    private func transcribe(url: URL, recordingDuration: Double) async -> Void  {
+    private func transcribe(mode: Modes, url: URL, recordingDuration: Double) async -> Void  {
         let timer = ParkBenchTimer()
         var text = ""
         do {
@@ -81,14 +81,14 @@ class TranscriptionModel: ObservableObject {
             
             print("Transcription result: \(text)")
             
-            if settings.openAIMode == .instruction {
+            if mode == .instruction {
                 recordingState = RecordingStates.transforming
                 let chatPrompts: [Chat] = [Chat(role: .system, content: "Provided is text that was transcribed by the user. Please follow their instruction."), Chat(role: .user, content: text)]
 
                 let chatQuery = ChatQuery(model: "gpt-4", messages: chatPrompts)
                 let result = try await openAI.chats(query: chatQuery)
                 text = result.choices[0].message.content ?? "no response"
-            } else if settings.openAIMode == .creative {
+            } else if mode == .creative {
                 recordingState = RecordingStates.transforming
                 let content = Clipboard.read()
                 let chatPrompts: [Chat] = [Chat(role: .system, content: "First is a set of instructions followed by content to apply the instructions to"), Chat(role: .user, content: text), Chat(role: .user, content: content)]
@@ -98,7 +98,7 @@ class TranscriptionModel: ObservableObject {
                 text = result.choices[0].message.content ?? "no response"
             }                        
             
-            let item = HistoryItem(text)
+            let item = HistoryItem(body: text, mode: mode)
             item.duration = timer.stop()
             Clipboard.copy(text)
             settings.history.enqueue(item)
@@ -117,7 +117,7 @@ class TranscriptionModel: ObservableObject {
             let components = item.body.components(separatedBy: .whitespacesAndNewlines)
             let words = components.filter { !$0.isEmpty }
 
-            EventTracking.transcription(provider: settings.enableOpenAI ? "OpenAI" : "Local", recordingDuration: recordingDuration, transcriptionDuration: item.duration, numWords: words.count)
+            EventTracking.transcription(provider: settings.enableOpenAI ? "OpenAI" : "Local", mode: mode.rawValue, recordingDuration: recordingDuration, transcriptionDuration: item.duration, numWords: words.count)
 
         } catch {
             self.showError(error)

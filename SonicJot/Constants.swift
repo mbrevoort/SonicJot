@@ -14,6 +14,8 @@ import Carbon
 // Keyboard shortcut registration
 extension KeyboardShortcuts.Name {
     static let toggleRecordMode = Self("toggleRecordMode", default: .init(.x, modifiers: [.control, .command]))
+    static let toggleInstructionMode  = Self("toggleInstructionMode")
+    static let toggleCreativeMode  = Self("toggleCreativeMode")
 }
 
 let vKeyCode = UInt16(kVK_ANSI_V)

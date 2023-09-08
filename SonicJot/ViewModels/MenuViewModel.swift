@@ -36,6 +36,7 @@ import Combine
     @Published var isMenuPresented: Bool = false
     @Published var isMenuSummary: Bool = false
     @Published public var isKeyDown: Bool = false
+    @Published var activeMode: Modes = Modes.transcription
     private var lastKeyDownTime: Date?
 
     var changeSink: AnyCancellable?
@@ -44,13 +45,51 @@ import Combine
     init() {
         // Register keyboard shortcuts
         KeyboardShortcuts.onKeyDown(for: .toggleRecordMode) { [weak self] in
+            self?.activeMode = .transcription
             self?.keyDown()
         }
         
         KeyboardShortcuts.onKeyUp(for: .toggleRecordMode) { [weak self] in
+            self?.activeMode = .transcription
             self?.keyUp()
         }
-                
+
+        KeyboardShortcuts.onKeyDown(for: .toggleInstructionMode) { [weak self] in
+            if !self!.settings.enableOpenAI {
+                return
+            }
+            
+            self?.activeMode = .instruction
+            self?.keyDown()
+        }
+        
+        KeyboardShortcuts.onKeyUp(for: .toggleInstructionMode) { [weak self] in
+            if !self!.settings.enableOpenAI {
+                return
+            }
+            
+            self?.activeMode = .instruction
+            self?.keyUp()
+        }
+
+        KeyboardShortcuts.onKeyDown(for: .toggleCreativeMode) { [weak self] in
+            if !self!.settings.enableOpenAI {
+                return
+            }
+            
+            self?.activeMode = .creative
+            self?.keyDown()
+        }
+        
+        KeyboardShortcuts.onKeyUp(for: .toggleCreativeMode) { [weak self] in
+            if !self!.settings.enableOpenAI {
+                return
+            }
+            
+            self?.activeMode = .creative
+            self?.keyUp()
+        }
+
         changeSink = transcription.$recordingState.sink { _ in
             self.objectWillChange.send()
         }
@@ -122,7 +161,7 @@ import Combine
     }
     
     public func stopRecording() async {
-        await transcription.stopRecording()
+        await transcription.stopRecording(mode: self.activeMode)
         self.hideMenu()
     }
     

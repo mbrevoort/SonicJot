@@ -50,16 +50,30 @@ struct MenuView: View {
             if !isSummary {
                 VStack(alignment: .leading, spacing: 0) {
                     Button(action: {
+                        menuVM.activeMode = .transcription
                         menuVM.startRecording()
                     }, label: {})
-                    .buttonStyle(MenuStyle(title: "Start"))
+                    .buttonStyle(MenuStyle(title: "Start Transcription"))
                     .disabled(menuVM.transcription.recordingState != RecordingStates.stopped || menuVM.isKeyDown)
-                    
+
+                    Button(action: {
+                        menuVM.activeMode = .instruction
+                        menuVM.startRecording()
+                    }, label: {})
+                    .buttonStyle(MenuStyle(title: "Start Instruction"))
+                    .disabled(menuVM.transcription.recordingState != RecordingStates.stopped || menuVM.isKeyDown || !menuVM.settings.enableOpenAI)
+
+                    Button(action: {
+                        menuVM.activeMode = .creative
+                        menuVM.startRecording()
+                    }, label: {})
+                    .buttonStyle(MenuStyle(title: "Start Creative"))
+                    .disabled(menuVM.transcription.recordingState != RecordingStates.stopped || menuVM.isKeyDown || !menuVM.settings.enableOpenAI)
+
                     Button(action: {
                         Task(priority: .userInitiated) {
                             await menuVM.stopRecording()
                         }
-                        
                     }, label: {})
                     .buttonStyle(MenuStyle(title: "Stop"))
                     .disabled(menuVM.transcription.recordingState != RecordingStates.recording || menuVM.isKeyDown)

@@ -60,7 +60,7 @@ struct HistoryModel: CustomStringConvertible, Codable {
 }
 
 enum HistoryItemType: Codable {
-    case error, transcription
+    case error, transcription, instruction, creative
 }
 
 class HistoryItem: Identifiable, Codable {
@@ -79,6 +79,10 @@ class HistoryItem: Identifiable, Codable {
             return "Error"
         case HistoryItemType.transcription:
             return "Transcription"
+        case HistoryItemType.instruction:
+            return "Instruction"
+        case HistoryItemType.creative:
+            return "Creative"
         }
     }
     
@@ -94,6 +98,21 @@ class HistoryItem: Identifiable, Codable {
         self.type = type
         self.time = Date()
         self.duration = 0;
+    }
+
+    init(body: String, mode: Modes) {
+        self.body = body
+        self.time = Date()
+        self.duration = 0;
+        
+        switch mode {
+        case .transcription:
+            self.type = .transcription
+        case .instruction:
+            self.type = .instruction
+        case .creative:
+            self.type = .creative
+        }
     }
     
     init(body: String, type: HistoryItemType, time: Date) {

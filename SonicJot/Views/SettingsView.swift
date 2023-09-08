@@ -23,8 +23,6 @@ struct SettingsView: View {
     @State var enableAutoPaste: Bool = false;
     @State var enableSounds: Bool = false;
     @State var enableOpenAI: Bool = false;
-    @State var openAIMode: Modes = Modes.transcription
-    
     
     var body: some View {
         Spacer()
@@ -80,17 +78,14 @@ struct SettingsView: View {
                 .disabled(!enableOpenAI)
                 .labelStyle(.titleAndIcon)
             
-            Picker("Mode:", selection: $openAIMode) {
-                Text("Transcription").tag(Modes.transcription)
-                Text("Instruction (experimental)").tag(Modes.instruction)
-                Text("Creative (experimental)").tag(Modes.creative)
+            
+            Group {
+                KeyboardShortcuts.Recorder("Transcription:", name: .toggleRecordMode)
+                
+                KeyboardShortcuts.Recorder("Instruction Mode:", name: .toggleInstructionMode).disabled(!enableOpenAI)
+                
+                KeyboardShortcuts.Recorder("Creative Mode:", name: .toggleCreativeMode).disabled(!enableOpenAI)
             }
-            .disabled(!enableOpenAI)
-            .pickerStyle(.radioGroup)
-            
-            KeyboardShortcuts.Recorder("Record Keyboard Shortcut:", name: .toggleRecordMode)
-            
-            
             
             Spacer()
             HStack(alignment: .firstTextBaseline) {
@@ -119,7 +114,6 @@ struct SettingsView: View {
         self.enableAutoPaste = settingsVM.settings.enableAutoPaste
         self.enableSounds = settingsVM.settings.enableSounds
         self.enableOpenAI = settingsVM.settings.enableOpenAI
-        self.openAIMode = settingsVM.settings.openAIMode
     }
     
     private func save() {
@@ -131,7 +125,6 @@ struct SettingsView: View {
         settingsVM.settings.enableAutoPaste = self.enableAutoPaste
         settingsVM.settings.enableSounds = self.enableSounds
         settingsVM.settings.enableOpenAI = self.enableOpenAI
-        settingsVM.settings.openAIMode = self.openAIMode
         dismiss()
         
         if autoPasteJustEnabled {

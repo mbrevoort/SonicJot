@@ -31,7 +31,7 @@ class EventTracking {
         }
     }
     
-    static func transcription(provider: String, recordingDuration: Double, transcriptionDuration: Double, numWords: Int) {
+    static func transcription(provider: String, mode: String, recordingDuration: Double, transcriptionDuration: Double, numWords: Int) {
         if !enabled {
             return
         }
