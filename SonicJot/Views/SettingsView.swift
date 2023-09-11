@@ -8,8 +8,7 @@
 import SwiftUI
 import CloudKit
 import KeyboardShortcuts
-
-
+import LaunchAtLogin
 
 struct SettingsView: View {
     
@@ -29,7 +28,6 @@ struct SettingsView: View {
         Spacer()
         Form {
             
-            
             Picker("Speaking Language:", selection: $language) {
                 Text("English").tag("en")
                 Text("German").tag("de")
@@ -37,6 +35,7 @@ struct SettingsView: View {
                 Text("Spanish").tag("es")
             }
             .pickerStyle(MenuPickerStyle())
+            .frame(width: 400)
             
             Group {
                 
@@ -54,6 +53,9 @@ struct SettingsView: View {
                     Text("Enable sounds")
                 }
                 .toggleStyle(.checkbox)
+                
+                LaunchAtLogin.Toggle()
+                
             }
             
             LabeledContent {
@@ -65,38 +67,46 @@ struct SettingsView: View {
                 .padding(EdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 0))
                 .background(Color(NSColor.controlBackgroundColor))
                 .cornerRadius(5)
+                .frame(minWidth: 400, maxWidth: 400, minHeight: 100)
             } label: {
                 Text("Speech Hints:")
             }
             
-            Toggle(isOn: $enableOpenAI) {
-                Text("Enable OpenAI")
-            }
-            .toggleStyle(.checkbox)
-            
-            
-            SecureField("OpenAI API Key:", text: $openAIToken)
-                .disabled(!enableOpenAI)
-                .labelStyle(.titleAndIcon)
-            
-            LabeledContent {
-            VStack {
-                Slider(value: $temperature, in: 0...1)
-                    .disabled(!enableOpenAI)
-                Text("\(formatTemperatureString(val: temperature))")
-            }
-        } label: {
-            Text("Creativity:")
-        }
+            KeyboardShortcuts.Recorder("Transcription:", name: .toggleRecordMode)
+            Caption("Verbatim, what you say")
 
-            Group {
-                KeyboardShortcuts.Recorder("Transcription:", name: .toggleRecordMode)
-                
-                KeyboardShortcuts.Recorder("Instruction Mode:", name: .toggleInstructionMode).disabled(!enableOpenAI)
-                
-                KeyboardShortcuts.Recorder("Creative Mode:", name: .toggleCreativeMode).disabled(!enableOpenAI)
-            }
+            Spacer().frame(height:20)
             
+            Group {
+                Toggle(isOn: $enableOpenAI) {
+                    Text("Enable OpenAI")
+                }
+                .toggleStyle(.checkbox)
+                
+                
+                SecureField("OpenAI API Key:", text: $openAIToken)
+                    .disabled(!enableOpenAI)
+                    .labelStyle(.titleAndIcon)
+                    .frame(width: 500)
+                
+                LabeledContent {
+                    VStack {
+                        Slider(value: $temperature, in: 0...1)
+                            .disabled(!enableOpenAI)
+                            .frame(width: 400)
+                        DisableableText("\(formatTemperatureString(val: temperature))", disabled: !enableOpenAI)
+                    }
+                } label: {
+                    Text("Creativity:")
+                }
+                
+                KeyboardShortcuts.Recorder("Instructive Transcription:", name: .toggleInstructionMode).disabled(!enableOpenAI)
+                Caption("Decribe output", disabled: !enableOpenAI)
+                
+                KeyboardShortcuts.Recorder("Creative Transcription:", name: .toggleCreativeMode).disabled(!enableOpenAI)
+                Caption("Reference clipboard contents", disabled: !enableOpenAI)
+                
+            }
             Spacer()
             HStack(alignment: .firstTextBaseline) {
                 Button("Cancel") {
@@ -153,6 +163,19 @@ struct SettingsView: View {
         formatter.maximumFractionDigits = 2
         return String(Int(round(100 * formatTemperature(val: val)))) + "%"
     }
+    
+    private func Caption(_ string: String, disabled: Bool = false) -> Text {
+        return DisableableText(string, disabled: disabled).font(.caption)
+    }
+
+    private func DisableableText(_ string: String, disabled: Bool = false) -> Text {
+        var text = Text(string)
+        if disabled {
+            text = text.foregroundColor(Color(NSColor.disabledControlTextColor))
+        }
+        return text
+    }
+
 }
 
 struct SettingsView_Previews: PreviewProvider {

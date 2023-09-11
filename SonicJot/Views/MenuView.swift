@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import KeyboardShortcuts
 
 struct MenuView: View {
     @Environment(\.openWindow) private var openWindow
@@ -53,23 +54,25 @@ struct MenuView: View {
                         menuVM.activeMode = .transcription
                         menuVM.startRecording()
                     }, label: {})
-                    .buttonStyle(MenuStyle(title: "Start Transcription"))
+                    .buttonStyle(MenuStyle(title: "Start Transcription", shortcut: KeyboardShortcuts.Name.toggleRecordMode.shortcut?.description))
                     .disabled(menuVM.transcription.recordingState != RecordingStates.stopped || menuVM.isKeyDown)
 
-                    Button(action: {
-                        menuVM.activeMode = .instruction
-                        menuVM.startRecording()
-                    }, label: {})
-                    .buttonStyle(MenuStyle(title: "Start Instruction"))
-                    .disabled(menuVM.transcription.recordingState != RecordingStates.stopped || menuVM.isKeyDown || !menuVM.settings.enableOpenAI)
-
-                    Button(action: {
-                        menuVM.activeMode = .creative
-                        menuVM.startRecording()
-                    }, label: {})
-                    .buttonStyle(MenuStyle(title: "Start Creative"))
-                    .disabled(menuVM.transcription.recordingState != RecordingStates.stopped || menuVM.isKeyDown || !menuVM.settings.enableOpenAI)
-
+                    if menuVM.settings.enableOpenAI {
+                        Button(action: {
+                            menuVM.activeMode = .instruction
+                            menuVM.startRecording()
+                        }, label: {})
+                        .buttonStyle(MenuStyle(title: "Start Instructive", shortcut: KeyboardShortcuts.Name.toggleInstructionMode.shortcut?.description))
+                        .disabled(menuVM.transcription.recordingState != RecordingStates.stopped || menuVM.isKeyDown || !menuVM.settings.enableOpenAI)
+                        
+                        Button(action: {
+                            menuVM.activeMode = .creative
+                            menuVM.startRecording()
+                        }, label: {})
+                        .buttonStyle(MenuStyle(title: "Start Creative", shortcut: KeyboardShortcuts.Name.toggleCreativeMode.shortcut?.description))
+                        .disabled(menuVM.transcription.recordingState != RecordingStates.stopped || menuVM.isKeyDown || !menuVM.settings.enableOpenAI)
+                    }
+                    
                     Button(action: {
                         Task(priority: .userInitiated) {
                             await menuVM.stopRecording()
@@ -233,13 +236,21 @@ struct MenuStyle: ButtonStyle {
     @Environment(\.isEnabled) var isEnabled
     @State var isHovered: Bool = false
     let buttonTitle: String
+    let buttonShortcut: String
     let buttonIcon: Image?
     
     init(title: String, icon: Image? = nil) {
         self.buttonTitle = title
         self.buttonIcon = icon
+        self.buttonShortcut = ""
     }
-    
+
+    init(title: String, shortcut: String?, icon: Image? = nil) {
+        self.buttonTitle = title
+        self.buttonIcon = nil
+        self.buttonShortcut = shortcut ?? ""
+    }
+
     func makeBody(configuration: Self.Configuration) -> some View {
         HStack {
             Spacer().frame(width:10)
@@ -248,7 +259,13 @@ struct MenuStyle: ButtonStyle {
                     .foregroundColor(isEnabled ? isHovered ? Color(NSColor.selectedMenuItemTextColor) : Color(NSColor.labelColor): Color(NSColor.disabledControlTextColor))
             }
             Text(buttonTitle)
+                .frame(maxWidth: .infinity, alignment: .leading)
                 .foregroundColor(isEnabled ? isHovered ? Color(NSColor.selectedMenuItemTextColor) : Color(NSColor.labelColor) : Color(NSColor.disabledControlTextColor))
+            if buttonShortcut != "" {
+                Text(buttonShortcut)
+                    .frame(width: 50, alignment: .trailing)
+                    .foregroundColor(isEnabled ? isHovered ? Color(NSColor.selectedMenuItemTextColor) : Color(NSColor.disabledControlTextColor) : Color(NSColor.disabledControlTextColor))
+            }
             Spacer()
             
         }

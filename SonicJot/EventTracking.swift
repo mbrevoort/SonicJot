@@ -23,6 +23,11 @@ class EventTracking {
         Mixpanel.initialize(token: mixpanelToken)
         Mixpanel.mainInstance().loggingEnabled = enableLogging
         EventTracking.enabled = true
+        
+        if let userId = Mixpanel.mainInstance().anonymousId {
+            Mixpanel.mainInstance().identify(distinctId: userId);
+            Mixpanel.mainInstance().people.set(properties: [ "$name": NSUserName()])
+        }
     }
     
     static func initialize(enableLogging: Bool = false) {
