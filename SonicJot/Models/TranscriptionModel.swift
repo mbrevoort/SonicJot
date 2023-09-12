@@ -52,7 +52,7 @@ class TranscriptionModel: ObservableObject {
         recordingState = RecordingStates.recording
         try rec.record()
         if settings.enableSounds {
-            playOKSound()
+            playStartRecordingSound()
         }
     }
     
@@ -61,7 +61,7 @@ class TranscriptionModel: ObservableObject {
         recordingState = RecordingStates.transcribing
         let url = rec.stop()
         if settings.enableSounds {
-            playOKSound()
+            playStopRecordingSound()
         } 
         
         return await self.transcribe(mode: mode, url: url as URL, recordingDuration: recordingDuration as Double)

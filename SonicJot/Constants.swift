@@ -47,6 +47,8 @@ let beepSound = NSSound(named: "ok-beep.mp3")
 let pingSound = NSSound(named: "ping.mp3")
 let pianoKey1 = NSSound(named: "g-tone.mp3")
 let pianoKey2 = NSSound(named: "j-tone.mp3")
+let startSound = NSSound(named: "boop1.mp3")
+let stopSound = NSSound(named: "boop2.mp3")
 
 
 func playErrorSound() {
@@ -68,3 +70,10 @@ func playOKSound() {
 }
 
 
+func playStartRecordingSound() {
+    startSound?.play()
+}
+
+func playStopRecordingSound() {
+    stopSound?.play()
+}
