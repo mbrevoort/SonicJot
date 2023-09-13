@@ -56,24 +56,16 @@ func playErrorSound() {
 }
 
 func playDoneSound() {
-    beepSound?.play()
-}
-
-func playDoneAsyncSound() {
+    pingSound?.volume = 0.05
     pingSound?.play()
-//    pianoKey2?.play()
 }
-
-func playOKSound() {
-    NSSound.beep()
-//    pianoKey1?.play()
-}
-
 
 func playStartRecordingSound() {
+    startSound?.volume = 0.05
     startSound?.play()
 }
 
 func playStopRecordingSound() {
+    stopSound?.volume = 0.05
     stopSound?.play()
 }

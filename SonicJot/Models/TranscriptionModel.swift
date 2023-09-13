@@ -103,15 +103,11 @@ class TranscriptionModel: ObservableObject {
             Clipboard.copy(text)
             settings.history.enqueue(item)
             
+            if settings.enableSounds {
+                playDoneSound()
+            }
             if settings.enableAutoPaste {
-                if settings.enableSounds {
-                    playDoneAsyncSound()
-                }
                 paste()
-            } else {
-                if settings.enableSounds {
-                    playDoneSound()
-                }
             }
             
             let components = item.body.components(separatedBy: .whitespacesAndNewlines)
