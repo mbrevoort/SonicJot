@@ -54,7 +54,7 @@ struct MenuView: View {
                         menuVM.activeMode = .transcription
                         menuVM.startRecording()
                     }, label: {})
-                    .buttonStyle(MenuStyle(title: "Start Transcription", shortcut: KeyboardShortcuts.Name.toggleRecordMode.shortcut?.description))
+                    .buttonStyle(MenuStyle(title: "Begin Transcription", shortcut: KeyboardShortcuts.Name.toggleRecordMode.shortcut?.description))
                     .disabled(menuVM.transcription.recordingState != RecordingStates.stopped || menuVM.isKeyDown)
 
                     if menuVM.settings.enableOpenAI {
@@ -62,14 +62,14 @@ struct MenuView: View {
                             menuVM.activeMode = .instruction
                             menuVM.startRecording()
                         }, label: {})
-                        .buttonStyle(MenuStyle(title: "Start Instructive", shortcut: KeyboardShortcuts.Name.toggleInstructionMode.shortcut?.description))
+                        .buttonStyle(MenuStyle(title: "Begin Instructive", shortcut: KeyboardShortcuts.Name.toggleInstructionMode.shortcut?.description))
                         .disabled(menuVM.transcription.recordingState != RecordingStates.stopped || menuVM.isKeyDown || !menuVM.settings.enableOpenAI)
                         
                         Button(action: {
                             menuVM.activeMode = .creative
                             menuVM.startRecording()
                         }, label: {})
-                        .buttonStyle(MenuStyle(title: "Start Creative", shortcut: KeyboardShortcuts.Name.toggleCreativeMode.shortcut?.description))
+                        .buttonStyle(MenuStyle(title: "Begin Creative", shortcut: KeyboardShortcuts.Name.toggleCreativeMode.shortcut?.description))
                         .disabled(menuVM.transcription.recordingState != RecordingStates.stopped || menuVM.isKeyDown || !menuVM.settings.enableOpenAI)
                     }
                     
@@ -78,7 +78,7 @@ struct MenuView: View {
                             await menuVM.stopRecording()
                         }
                     }, label: {})
-                    .buttonStyle(MenuStyle(title: "Stop"))
+                    .buttonStyle(MenuStyle(title: "Complete"))
                     .disabled(menuVM.transcription.recordingState != RecordingStates.recording || menuVM.isKeyDown)
                     
                     Button(action: {
