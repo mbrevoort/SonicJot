@@ -8,6 +8,7 @@
 import Foundation
 import SwiftWhisper
 import AudioKit
+import Zip
 
 final class LocalTranscriptionModel: ObservableObject {
     @Published var isInitialized: Bool = false
@@ -34,7 +35,7 @@ final class LocalTranscriptionModel: ObservableObject {
         set {
             // first deallocate an existing value
             initPromptPtr?.deallocate()
-
+            
             if let cString = newValue.cString(using: .utf8) {
                 let length = cString.count
                 initPromptPtr = UnsafeMutablePointer<CChar>.allocate(capacity: length)
@@ -53,17 +54,19 @@ final class LocalTranscriptionModel: ObservableObject {
     init() {
     }
     
-    public func initModel() async {
+    public func initModel() async throws {
         if self.whisper == nil {
-            let url = await LocalTranscriptionModel.getModelURL()!
+            let url = try await LocalTranscriptionModel.getModelURL()
             print("Model URL: \(url)")
             self.whisper = Whisper(fromFileURL: url)
+            print("Loaded model")
             self.whisper?.params.beam_search.beam_size = 5
             self.whisper?.params.entropy_thold = 2.4
             self.whisper?.params.temperature = 0
             // https://github.com/ggerganov/whisper.cpp/issues/588
             self.whisper?.params.temperature_inc = 0
             isInitialized = true
+            print("Initiatlized")
         }
     }
     
@@ -118,48 +121,81 @@ final class LocalTranscriptionModel: ObservableObject {
             }
             
             try? FileManager.default.removeItem(at: tempURL)
-            
             print("Conversion to PCM Array took \(timer.stop())")
             completionHandler(.success(floats))
         }
     }
     
-    static private func getModelURL() async -> URL? {
-        let hostedModelURL = URL(string: "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-small.bin")!
-        NSHomeDirectory()
+    static private func getModelURL() async throws -> URL {
+        let modelNameBase = "medium"
+        let name = "ggml-\(modelNameBase)-q5_0.bin"
+        let coreMLName = "ggml-\(modelNameBase)-encoder.mlmodelc"
+        let hostedModelURL = URL(string: "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/\(name)")!
+        let hostedCoreMLZipURL = URL(string: "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/\(coreMLName).zip")!
         
-        
-        guard let path = pathForAppSupportDirecotry()?.appendingPathComponent("ggml-small.bin") else { return nil }
+        let path = try pathForAppSupportDirectory().appendingPathComponent(name)
+        let coreMLFilePath = try pathForAppSupportDirectory().appendingPathComponent(coreMLName)
+        let coreMLFileZipPath = try pathForAppSupportDirectory().appendingPathComponent("\(coreMLName).zip")
         print("Local model path is \(path)")
         
-        if FileManager.default.fileExists(atPath: path.path) {
-            return path
-        }
         
-        do {
-            let url = try await withCheckedThrowingContinuation { (cont: CheckedContinuation<URL, Error>) -> Void in
-                let urlRequest = URLRequest(url: hostedModelURL)
-                
-                URLSession.shared.downloadTask(with: urlRequest) { url, _, error in
+        if !FileManager.default.fileExists(atPath: path.path) {
+            // Download model file
+            print("Downloading model file")
+            try await withCheckedThrowingContinuation { (cont: CheckedContinuation<Void, Error>) -> Void in
+                URLSession.shared.downloadTask(with: URLRequest(url: hostedModelURL)) { url, _, error in
                     if let error {
                         cont.resume(throwing: error)
                     }
                     
-                    cont.resume(returning: url!)
+                    do {
+                        try FileManager.default.copyItem(at: url!, to: path)
+                        cont.resume()
+                    } catch {
+                        cont.resume(throwing: error)
+                    }
+                    
                 }.resume()
             }
-            
-            try FileManager.default.copyItem(at: url, to: path)
-        } catch {
-            return nil
         }
+        
+        if !FileManager.default.fileExists(atPath: coreMLFilePath.path) {
+            // Download CoreML zip file
+            print("Downloading CoreML file")
+            try await withCheckedThrowingContinuation { (cont: CheckedContinuation<Void, Error>) -> Void in
+                URLSession.shared.downloadTask(with: URLRequest(url: hostedCoreMLZipURL)) { url, _, error in
+                    if let error {
+                        cont.resume(throwing: error)
+                    }
+                    
+                    do {
+                        try FileManager.default.copyItem(at: url!, to: coreMLFileZipPath)
+                        cont.resume()
+                    } catch {
+                        cont.resume(throwing: error)
+                    }
+                }.resume()
+            }
+                        
+            // unzip
+            try Zip.unzipFile(coreMLFileZipPath, destination: pathForAppSupportDirectory(), overwrite: true, password: "", progress: { (progress) -> () in
+                print(progress)
+            }) // Unzip
+            
+            
+            print("Unzipped coreML file \(coreMLFilePath)")
+            
+            try FileManager.default.removeItem(at: coreMLFileZipPath)
+        }
+
+        print("Done downloading files")
         
         return path
     }
     
-    static private func pathForAppSupportDirecotry() -> URL? {
+    static private func pathForAppSupportDirectory() throws -> URL {
         guard let appSupportDirectory = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first else {
-            return nil
+            throw NSError(domain: "", code: 404, userInfo: [ NSLocalizedDescriptionKey: "Application Support directory not found"])
         }
         
         checkAndCreateDirectory(at: appSupportDirectory.absoluteString)
@@ -176,6 +212,7 @@ final class LocalTranscriptionModel: ObservableObject {
             }
         }
     }
+    
 }
 
 

@@ -20,7 +20,7 @@ import Combine
         get {
             switch transcription.recordingState {
             case RecordingStates.initializing:
-                return "Initializing..."
+                return "Downloading and preparing models..."
             case RecordingStates.stopped:
                 return "Ready..."
             case RecordingStates.recording:

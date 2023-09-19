@@ -24,13 +24,14 @@
 		BE93500C2A9EAF0E000B3841 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE93500B2A9EAF0E000B3841 /* SettingsViewModel.swift */; };
 		BEC0F5A02AB0038800084098 /* boop2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BEC0F59E2AB0038800084098 /* boop2.mp3 */; };
 		BEC0F5A12AB0038800084098 /* boop1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BEC0F59F2AB0038800084098 /* boop1.mp3 */; };
+		BEC0F5A42AB9427400084098 /* Zip in Frameworks */ = {isa = PBXBuildFile; productRef = BEC0F5A32AB9427400084098 /* Zip */; };
+		BEC0F5A72AB961C900084098 /* SwiftWhisper in Frameworks */ = {isa = PBXBuildFile; productRef = BEC0F5A62AB961C900084098 /* SwiftWhisper */; };
 		BED2FBCE2A83C4A000ACF6FC /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED2FBCD2A83C4A000ACF6FC /* Constants.swift */; };
 		BED2FBD12A83C54800ACF6FC /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = BED2FBD02A83C54800ACF6FC /* KeyboardShortcuts */; };
 		BED2FBD72A8665C200ACF6FC /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED2FBD62A8665C200ACF6FC /* HistoryView.swift */; };
 		BED2FBDD2A86AFBF00ACF6FC /* error.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BED2FBDC2A86AFBF00ACF6FC /* error.mp3 */; };
 		BED2FBE02A89D01500ACF6FC /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED2FBDF2A89D01500ACF6FC /* AboutView.swift */; };
 		BED2FBE22A8ABB4A00ACF6FC /* HistoryState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED2FBE12A8ABB4A00ACF6FC /* HistoryState.swift */; };
-		BED2FBEF2A8D4D1200ACF6FC /* SwiftWhisper in Frameworks */ = {isa = PBXBuildFile; productRef = BED2FBEE2A8D4D1200ACF6FC /* SwiftWhisper */; };
 		BED2FBF12A8D4DDD00ACF6FC /* LocalTranscriptionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED2FBF02A8D4DDD00ACF6FC /* LocalTranscriptionModel.swift */; };
 		BED2FBF72A8D50D600ACF6FC /* AudioKit in Frameworks */ = {isa = PBXBuildFile; productRef = BED2FBF62A8D50D600ACF6FC /* AudioKit */; };
 		BED2FBFC2A8D682500ACF6FC /* ParkBenchTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED2FBFB2A8D682500ACF6FC /* ParkBenchTimer.swift */; };
@@ -86,10 +87,11 @@
 				BE934FF92A95391B000B3841 /* Mixpanel in Frameworks */,
 				BEECD9802A82955E000D6833 /* OpenAI in Frameworks */,
 				BE6AAAB72AAAE29B00C7B8A6 /* LaunchAtLogin in Frameworks */,
+				BEC0F5A72AB961C900084098 /* SwiftWhisper in Frameworks */,
 				BED2FBF72A8D50D600ACF6FC /* AudioKit in Frameworks */,
 				BED2FBD12A83C54800ACF6FC /* KeyboardShortcuts in Frameworks */,
 				BE934FCA2A928CF2000B3841 /* MenuBarExtraAccess in Frameworks */,
-				BED2FBEF2A8D4D1200ACF6FC /* SwiftWhisper in Frameworks */,
+				BEC0F5A42AB9427400084098 /* Zip in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -225,11 +227,12 @@
 			packageProductDependencies = (
 				BEECD97F2A82955E000D6833 /* OpenAI */,
 				BED2FBD02A83C54800ACF6FC /* KeyboardShortcuts */,
-				BED2FBEE2A8D4D1200ACF6FC /* SwiftWhisper */,
 				BED2FBF62A8D50D600ACF6FC /* AudioKit */,
 				BE934FC92A928CF2000B3841 /* MenuBarExtraAccess */,
 				BE934FF82A95391B000B3841 /* Mixpanel */,
 				BE6AAAB62AAAE29B00C7B8A6 /* LaunchAtLogin */,
+				BEC0F5A32AB9427400084098 /* Zip */,
+				BEC0F5A62AB961C900084098 /* SwiftWhisper */,
 			);
 			productName = QuickScribe;
 			productReference = BEECD9672A81FB08000D6833 /* SonicJot.app */;
@@ -264,11 +267,12 @@
 				BEECD97B2A820D94000D6833 /* XCRemoteSwiftPackageReference "HotKey" */,
 				BEECD97E2A82955E000D6833 /* XCRemoteSwiftPackageReference "OpenAI" */,
 				BED2FBCF2A83C54800ACF6FC /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */,
-				BED2FBED2A8D4D1200ACF6FC /* XCRemoteSwiftPackageReference "SwiftWhisper" */,
 				BED2FBF52A8D50D600ACF6FC /* XCRemoteSwiftPackageReference "AudioKit" */,
 				BE934FC82A928CF2000B3841 /* XCRemoteSwiftPackageReference "MenuBarExtraAccess" */,
 				BE934FF72A95391B000B3841 /* XCRemoteSwiftPackageReference "mixpanel-swift" */,
 				BE6AAAB52AAAE29B00C7B8A6 /* XCRemoteSwiftPackageReference "LaunchAtLogin-Modern" */,
+				BEC0F5A22AB9427400084098 /* XCRemoteSwiftPackageReference "Zip" */,
+				BEC0F5A52AB961C900084098 /* XCRemoteSwiftPackageReference "SwiftWhisper" */,
 			);
 			productRefGroup = BEECD9682A81FB08000D6833 /* Products */;
 			projectDirPath = "";
@@ -568,17 +572,25 @@
 				kind = branch;
 			};
 		};
+		BEC0F5A22AB9427400084098 /* XCRemoteSwiftPackageReference "Zip" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/marmelroy/Zip";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+		BEC0F5A52AB961C900084098 /* XCRemoteSwiftPackageReference "SwiftWhisper" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mbrevoort/SwiftWhisper";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		BED2FBCF2A83C54800ACF6FC /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/sindresorhus/KeyboardShortcuts";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
-			};
-		};
-		BED2FBED2A8D4D1200ACF6FC /* XCRemoteSwiftPackageReference "SwiftWhisper" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/exPHAT/SwiftWhisper";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 1.0.0;
@@ -626,15 +638,20 @@
 			package = BE934FF72A95391B000B3841 /* XCRemoteSwiftPackageReference "mixpanel-swift" */;
 			productName = Mixpanel;
 		};
+		BEC0F5A32AB9427400084098 /* Zip */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BEC0F5A22AB9427400084098 /* XCRemoteSwiftPackageReference "Zip" */;
+			productName = Zip;
+		};
+		BEC0F5A62AB961C900084098 /* SwiftWhisper */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BEC0F5A52AB961C900084098 /* XCRemoteSwiftPackageReference "SwiftWhisper" */;
+			productName = SwiftWhisper;
+		};
 		BED2FBD02A83C54800ACF6FC /* KeyboardShortcuts */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = BED2FBCF2A83C54800ACF6FC /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */;
 			productName = KeyboardShortcuts;
-		};
-		BED2FBEE2A8D4D1200ACF6FC /* SwiftWhisper */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = BED2FBED2A8D4D1200ACF6FC /* XCRemoteSwiftPackageReference "SwiftWhisper" */;
-			productName = SwiftWhisper;
 		};
 		BED2FBF62A8D50D600ACF6FC /* AudioKit */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -23,7 +23,7 @@ struct HistoryView: View {
                         Image(systemName: item.type == HistoryItemType.error ? "x.circle" : "waveform")
                         
                         VStack(alignment: .leading) {
-                            Text("\(item.friendlyType) - \(item.time.formatted()) \(item.duration > 0 ? String(format: " %.2fs", item.duration) : "")")
+                            Metadata(item)
                             Text(item.body).textSelection(.enabled)
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -69,6 +69,15 @@ struct HistoryView: View {
             }
         }
 
+    }
+    
+    func Metadata(_ item: HistoryItem) -> Text {
+        let duration = (item.duration > 0) ? String(format: " %.2fs", item.duration) : ""
+        var val = "\(item.friendlyType) - \(item.time.formatted()) \(duration)"
+        if item.wordsPerSecond > 0 {
+            val += String(format: " (%.2f words/s)", item.wordsPerSecond)
+        }
+        return Text(val)
     }
 }
 

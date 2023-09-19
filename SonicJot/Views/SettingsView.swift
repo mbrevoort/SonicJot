@@ -79,7 +79,7 @@ struct SettingsView: View {
             
             Group {
                 Toggle(isOn: $enableOpenAI) {
-                    Text("Enable OpenAI")
+                    Text("Enable Generative AI Features")
                 }
                 .toggleStyle(.checkbox)
                 

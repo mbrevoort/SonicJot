@@ -67,6 +67,7 @@ class HistoryItem: Identifiable, Codable {
     var type: HistoryItemType = HistoryItemType.transcription
     var body: String
     var time: Date
+    var wordsPerSecond: Double = 0
     var duration: CFAbsoluteTime
     
     var description: String {
@@ -90,20 +91,20 @@ class HistoryItem: Identifiable, Codable {
         self.body = body
         self.type = HistoryItemType.transcription
         self.time = Date()
-        self.duration = 0;
+        self.duration = 0
     }
     
     init(body: String, type: HistoryItemType) {
         self.body = body
         self.type = type
         self.time = Date()
-        self.duration = 0;
+        self.duration = 0
     }
 
     init(body: String, mode: Modes) {
         self.body = body
         self.time = Date()
-        self.duration = 0;
+        self.duration = 0
         
         switch mode {
         case .transcription:

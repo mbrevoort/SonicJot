@@ -31,8 +31,12 @@ class TranscriptionModel: ObservableObject {
         if !settings.enableOpenAI {
             self.recordingState = RecordingStates.initializing
             Task {
-                await self.localTranscription.initModel()
-                self.recordingState = RecordingStates.stopped
+                do {
+                    try await self.localTranscription.initModel()
+                    self.recordingState = RecordingStates.stopped
+                } catch {
+                    showError(error)
+                }
             }
         }
     }
@@ -71,6 +75,13 @@ class TranscriptionModel: ObservableObject {
         let timer = ParkBenchTimer()
         var text = ""
         do {
+
+            // Always transcribe locally
+            text = try await self.transcribeLocal(url: url)
+
+            // This is how we did it previously when you could select OpenAI as an option,
+            // leaving this commented out for a little bit longer in case we need to fall back.
+            /*
             if settings.enableOpenAI && settings.translateResultToEnglish {
                 text = try await self.translateOpenAI(url: url)
             } else if settings.enableOpenAI {
@@ -78,6 +89,7 @@ class TranscriptionModel: ObservableObject {
             } else {
                 text = try await self.transcribeLocal(url: url)
             }
+            */
             
             print("Transcription result: \(text)")
             
@@ -98,8 +110,15 @@ class TranscriptionModel: ObservableObject {
                 text = result.choices[0].message.content ?? "no response"
             }                        
             
+            let duration = timer.stop()
+            let components = text.components(separatedBy: .whitespacesAndNewlines)
+            let words = components.filter { !$0.isEmpty }
+
+
             let item = HistoryItem(body: text, mode: mode)
-            item.duration = timer.stop()
+            item.duration = duration
+            item.wordsPerSecond =  Double(words.count) / duration
+
             Clipboard.copy(text)
             settings.history.enqueue(item)
             
@@ -110,10 +129,8 @@ class TranscriptionModel: ObservableObject {
                 paste()
             }
             
-            let components = item.body.components(separatedBy: .whitespacesAndNewlines)
-            let words = components.filter { !$0.isEmpty }
 
-            EventTracking.transcription(provider: settings.enableOpenAI ? "OpenAI" : "Local", mode: mode.rawValue, recordingDuration: recordingDuration, transcriptionDuration: item.duration, numWords: words.count)
+            EventTracking.transcription(provider: "Local", mode: mode.rawValue, recordingDuration: recordingDuration, transcriptionDuration: item.duration, numWords: words.count)
 
         } catch {
             self.showError(error)
@@ -162,7 +179,7 @@ class TranscriptionModel: ObservableObject {
     }
     
     private func transcribeLocal(url: URL) async throws -> String {
-        await localTranscription.initModel()
+        try await localTranscription.initModel()
         localTranscription.language = settings.language
         localTranscription.translateToEnglish = settings.translateResultToEnglish
         localTranscription.prompt = "The sentence may be cut off, do not make up words to fill in the rest of the sentence. Don't make up anything that wasn't clearly spoken. Don't include any noises. " + settings.prompt

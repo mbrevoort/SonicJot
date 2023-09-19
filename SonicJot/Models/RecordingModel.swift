@@ -23,10 +23,11 @@ public class RecordingModel : NSObject, AVAudioRecorderDelegate {
     public var sampleRate = 44100.0
     public var channels = 1
     private var recorder: AVAudioRecorder?
-    private var filename = "sonicjot.m4a"
+    private var filename: String
     private var state: State = State.None
     
     public override init() {
+        filename = "\(UUID().uuidString).m4a"
         url = NSURL(fileURLWithPath: RecordingModel.directory).appendingPathComponent(filename)! as NSURL
     }
     

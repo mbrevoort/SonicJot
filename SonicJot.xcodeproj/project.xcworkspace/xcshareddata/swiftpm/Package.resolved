@@ -66,10 +66,19 @@
     {
       "identity" : "swiftwhisper",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/exPHAT/SwiftWhisper",
+      "location" : "https://github.com/mbrevoort/SwiftWhisper",
       "state" : {
-        "revision" : "f7604884e09e97d8e45455608f7326233d30b66e",
-        "version" : "1.1.0"
+        "branch" : "master",
+        "revision" : "30325a43b1f71be23999995a948c8019c8bb2a60"
+      }
+    },
+    {
+      "identity" : "zip",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/marmelroy/Zip",
+      "state" : {
+        "revision" : "67fa55813b9e7b3b9acee9c0ae501def28746d76",
+        "version" : "2.1.2"
       }
     }
   ],
