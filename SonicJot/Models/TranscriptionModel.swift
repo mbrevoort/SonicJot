@@ -28,15 +28,13 @@ class TranscriptionModel: ObservableObject {
     let rec = RecordingModel()
     
     init() {                
-        if !settings.enableOpenAI {
-            self.recordingState = RecordingStates.initializing
-            Task {
-                do {
-                    try await self.localTranscription.initModel()
-                    self.recordingState = RecordingStates.stopped
-                } catch {
-                    showError(error)
-                }
+        self.recordingState = RecordingStates.initializing
+        Task {
+            do {
+                try await self.localTranscription.initModel()
+                self.recordingState = RecordingStates.stopped
+            } catch {
+                showError(error)
             }
         }
     }
