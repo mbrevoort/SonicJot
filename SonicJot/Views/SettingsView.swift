@@ -79,9 +79,10 @@ struct SettingsView: View {
             
             Group {
                 Toggle(isOn: $enableOpenAI) {
-                    Text("Enable Generative AI Features")
+                    Text("Enable OpenAI")
                 }
                 .toggleStyle(.checkbox)
+                Caption("Use OpenAI for transcription and generative features", disabled: !enableOpenAI)
                 
                 
                 SecureField("OpenAI API Key:", text: $openAIToken)

@@ -74,20 +74,16 @@ class TranscriptionModel: ObservableObject {
         var text = ""
         do {
 
-            // Always transcribe locally
-            text = try await self.transcribeLocal(url: url)
-
-            // This is how we did it previously when you could select OpenAI as an option,
-            // leaving this commented out for a little bit longer in case we need to fall back.
-            /*
-            if settings.enableOpenAI && settings.translateResultToEnglish {
-                text = try await self.translateOpenAI(url: url)
-            } else if settings.enableOpenAI {
-                text = try await self.transcribeOpenAI(url: url)
+            if settings.enableOpenAI {
+                if settings.translateResultToEnglish {
+                    text = try await self.translateOpenAI(url: url)
+                } else {
+                    text = try await self.transcribeOpenAI(url: url)
+                }
             } else {
                 text = try await self.transcribeLocal(url: url)
             }
-            */
+            
             
             print("Transcription result: \(text)")
             
@@ -127,8 +123,8 @@ class TranscriptionModel: ObservableObject {
                 paste()
             }
             
-
-            EventTracking.transcription(provider: "Local", mode: mode.rawValue, recordingDuration: recordingDuration, transcriptionDuration: item.duration, numWords: words.count)
+            let provider = settings.enableOpenAI ? "OpenAI" : "Local"
+            EventTracking.transcription(provider: provider, mode: mode.rawValue, recordingDuration: recordingDuration, transcriptionDuration: item.duration, numWords: words.count)
 
         } catch {
             self.showError(error)
