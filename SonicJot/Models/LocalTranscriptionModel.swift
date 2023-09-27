@@ -41,6 +41,7 @@ final class LocalTranscriptionModel: ObservableObject {
                 initPromptPtr = UnsafeMutablePointer<CChar>.allocate(capacity: length)
                 initPromptPtr?.initialize(from: cString, count: length)
                 self.whisper?.params.initial_prompt = UnsafePointer(initPromptPtr)
+                
             }
         }
         get {
@@ -75,27 +76,31 @@ final class LocalTranscriptionModel: ObservableObject {
         self.convertAudioFileToPCMArray(fileURL: fileURL) { result in
             switch result {
             case .success(let data):
-                Task {
-                    do {
-                        let segments = try await self.whisper!.transcribe(audioFrames: data)
-                        let text = segments.map(\.text)
-                            .joined()
-                            .replacingOccurrences(of: #"\[.*\]"#, with: "", options: .regularExpression)
-                            .trimmingCharacters(in: .whitespaces)
-                        completionHandler(.success(text))
-                    }
-                    catch {
-                        
-                    }
-                }
+                self.transcribe(data: data, completionHandler: completionHandler)
             case .failure(let error):
                 completionHandler(.failure(error))
             }
         }
     }
     
+    func transcribe(data: [Float], completionHandler: @escaping (_ result: Result<String, Error>) -> Void) {
+        Task {
+            do {
+                let segments = try await self.whisper!.transcribe(audioFrames: data)
+                let text = segments.map(\.text)
+                    .joined()
+//                    .replacingOccurrences(of: #"\[.*\]"#, with: "", options: .regularExpression)
+                    .trimmingCharacters(in: .whitespaces)
+                completionHandler(.success(text))
+            }
+            catch {
+                
+            }
+        }
+    }
+    
     private func convertAudioFileToPCMArray(fileURL: URL, completionHandler: @escaping (_ result: Result<[Float], Error>) -> Void) {
-        let timer = ParkBenchTimer()
+        // let timer = ParkBenchTimer()
         var options = FormatConverter.Options()
         options.format = .wav
         options.sampleRate = 16000
@@ -121,7 +126,7 @@ final class LocalTranscriptionModel: ObservableObject {
             }
             
             try? FileManager.default.removeItem(at: tempURL)
-            print("Conversion to PCM Array took \(timer.stop())")
+//            print("Conversion to PCM Array took \(timer.stop())")
             completionHandler(.success(floats))
         }
     }
@@ -176,7 +181,7 @@ final class LocalTranscriptionModel: ObservableObject {
                     }
                 }.resume()
             }
-                        
+            
             // unzip
             try Zip.unzipFile(coreMLFileZipPath, destination: pathForAppSupportDirectory(), overwrite: true, password: "", progress: { (progress) -> () in
                 print(progress)
@@ -187,7 +192,7 @@ final class LocalTranscriptionModel: ObservableObject {
             
             try FileManager.default.removeItem(at: coreMLFileZipPath)
         }
-
+        
         print("Done downloading files")
         
         return path

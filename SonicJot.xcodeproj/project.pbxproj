@@ -22,6 +22,12 @@
 		BE9350062A9BC8DF000B3841 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9350052A9BC8DF000B3841 /* SettingsView.swift */; };
 		BE9350092A9EAB65000B3841 /* SettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9350082A9EAB65000B3841 /* SettingsModel.swift */; };
 		BE93500C2A9EAF0E000B3841 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE93500B2A9EAF0E000B3841 /* SettingsViewModel.swift */; };
+		BEB2C5AA2ABA5D0F0032EF70 /* Transformers in Frameworks */ = {isa = PBXBuildFile; productRef = BEB2C5A92ABA5D0F0032EF70 /* Transformers */; };
+		BEB2C5AC2ABA5D0F0032EF70 /* transformers in Frameworks */ = {isa = PBXBuildFile; productRef = BEB2C5AB2ABA5D0F0032EF70 /* transformers */; };
+		BEB2C5AE2ABA5DD60032EF70 /* ModelLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB2C5AD2ABA5DD60032EF70 /* ModelLoader.swift */; };
+		BEB2C5B12ABA5EB80032EF70 /* Path in Frameworks */ = {isa = PBXBuildFile; productRef = BEB2C5B02ABA5EB80032EF70 /* Path */; };
+		BEB2C5B32ABA5EFC0032EF70 /* Transformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB2C5B22ABA5EFC0032EF70 /* Transformer.swift */; };
+		BEB2C5B52ABA7CCA0032EF70 /* RecordingQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB2C5B42ABA7CCA0032EF70 /* RecordingQueue.swift */; };
 		BEC0F5A02AB0038800084098 /* boop2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BEC0F59E2AB0038800084098 /* boop2.mp3 */; };
 		BEC0F5A12AB0038800084098 /* boop1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BEC0F59F2AB0038800084098 /* boop1.mp3 */; };
 		BEC0F5A42AB9427400084098 /* Zip in Frameworks */ = {isa = PBXBuildFile; productRef = BEC0F5A32AB9427400084098 /* Zip */; };
@@ -59,6 +65,9 @@
 		BE9350052A9BC8DF000B3841 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		BE9350082A9EAB65000B3841 /* SettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsModel.swift; sourceTree = "<group>"; };
 		BE93500B2A9EAF0E000B3841 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
+		BEB2C5AD2ABA5DD60032EF70 /* ModelLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelLoader.swift; sourceTree = "<group>"; };
+		BEB2C5B22ABA5EFC0032EF70 /* Transformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transformer.swift; sourceTree = "<group>"; };
+		BEB2C5B42ABA7CCA0032EF70 /* RecordingQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingQueue.swift; sourceTree = "<group>"; };
 		BEC0F59E2AB0038800084098 /* boop2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = boop2.mp3; sourceTree = "<group>"; };
 		BEC0F59F2AB0038800084098 /* boop1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = boop1.mp3; sourceTree = "<group>"; };
 		BED2FBCD2A83C4A000ACF6FC /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -90,8 +99,11 @@
 				BEC0F5A72AB961C900084098 /* SwiftWhisper in Frameworks */,
 				BED2FBF72A8D50D600ACF6FC /* AudioKit in Frameworks */,
 				BED2FBD12A83C54800ACF6FC /* KeyboardShortcuts in Frameworks */,
+				BEB2C5AA2ABA5D0F0032EF70 /* Transformers in Frameworks */,
 				BE934FCA2A928CF2000B3841 /* MenuBarExtraAccess in Frameworks */,
+				BEB2C5AC2ABA5D0F0032EF70 /* transformers in Frameworks */,
 				BEC0F5A42AB9427400084098 /* Zip in Frameworks */,
+				BEB2C5B12ABA5EB80032EF70 /* Path in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -111,9 +123,12 @@
 			children = (
 				BED2FBE12A8ABB4A00ACF6FC /* HistoryState.swift */,
 				BEECD9812A82A510000D6833 /* RecordingModel.swift */,
+				BEB2C5B42ABA7CCA0032EF70 /* RecordingQueue.swift */,
 				BE9350082A9EAB65000B3841 /* SettingsModel.swift */,
 				BE2B7EA22AA02AFD00EE17C4 /* TranscriptionModel.swift */,
 				BED2FBF02A8D4DDD00ACF6FC /* LocalTranscriptionModel.swift */,
+				BEB2C5AD2ABA5DD60032EF70 /* ModelLoader.swift */,
+				BEB2C5B22ABA5EFC0032EF70 /* Transformer.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -233,6 +248,9 @@
 				BE6AAAB62AAAE29B00C7B8A6 /* LaunchAtLogin */,
 				BEC0F5A32AB9427400084098 /* Zip */,
 				BEC0F5A62AB961C900084098 /* SwiftWhisper */,
+				BEB2C5A92ABA5D0F0032EF70 /* Transformers */,
+				BEB2C5AB2ABA5D0F0032EF70 /* transformers */,
+				BEB2C5B02ABA5EB80032EF70 /* Path */,
 			);
 			productName = QuickScribe;
 			productReference = BEECD9672A81FB08000D6833 /* SonicJot.app */;
@@ -273,6 +291,8 @@
 				BE6AAAB52AAAE29B00C7B8A6 /* XCRemoteSwiftPackageReference "LaunchAtLogin-Modern" */,
 				BEC0F5A22AB9427400084098 /* XCRemoteSwiftPackageReference "Zip" */,
 				BEC0F5A52AB961C900084098 /* XCRemoteSwiftPackageReference "SwiftWhisper" */,
+				BEB2C5A82ABA5D0F0032EF70 /* XCRemoteSwiftPackageReference "swift-transformers" */,
+				BEB2C5AF2ABA5EB80032EF70 /* XCRemoteSwiftPackageReference "Path.swift" */,
 			);
 			productRefGroup = BEECD9682A81FB08000D6833 /* Products */;
 			projectDirPath = "";
@@ -307,9 +327,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BEB2C5B52ABA7CCA0032EF70 /* RecordingQueue.swift in Sources */,
 				BED2FBE22A8ABB4A00ACF6FC /* HistoryState.swift in Sources */,
 				BE2B7EA72AA2A56D00EE17C4 /* Clipboard.swift in Sources */,
 				BE9350092A9EAB65000B3841 /* SettingsModel.swift in Sources */,
+				BEB2C5B32ABA5EFC0032EF70 /* Transformer.swift in Sources */,
 				BE2B7EA52AA2924D00EE17C4 /* MenuViewModel.swift in Sources */,
 				BEECD9822A82A510000D6833 /* RecordingModel.swift in Sources */,
 				BE9350012A959A10000B3841 /* Obfuscator.swift in Sources */,
@@ -324,6 +346,7 @@
 				BED2FBFC2A8D682500ACF6FC /* ParkBenchTimer.swift in Sources */,
 				BED2FBF12A8D4DDD00ACF6FC /* LocalTranscriptionModel.swift in Sources */,
 				BED2FBD72A8665C200ACF6FC /* HistoryView.swift in Sources */,
+				BEB2C5AE2ABA5DD60032EF70 /* ModelLoader.swift in Sources */,
 				BE93500C2A9EAF0E000B3841 /* SettingsViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -572,6 +595,22 @@
 				kind = branch;
 			};
 		};
+		BEB2C5A82ABA5D0F0032EF70 /* XCRemoteSwiftPackageReference "swift-transformers" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/huggingface/swift-transformers";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.0;
+			};
+		};
+		BEB2C5AF2ABA5EB80032EF70 /* XCRemoteSwiftPackageReference "Path.swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mxcl/Path.swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.4.0;
+			};
+		};
 		BEC0F5A22AB9427400084098 /* XCRemoteSwiftPackageReference "Zip" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/marmelroy/Zip";
@@ -637,6 +676,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = BE934FF72A95391B000B3841 /* XCRemoteSwiftPackageReference "mixpanel-swift" */;
 			productName = Mixpanel;
+		};
+		BEB2C5A92ABA5D0F0032EF70 /* Transformers */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BEB2C5A82ABA5D0F0032EF70 /* XCRemoteSwiftPackageReference "swift-transformers" */;
+			productName = Transformers;
+		};
+		BEB2C5AB2ABA5D0F0032EF70 /* transformers */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BEB2C5A82ABA5D0F0032EF70 /* XCRemoteSwiftPackageReference "swift-transformers" */;
+			productName = transformers;
+		};
+		BEB2C5B02ABA5EB80032EF70 /* Path */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BEB2C5AF2ABA5EB80032EF70 /* XCRemoteSwiftPackageReference "Path.swift" */;
+			productName = Path;
 		};
 		BEC0F5A32AB9427400084098 /* Zip */ = {
 			isa = XCSwiftPackageProductDependency;

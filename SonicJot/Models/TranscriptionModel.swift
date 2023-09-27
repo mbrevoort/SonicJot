@@ -26,6 +26,7 @@ class TranscriptionModel: ObservableObject {
     
     lazy public var openAI: OpenAI = OpenAI(apiToken: settings.openAIToken)
     let rec = RecordingModel()
+    let recQueue = RecordingQueue()
     
     init() {                
         self.recordingState = RecordingStates.initializing
@@ -53,14 +54,38 @@ class TranscriptionModel: ObservableObject {
         
         recordingState = RecordingStates.recording
         try rec.record()
+        recQueue.startRecording()
         if settings.enableSounds {
             playStartRecordingSound()
         }
+        
+        // Shim this in here now but move out if we keep it
+        Task {
+            await processBufferedAudio()
+        }
+    }
+    
+    private func processBufferedAudio() async {
+        let data = self.recQueue.clearIncremental()
+        if data.count == 0 && !self.recQueue.isRunning {
+            print("Done")
+            return
+        }
+        
+        if data.count > 0 {
+            let text = try! await self.transcribeLocal(data: data)
+            print("Text: \(text)")
+        }
+        
+        try! await Task.sleep(nanoseconds: 2000000000)  // Two seconds
+        await self.processBufferedAudio()
     }
     
     public func stopRecording(mode: Modes) async {
         let recordingDuration = recordingTimer?.stop() ?? 0
         recordingState = RecordingStates.transcribing
+        recQueue.stopRecording()
+        
         let url = rec.stop()
         if settings.enableSounds {
             playStopRecordingSound()
@@ -75,7 +100,10 @@ class TranscriptionModel: ObservableObject {
         do {
 
             // Always transcribe locally
-            text = try await self.transcribeLocal(url: url)
+//            text = try await self.transcribeLocal(url: url)
+            
+            //let data = await self.recQueue.clear()
+            //text = try await self.transcribeLocal(data: data)
 
             // This is how we did it previously when you could select OpenAI as an option,
             // leaving this commented out for a little bit longer in case we need to fall back.
@@ -89,7 +117,9 @@ class TranscriptionModel: ObservableObject {
             }
             */
             
-            print("Transcription result: \(text)")
+            print("Transcription result strm: \(text)")
+            let text2 = try await self.transcribeLocal(url: url)
+            print("Transcription result file: \(text2)")
             
             if mode == .instruction {
                 recordingState = RecordingStates.transforming
@@ -194,7 +224,27 @@ class TranscriptionModel: ObservableObject {
             }
         }
     }
-        
+
+    private func transcribeLocal(data: [Float]) async throws -> String {
+        try await localTranscription.initModel()
+        localTranscription.language = settings.language
+        localTranscription.translateToEnglish = settings.translateResultToEnglish
+        localTranscription.prompt = "The sentence may be cut off, do not make up words to fill in the rest of the sentence. Don't make up anything that wasn't clearly spoken. Don't include any noises. " + settings.prompt
+        return try await withCheckedThrowingContinuation { continuation in
+            localTranscription.translateToEnglish = settings.translateResultToEnglish
+            localTranscription.language = settings.language
+            localTranscription.transcribe(data: data) { result in
+                switch result {
+                case .success(let text):
+                    continuation.resume(returning: text)
+                case .failure(let error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+
+    
     public func cancelRecording() {
         print("CANCEL RECORDING")
         recordingState = RecordingStates.stopped

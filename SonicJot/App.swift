@@ -57,6 +57,8 @@ struct swiftui_menu_barApp: App {
     
     init() {
         NSApplication.shared.activate(ignoringOtherApps: true)
+        
+        _ = Transformer(modelURL: URL(string: "https://huggingface.co/coreml-projects/Llama-2-7b-chat-coreml")!)
     }
     
 }

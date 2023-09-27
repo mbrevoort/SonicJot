@@ -64,6 +64,33 @@
       }
     },
     {
+      "identity" : "path.swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mxcl/Path.swift.git",
+      "state" : {
+        "revision" : "9c6f807b0a76be0e27aecc908bc6f173400d839e",
+        "version" : "1.4.0"
+      }
+    },
+    {
+      "identity" : "swift-argument-parser",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-argument-parser.git",
+      "state" : {
+        "revision" : "fddd1c00396eed152c45a46bea9f47b98e59301d",
+        "version" : "1.2.0"
+      }
+    },
+    {
+      "identity" : "swift-transformers",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/huggingface/swift-transformers",
+      "state" : {
+        "revision" : "bb61cbb5b87a471b32462545af1e909c2e57dc71",
+        "version" : "0.1.0"
+      }
+    },
+    {
       "identity" : "swiftwhisper",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mbrevoort/SwiftWhisper",
