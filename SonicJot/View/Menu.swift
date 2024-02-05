@@ -213,14 +213,6 @@ public struct MenuReducer: Reducer {
 struct MenuView: View {
     @Bindable var store: StoreOf<MenuReducer>
     
-    @Environment(\.openWindow) private var openWindow
-    //    @EnvironmentObject var menuVM: MenuViewModel
-    
-    @State private var isHistoryHovered = false
-    @State private var isSettingsHovered = false
-    @State private var isAboutHovered = false
-    @State private var isQuitHovered = false
-    
     public init(store: StoreOf<MenuReducer>) {
         self.store = store
         store.send(.initialize)
