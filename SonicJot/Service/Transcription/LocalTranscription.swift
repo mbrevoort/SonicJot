@@ -10,17 +10,10 @@ import SwiftWhisper
 import AudioKit
 import Zip
 
-enum TranscriptionLanguage: String {
-    case English = "en"
-    case German = "de"
-    case Russian = "ru"
-    case Spanish = "es"
-}
-
-final class LocalTranscription: ObservableObject {
+final class LocalTranscription: TranscriptionBase, ObservableObject {
     @Published public private(set) var isInitialized: Bool = false
     
-    var translateToEnglish: Bool {
+    override var translateToEnglish: Bool {
         set {
             self.whisper?.params.translate = newValue
         }
@@ -29,19 +22,22 @@ final class LocalTranscription: ObservableObject {
         }
     }
     
-    var language: String {
+    override var language: TranscriptionLanguage {
         set {
-            self.whisper?.params.language = WhisperLanguage(rawValue: newValue)!
+            self.whisper?.params.language = WhisperLanguage(rawValue: newValue.rawValue)!
         }
         get {
-            self.whisper?.params.language.rawValue ?? ""
+            if self.whisper?.params.language == nil || self.whisper?.params.language.rawValue == "" {
+                return TranscriptionLanguage.English
+            }
+            return TranscriptionLanguage(rawValue: (self.whisper?.params.language.rawValue)!)!
         }
     }
     
     private var initPromptPtr: UnsafeMutablePointer<CChar>?
     private var whisper: Whisper?
 
-    var prompt: String {
+    override var prompt: String {
         set {
             // first deallocate an existing value
             initPromptPtr?.deallocate()
@@ -77,9 +73,8 @@ final class LocalTranscription: ObservableObject {
         }
     }
     
-    public func transcribe(url: URL) async throws -> String {
+    public override func transcribe(url: URL) async throws -> String {
         try await self.initModel()
-        self.prompt = "The sentence may be cut off, do not make up words to fill in the rest of the sentence. Don't make up anything that wasn't clearly spoken. Don't include any noises. "
         
         return try await withCheckedThrowingContinuation { continuation in
             self.transcribe(fileURL: url) { result in
@@ -206,7 +201,7 @@ final class LocalTranscription: ObservableObject {
             // unzip
             try Zip.unzipFile(coreMLFileZipPath, destination: pathForAppSupportDirectory(), overwrite: true, password: "", progress: { (progress) -> () in
                 print(progress)
-            }) // Unzip
+            })
             
             
             print("Unzipped coreML file \(coreMLFilePath)")

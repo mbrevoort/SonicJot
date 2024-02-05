@@ -29,6 +29,7 @@
 		BED2FBFC2A8D682500ACF6FC /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED2FBFB2A8D682500ACF6FC /* Timer.swift */; };
 		BED2FC022A8F0AAF00ACF6FC /* ok-beep.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BED2FC012A8F0AAF00ACF6FC /* ok-beep.mp3 */; };
 		BED2FC042A8F0B7D00ACF6FC /* ping.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BED2FC032A8F0B7D00ACF6FC /* ping.mp3 */; };
+		BED4BEB22B7149FA0070A1C0 /* TranscriptionBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED4BEB12B7149FA0070A1C0 /* TranscriptionBase.swift */; };
 		BED88E952B6C6C7A00834D2E /* Transcription.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED88E942B6C6C7A00834D2E /* Transcription.swift */; };
 		BED88E972B6C6D8B00834D2E /* Recording.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED88E962B6C6D8B00834D2E /* Recording.swift */; };
 		BED88E992B6C82C500834D2E /* SettingsStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED88E982B6C82C500834D2E /* SettingsStorage.swift */; };
@@ -79,6 +80,7 @@
 		BED2FC012A8F0AAF00ACF6FC /* ok-beep.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "ok-beep.mp3"; sourceTree = "<group>"; };
 		BED2FC032A8F0B7D00ACF6FC /* ping.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ping.mp3; sourceTree = "<group>"; };
 		BED4BEB02B70A8F60070A1C0 /* ci_post_clone.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_post_clone.sh; sourceTree = "<group>"; };
+		BED4BEB12B7149FA0070A1C0 /* TranscriptionBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptionBase.swift; sourceTree = "<group>"; };
 		BED88E942B6C6C7A00834D2E /* Transcription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transcription.swift; sourceTree = "<group>"; };
 		BED88E962B6C6D8B00834D2E /* Recording.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recording.swift; sourceTree = "<group>"; };
 		BED88E982B6C82C500834D2E /* SettingsStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStorage.swift; sourceTree = "<group>"; };
@@ -156,6 +158,7 @@
 		BE676BB32B700B39005C4446 /* Transcription */ = {
 			isa = PBXGroup;
 			children = (
+				BED4BEB12B7149FA0070A1C0 /* TranscriptionBase.swift */,
 				BE676BB42B700B4C005C4446 /* LocalTranscription.swift */,
 				BE676BB62B700BF7005C4446 /* OpenAITranscription.swift */,
 			);
@@ -431,6 +434,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BED4BEB22B7149FA0070A1C0 /* TranscriptionBase.swift in Sources */,
 				BE2B7EA72AA2A56D00EE17C4 /* Clipboard.swift in Sources */,
 				BED88EA12B6D35E000834D2E /* Sounds.swift in Sources */,
 				BE676BAF2B6F0368005C4446 /* Settings.swift in Sources */,

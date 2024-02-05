@@ -36,6 +36,7 @@ public struct MenuReducer: Reducer {
         var recordingState: RecordingState = .initializing
         var isSummary = false
         var lastActivity: LastActivity?
+        var totalWordsTranscribed: Int = 0
     }
     
     // MARK: - Action
@@ -45,6 +46,7 @@ public struct MenuReducer: Reducer {
         case completeTranscriptionClicked
         case transcriptionServiceReady
         case initialize
+        case updateTotalWords(Int)
         case startTranscription(URL)
         case completeTransription(TranscriptionResult)
         case transcriptionError(String)
@@ -115,12 +117,12 @@ public struct MenuReducer: Reducer {
                 }
                 
             case let .completeTransription(result):
+                let lastActivity = LastActivity(transcriptionResult: result)
                 menuProxy.close()
                 state.recordingState = .stopped
                 state.isSummary = false
-                state.lastActivity = LastActivity(transcriptionResult: result)
+                state.lastActivity = lastActivity
                 return .run { send in
-                    menuProxy.replaceIcon(.stopped)
                     let currentSettings = try settings.get()
                     if currentSettings.enableSounds {
                         sound.playStop()
@@ -130,6 +132,8 @@ public struct MenuReducer: Reducer {
                     if currentSettings.enableAutoPaste {
                         clipboard.paste()
                     }
+                    settings.incrementTotalWordCount(lastActivity.words)
+                    await send(.transcriptionServiceReady)
                 }
                 
             case let .transcriptionError(error):
@@ -142,7 +146,13 @@ public struct MenuReducer: Reducer {
                 state.recordingState = .stopped
                 return .run { send in
                     menuProxy.replaceIcon(.stopped)
+                    let numWords = settings.totalWordCount()
+                    await send(.updateTotalWords(numWords))
                 }
+                
+            case let .updateTotalWords(numWords):
+                state.totalWordsTranscribed = numWords
+                return .none
                 
             case .initialize:
                 return .run { send in
@@ -257,7 +267,7 @@ struct MenuView: View {
                     .foregroundColor(Color(NSColor.labelColor))
                     .font(.system(size: 12))
                 Spacer()
-                MenuAnimation(recordingState: store.recordingState)
+                MenuStatus(recordingState: store.recordingState, totalWords: store.totalWordsTranscribed)
             }
             Spacer().frame(height: 10)
             
@@ -402,8 +412,9 @@ struct LastActivityStatus: View {
     }
 }
 
-struct MenuAnimation: View {
+struct MenuStatus: View {
     var recordingState: RecordingState
+    var totalWords: Int
     
     var body: some View {
         if recordingState == .recording {
@@ -411,7 +422,10 @@ struct MenuAnimation: View {
         } else if recordingState == .transcribing {
             transcriptionAnimation()
         } else {
-            EmptyView()
+            Text("\(totalWords) words")
+                .italic()
+                .padding(.trailing, 10)
+                .font(Font.system(.footnote))
         }
     }
     

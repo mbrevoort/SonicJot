@@ -20,7 +20,9 @@ final class MenuTests: XCTestCase {
         await store.receive(\.transcriptionServiceReady) { state in
             state.recordingState = .stopped
         }
-        
+
+        await store.receive(\.updateTotalWords)
+
         await store.send(.cancelTranscriptionClicked)
         await store.send(.completeTranscriptionClicked)
         
@@ -41,6 +43,9 @@ final class MenuTests: XCTestCase {
             $0.lastActivity = MenuReducer.LastActivity(transcriptionResult: TranscriptionResult.empty())
         }
         
+        await store.receive(\.transcriptionServiceReady)
+        await store.receive(\.updateTotalWords)
+        
         await store.send(.showSummary) {
             $0.isSummary = true
         }
@@ -59,6 +64,7 @@ final class MenuTests: XCTestCase {
         await store.receive(\.transcriptionServiceReady) { state in
             state.recordingState = .stopped
         }
+        await store.receive(\.updateTotalWords)
 
         await store.send(.shortcutKeyDown)
 
@@ -81,6 +87,9 @@ final class MenuTests: XCTestCase {
             $0.lastActivity = MenuReducer.LastActivity(transcriptionResult: TranscriptionResult.empty())
         }
         
+        await store.receive(\.transcriptionServiceReady)
+        await store.receive(\.updateTotalWords)
+        
         await store.send(.showSummary) {
             $0.isSummary = true
         }
@@ -100,13 +109,15 @@ final class MenuTests: XCTestCase {
             state.recordingState = .stopped
         }
         
+        await store.receive(\.updateTotalWords)
+        
         let activity = MenuReducer.LastActivity(error: "error", date: Date(timeIntervalSince1970: 0))
         await store.send(.transcriptionError("error")) { state in
             state.lastActivity = activity
         }
         
         await store.receive(\.transcriptionServiceReady)
-
+        await store.receive(\.updateTotalWords)
     }
     
 }

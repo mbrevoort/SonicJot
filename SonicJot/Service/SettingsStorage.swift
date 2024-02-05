@@ -14,6 +14,8 @@ import ComposableArchitecture
 struct SettingsClient {
     var get: () throws -> UserSettings
     var set: (UserSettings) -> Void
+    var incrementTotalWordCount: (Int) -> Void
+    var totalWordCount: () -> Int = { 0 }
     var now: () -> Date = { Date() }
 }
 
@@ -31,12 +33,12 @@ extension SettingsClient: DependencyKey {
         return Self(
             get: {
                 return UserSettings(enableOpenAI: service.enableOpenAI,
-                                language: service.language,
-                                translateResultToEnglish: service.translateResultToEnglish,
-                                enableAutoPaste: service.enableAutoPaste,
-                                enableSounds: service.enableSounds,
-                                prompt: service.prompt,
-                                openAIToken: service.openAIToken)
+                                    language: service.language,
+                                    translateResultToEnglish: service.translateResultToEnglish,
+                                    enableAutoPaste: service.enableAutoPaste,
+                                    enableSounds: service.enableSounds,
+                                    prompt: service.prompt,
+                                    openAIToken: service.openAIToken)
             },
             set: { settings in
                 service.enableOpenAI = settings.enableOpenAI
@@ -46,6 +48,12 @@ extension SettingsClient: DependencyKey {
                 service.enableSounds = settings.enableSounds
                 service.prompt = settings.prompt
                 service.openAIToken = settings.openAIToken
+            },
+            incrementTotalWordCount: { value in
+                service.totalWordCount = service.totalWordCount + value
+            },
+            totalWordCount: {
+                return service.totalWordCount
             },
             now: {
                 return Date()
@@ -69,7 +77,7 @@ class SettingsService: ObservableObject {
     private let obf = Obfuscator()
     private let jsonEncoder = JSONEncoder()
     private let jsonDecoder = JSONDecoder()
-
+    
     
     init() {
         self.openAIToken = self.openAITokenEnc
@@ -81,6 +89,9 @@ class SettingsService: ObservableObject {
     @AppStorage("enableAutoPaste") var enableAutoPaste: Bool = false
     @AppStorage("enableSounds") var enableSounds: Bool = true
     @AppStorage("prompt") var prompt: String = "Hello, nice to see you today!"
+    
+    // Treat totalWordCount separately
+    @AppStorage("totalWordCount") var totalWordCount: Int = 0
     
     // Store an obfuscated version of the openaikey in app storage. This is not "secure"
     // but it will make it a big more challenging to discover. Originally the keychain was
@@ -111,12 +122,16 @@ extension SettingsClient: TestDependencyKey {
     public static let testValue = Self(
         get: { UserSettings() },
         set: { _ in  },
+        incrementTotalWordCount: { _ in },
+        totalWordCount: { 0 },
         now: { Date(timeIntervalSince1970: 0) }
     )
     
     static let noop = Self(
         get: { UserSettings() },
         set: { _ in  },
+        incrementTotalWordCount: { _ in },
+        totalWordCount: { 0 },
         now: { Date(timeIntervalSince1970: 0) }
     )
 }

@@ -39,21 +39,17 @@ extension TranscriptionClient: DependencyKey {
             },
             
             transcribe: { fileURL in
-                // TODO: consider refactoring implementations into class with subclasses
-                var text = ""
                 let settings = try settingsClient.get()
+                openAITranscription.openAIToken = settings.openAIToken
+                let impl = (settings.enableOpenAI) ? openAITranscription : localTranscription
+                impl.translateToEnglish = settings.translateResultToEnglish
+                impl.setPrompt(speachHints: settings.prompt)
+                
                 let timer = Timer()
-                if settings.enableOpenAI {
-                    openAITranscription.openAIToken = settings.openAIToken
-                    openAITranscription.translateToEnglish = settings.translateResultToEnglish
-                    text = try await openAITranscription.transcribe(url: fileURL as URL)
-                } else {
-                    localTranscription.translateToEnglish = settings.translateResultToEnglish
-                    text = try await localTranscription.transcribe(url: fileURL as URL)
-                }
+                let text = try await impl.transcribe(url: fileURL as URL)
+                let duration = timer.stop()
                 
                 let provider = settings.enableOpenAI ? EventTracking.TranscriptionProvider.OpenAI : EventTracking.TranscriptionProvider.Local
-                let duration = timer.stop()
                 let components = text.components(separatedBy: .whitespacesAndNewlines)
                 let words = components.filter { !$0.isEmpty }
                 let numWords = words.count

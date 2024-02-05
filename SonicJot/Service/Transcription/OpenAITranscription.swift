@@ -10,7 +10,7 @@ import OpenAI
 import Dependencies
 
 
-final class OpenAITranscription: ObservableObject {
+final class OpenAITranscription: TranscriptionBase, ObservableObject {
     @Dependency(\.settings) var settingsClient
     
     lazy private var openAI: OpenAI = OpenAI(apiToken: self.openAIToken)
@@ -19,17 +19,12 @@ final class OpenAITranscription: ObservableObject {
             self.openAI = OpenAI(apiToken: self.openAIToken)
         }
     }
-    
-    var prompt: String = "The sentence may be cut off, do not make up words to fill in the rest of the sentence. Don't make up anything that wasn't clearly spoken. Don't include any background noises. "
-    var language: TranscriptionLanguage = .English
-    var translateToEnglish: Bool = false
-    
+        
     enum Errors: Error {
         case openAIAPIKeyNotSet
     }
     
-    
-    func transcribe(url: URL) async throws -> String {
+    override func transcribe(url: URL) async throws -> String {
         guard openAIToken != "" else {
             throw Errors.openAIAPIKeyNotSet
         }
