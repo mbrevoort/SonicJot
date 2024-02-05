@@ -2,17 +2,24 @@
 //  LocalTranscription.swift
 //  SonicJot
 //
-//  Created by Mike Brevoort on 8/16/23.
+//  Created by Mike Brevoort on 2/4/24.
 //
 
-import Foundation
+import SwiftUI
 import SwiftWhisper
 import AudioKit
 import Zip
 
-final class LocalTranscriptionModel: ObservableObject {
-    @Published var isInitialized: Bool = false
-    var whisper: Whisper?
+enum TranscriptionLanguage: String {
+    case English = "en"
+    case German = "de"
+    case Russian = "ru"
+    case Spanish = "es"
+}
+
+final class LocalTranscription: ObservableObject {
+    @Published public private(set) var isInitialized: Bool = false
+    
     var translateToEnglish: Bool {
         set {
             self.whisper?.params.translate = newValue
@@ -21,6 +28,7 @@ final class LocalTranscriptionModel: ObservableObject {
             self.whisper?.params.translate ?? false
         }
     }
+    
     var language: String {
         set {
             self.whisper?.params.language = WhisperLanguage(rawValue: newValue)!
@@ -31,6 +39,8 @@ final class LocalTranscriptionModel: ObservableObject {
     }
     
     private var initPromptPtr: UnsafeMutablePointer<CChar>?
+    private var whisper: Whisper?
+
     var prompt: String {
         set {
             // first deallocate an existing value
@@ -50,13 +60,10 @@ final class LocalTranscriptionModel: ObservableObject {
             return ""
         }
     }
-    
-    init() {
-    }
-    
+        
     public func initModel() async throws {
         if self.whisper == nil {
-            let url = try await LocalTranscriptionModel.getModelURL()
+            let url = try await LocalTranscription.getModelURL()
             print("Model URL: \(url)")
             self.whisper = Whisper(fromFileURL: url)
             print("Loaded model")
@@ -70,8 +77,23 @@ final class LocalTranscriptionModel: ObservableObject {
         }
     }
     
-    
-    func transcribe(fileURL: URL, completionHandler: @escaping (_ result: Result<String, Error>) -> Void) {
+    public func transcribe(url: URL) async throws -> String {
+        try await self.initModel()
+        self.prompt = "The sentence may be cut off, do not make up words to fill in the rest of the sentence. Don't make up anything that wasn't clearly spoken. Don't include any noises. "
+        
+        return try await withCheckedThrowingContinuation { continuation in
+            self.transcribe(fileURL: url) { result in
+                switch result {
+                case .success(let text):
+                    continuation.resume(returning: text)
+                case .failure(let error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+
+    private func transcribe(fileURL: URL, completionHandler: @escaping (_ result: Result<String, Error>) -> Void) {
         self.convertAudioFileToPCMArray(fileURL: fileURL) { result in
             switch result {
             case .success(let data):
@@ -95,7 +117,7 @@ final class LocalTranscriptionModel: ObservableObject {
     }
     
     private func convertAudioFileToPCMArray(fileURL: URL, completionHandler: @escaping (_ result: Result<[Float], Error>) -> Void) {
-        let timer = ParkBenchTimer()
+        let timer = Timer()
         var options = FormatConverter.Options()
         options.format = .wav
         options.sampleRate = 16000
@@ -111,18 +133,22 @@ final class LocalTranscriptionModel: ObservableObject {
                 return
             }
             
-            let data = try! Data(contentsOf: tempURL) // Handle error here
-            
-            let floats = stride(from: 44, to: data.count, by: 2).map {
-                return data[$0..<$0 + 2].withUnsafeBytes {
-                    let short = Int16(littleEndian: $0.load(as: Int16.self))
-                    return max(-1.0, min(Float(short) / 32767.0, 1.0))
+            do {
+                let data = try Data(contentsOf: tempURL)
+                
+                let floats = stride(from: 44, to: data.count, by: 2).map {
+                    return data[$0..<$0 + 2].withUnsafeBytes {
+                        let short = Int16(littleEndian: $0.load(as: Int16.self))
+                        return max(-1.0, min(Float(short) / 32767.0, 1.0))
+                    }
                 }
+                
+                try FileManager.default.removeItem(at: tempURL)
+                print("Conversion to PCM Array took \(timer.stop())")
+                completionHandler(.success(floats))
+            } catch {
+                completionHandler(.failure(error))
             }
-            
-            try? FileManager.default.removeItem(at: tempURL)
-            print("Conversion to PCM Array took \(timer.stop())")
-            completionHandler(.success(floats))
         }
     }
     
@@ -212,8 +238,4 @@ final class LocalTranscriptionModel: ObservableObject {
             }
         }
     }
-    
 }
-
-
-

@@ -5,12 +5,44 @@
 //  Created by Mike Brevoort on 9/1/23.
 //
 
-import Foundation
+import ComposableArchitecture
 import Cocoa
-import AppKit
 import Carbon
 
-class Clipboard {
+@DependencyClient
+struct ClipboardClient {
+    var copy: (String) -> Void
+    var paste: () -> Void
+    var read: () -> String = { "" }
+}
+
+extension DependencyValues {
+    var clipboard: ClipboardClient {
+        get { self[ClipboardClient.self] }
+        set { self[ClipboardClient.self] = newValue}
+    }
+}
+
+extension ClipboardClient: DependencyKey {
+    static var liveValue: Self {
+        
+        return Self(
+            copy: { text in
+                ClipboardService.copy(text)
+            },
+            paste: {
+                ClipboardService.paste()
+            },
+            read: {
+                return ClipboardService.read()
+            }
+        )
+    }
+}
+
+fileprivate let vKeyCode = UInt16(kVK_ANSI_V)
+
+class ClipboardService {
     static func copy(_ text: String) {
         let pasteboard = NSPasteboard.general
         pasteboard.clearContents()
@@ -35,5 +67,21 @@ class Clipboard {
         keyVDown?.post(tap: .cgAnnotatedSessionEventTap)
         keyVUp?.post(tap: .cgAnnotatedSessionEventTap)
     }
+}
+
+extension ClipboardClient: TestDependencyKey {
+    public static var previewValue = Self.noop
+    
+    public static let testValue = Self(
+        copy: { _ in },
+        paste: { },
+        read: { "" }
+    )
+    
+    static let noop = Self(
+        copy: { _ in },
+        paste: { },
+        read: { "" }
+    )
 }
 

@@ -1,3 +1,10 @@
+//
+//  Obfuscator.swift
+//  SonicJot
+//
+//  Created by Mike Brevoort on 2/1/24.
+//
+
 import Foundation
 
 class Obfuscator {

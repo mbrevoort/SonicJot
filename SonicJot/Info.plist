@@ -2,13 +2,13 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>To transcribe audio</string>
-	<key>NSAppleEventsUsageDescription</key>
-	<string>Need to write transcribed text to whatever app is in focus</string>
-	<key>MIXPANEL_PROJECT_TOKEN</key>
-	<string>$(MIXPANEL_PROJECT_TOKEN)</string>
+	<key>CFBundleGetInfoString</key>
+	<string></string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
+	<key>MIXPANEL_PROJECT_TOKEN</key>
+	<string>$(MIXPANEL_PROJECT_TOKEN)</string>
+	<key>LSUIElement</key>
+	<true/>
 </dict>
 </plist>
