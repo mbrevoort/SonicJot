@@ -12,7 +12,7 @@ import SwiftData
 @main
 struct SonicJotApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
-        
+    
     var body: some Scene {
         Settings {
             SettingsFeatureView(
@@ -36,7 +36,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
             MenuReducer()
         }
     )
-            
+    
     @MainActor func applicationWillFinishLaunching(_ notification: Notification) {
         menuProxy.setAppDelegate(self)
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
@@ -63,20 +63,16 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     
     func openPopover() {
         if let button = statusItem.button {
-            if !popover.isShown {
-                popover.show(relativeTo: button.bounds, of: button, preferredEdge: NSRectEdge.minY)
-            }
+            popover.show(relativeTo: button.bounds, of: button, preferredEdge: NSRectEdge.minY)
             isPopoverShown = true
         }
     }
     
     func closePopover() {
-        if popover.isShown {
-            self.popover.performClose(nil)
-        }
+        self.popover.performClose(nil)
         isPopoverShown = false
     }
-
+    
     func isPopoverOpen() -> Bool {
         return isPopoverShown
     }

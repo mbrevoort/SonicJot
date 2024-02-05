@@ -166,10 +166,8 @@ public struct MenuReducer: Reducer {
                     return .none
                 }
                 return .run { send in
-                    if !menuProxy.isOpen() {
-                        menuProxy.open()
-                        await send(.showSummary)
-                    }
+                    menuProxy.open()
+                    await send(.showSummary)
                     await send(.beginTranscriptionClicked)
                 }
                 
