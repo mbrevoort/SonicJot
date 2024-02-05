@@ -78,6 +78,7 @@
 		BED2FBFB2A8D682500ACF6FC /* Timer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
 		BED2FC012A8F0AAF00ACF6FC /* ok-beep.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "ok-beep.mp3"; sourceTree = "<group>"; };
 		BED2FC032A8F0B7D00ACF6FC /* ping.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ping.mp3; sourceTree = "<group>"; };
+		BED4BEB02B70A8F60070A1C0 /* ci_post_clone.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_post_clone.sh; sourceTree = "<group>"; };
 		BED88E942B6C6C7A00834D2E /* Transcription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transcription.swift; sourceTree = "<group>"; };
 		BED88E962B6C6D8B00834D2E /* Recording.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recording.swift; sourceTree = "<group>"; };
 		BED88E982B6C82C500834D2E /* SettingsStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStorage.swift; sourceTree = "<group>"; };
@@ -188,6 +189,7 @@
 			isa = PBXGroup;
 			children = (
 				BE934FFD2A9543D1000B3841 /* ci_pre_xcodebuild.sh */,
+				BED4BEB02B70A8F60070A1C0 /* ci_post_clone.sh */,
 			);
 			path = ci_scripts;
 			sourceTree = "<group>";
