@@ -1,6 +1,6 @@
 # SonicJot
 
-SonicJot is a MacOS app that runs in your menubar for turning thoughts into text via voice transcription. It uses whisper.cpp for local transcription or alternatively OpenAI transcription API (key required).
+SonicJot is a MacOS app that runs in your menubar for turning thoughts into text via voice transcription. It uses whisper.cpp for local transcription or alternatively OpenAI transcription API (key required). Here's a [short demo video](https://www.youtube.com/watch?v=fzlYFtDQ_fE).
 
 A build of the app is currently available through TestFlight but will be submitted to the App Store for review soon, for free. I expect/hope the MacOS update in 2024 will include significant improvements to transcription quality on-par with Whisper. 
 
