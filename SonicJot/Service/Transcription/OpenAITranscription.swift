@@ -28,10 +28,7 @@ final class OpenAITranscription: TranscriptionBase, ObservableObject {
         guard openAIToken != "" else {
             throw Errors.openAIAPIKeyNotSet
         }
-        if translateToEnglish {
-            return try await transcribeWithTranslation(url: url)
-        }
-
+        
         return try await withCheckedThrowingContinuation { continuation in
             do {
                 let data = try Data(contentsOf: url as URL)
@@ -49,24 +46,4 @@ final class OpenAITranscription: TranscriptionBase, ObservableObject {
             }
         }
     }
-    
-    private func transcribeWithTranslation(url: URL) async throws -> String {
-        return try await withCheckedThrowingContinuation { continuation in
-            do {
-                let data = try Data(contentsOf: url as URL)
-                let query = AudioTranslationQuery(file: data, fileName: "audio.m4a", model: .whisper_1, prompt: self.prompt)
-                openAI.audioTranslations(query: query) { result in
-                    switch result {
-                    case .success(let data):
-                        continuation.resume(returning: data.text)
-                    case .failure(let error):
-                        continuation.resume(throwing: error)
-                    }
-                }
-            } catch {
-                continuation.resume(throwing: error)
-            }
-        }
-    }
-
 }

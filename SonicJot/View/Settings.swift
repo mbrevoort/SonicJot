@@ -27,7 +27,6 @@ public struct SettingsReducer {
         var openAIToken: String = ""
         var prompt: String = "Hello, it's nice to see you today!"
         var temperature: Double = 0.0
-        var translateResultToEnglish: Bool = false
     }
     
     //MARK: - Action
@@ -56,7 +55,6 @@ public struct SettingsReducer {
                 settings.set(UserSettings(
                     enableOpenAI: state.enableOpenAI,
                     language: state.language,
-                    translateResultToEnglish: state.translateResultToEnglish,
                     enableAutoPaste: state.enableAutoPaste,
                     enableSounds: state.enableSounds,
                     prompt: state.prompt,
@@ -71,7 +69,6 @@ public struct SettingsReducer {
             case let .loadSettings(loaded):
                 state.enableOpenAI = loaded.enableOpenAI
                 state.language = loaded.language
-                state.translateResultToEnglish = loaded.translateResultToEnglish
                 state.enableAutoPaste = loaded.enableAutoPaste
                 state.enableSounds = loaded.enableSounds
                 state.prompt = loaded.prompt
@@ -106,10 +103,6 @@ struct SettingsFeatureView: View {
                     
                     LabeledContent {
                         VStack(alignment: .leading) {
-                            Toggle(isOn: $store.translateResultToEnglish) {
-                                Text("Translate to English")
-                            }
-                            
                             Toggle(isOn: $store.enableAutoPaste) {
                                 Text("Automatically paste transcription")
                             }

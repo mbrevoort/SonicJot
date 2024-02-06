@@ -12,16 +12,7 @@ import Zip
 
 final class LocalTranscription: TranscriptionBase, ObservableObject {
     @Published public private(set) var isInitialized: Bool = false
-    
-    override var translateToEnglish: Bool {
-        set {
-            self.whisper?.params.translate = newValue
-        }
-        get {
-            self.whisper?.params.translate ?? false
-        }
-    }
-    
+        
     override var language: TranscriptionLanguage {
         set {
             self.whisper?.params.language = WhisperLanguage(rawValue: newValue.rawValue)!

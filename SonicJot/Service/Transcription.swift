@@ -42,7 +42,7 @@ extension TranscriptionClient: DependencyKey {
                 let settings = try settingsClient.get()
                 openAITranscription.openAIToken = settings.openAIToken
                 let impl = (settings.enableOpenAI) ? openAITranscription : localTranscription
-                impl.translateToEnglish = settings.translateResultToEnglish
+                impl.language = settings.language
                 impl.setPrompt(speachHints: settings.prompt)
                 
                 let timer = Timer()

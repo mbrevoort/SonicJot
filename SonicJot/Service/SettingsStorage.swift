@@ -34,7 +34,6 @@ extension SettingsClient: DependencyKey {
             get: {
                 return UserSettings(enableOpenAI: service.enableOpenAI,
                                     language: service.language,
-                                    translateResultToEnglish: service.translateResultToEnglish,
                                     enableAutoPaste: service.enableAutoPaste,
                                     enableSounds: service.enableSounds,
                                     prompt: service.prompt,
@@ -43,7 +42,6 @@ extension SettingsClient: DependencyKey {
             set: { settings in
                 service.enableOpenAI = settings.enableOpenAI
                 service.language = settings.language
-                service.translateResultToEnglish = settings.translateResultToEnglish
                 service.enableAutoPaste = settings.enableAutoPaste
                 service.enableSounds = settings.enableSounds
                 service.prompt = settings.prompt
@@ -65,7 +63,6 @@ extension SettingsClient: DependencyKey {
 public struct UserSettings: Equatable {
     var enableOpenAI: Bool = false
     var language: TranscriptionLanguage = .English
-    var translateResultToEnglish: Bool = false
     var enableAutoPaste: Bool = false
     var enableSounds: Bool = false
     var prompt: String = ""
@@ -85,7 +82,6 @@ class SettingsService: ObservableObject {
     
     @AppStorage("enableOpenAI") var enableOpenAI: Bool = false
     @AppStorage("language") var language: TranscriptionLanguage = .English
-    @AppStorage("translateResultToEnglish") var translateResultToEnglish: Bool = false
     @AppStorage("enableAutoPaste") var enableAutoPaste: Bool = false
     @AppStorage("enableSounds") var enableSounds: Bool = true
     @AppStorage("prompt") var prompt: String = "Hello, nice to see you today!"

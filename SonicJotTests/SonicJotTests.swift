@@ -67,6 +67,9 @@ final class MenuTests: XCTestCase {
         await store.receive(\.updateTotalWords)
 
         await store.send(.shortcutKeyDown)
+        await store.receive(\.showSummary) {
+            $0.isSummary = true
+        }
 
         await store.receive(\.beginTranscriptionClicked) {
             $0.recordingState = .recording
