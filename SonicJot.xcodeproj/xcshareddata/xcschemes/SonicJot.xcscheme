@@ -30,17 +30,6 @@
       shouldAutocreateTestPlan = "YES">
       <Testables>
          <TestableReference
-            skipped = "YES"
-            parallelizable = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BE676BEA2B7087BD005C4446"
-               BuildableName = "SonicJotUITests.xctest"
-               BlueprintName = "SonicJotUITests"
-               ReferencedContainer = "container:SonicJot.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
             skipped = "NO"
             parallelizable = "YES">
             <BuildableReference
