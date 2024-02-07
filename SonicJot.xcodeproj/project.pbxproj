@@ -14,7 +14,6 @@
 		BE676BAF2B6F0368005C4446 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE676BAE2B6F0368005C4446 /* Settings.swift */; };
 		BE676BB52B700B4C005C4446 /* LocalTranscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE676BB42B700B4C005C4446 /* LocalTranscription.swift */; };
 		BE676BB72B700BF7005C4446 /* OpenAITranscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE676BB62B700BF7005C4446 /* OpenAITranscription.swift */; };
-		BE6AAAB72AAAE29B00C7B8A6 /* LaunchAtLogin in Frameworks */ = {isa = PBXBuildFile; productRef = BE6AAAB62AAAE29B00C7B8A6 /* LaunchAtLogin */; };
 		BE934FF92A95391B000B3841 /* Mixpanel in Frameworks */ = {isa = PBXBuildFile; productRef = BE934FF82A95391B000B3841 /* Mixpanel */; };
 		BE934FFF2A958BD6000B3841 /* EventTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE934FFE2A958BD6000B3841 /* EventTracking.swift */; };
 		BE9350012A959A10000B3841 /* Obfuscator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9350002A959A10000B3841 /* Obfuscator.swift */; };
@@ -117,7 +116,6 @@
 				BE934FF92A95391B000B3841 /* Mixpanel in Frameworks */,
 				BEECD9802A82955E000D6833 /* OpenAI in Frameworks */,
 				BE4F30A12B54527D007B2D1C /* ComposableArchitecture in Frameworks */,
-				BE6AAAB72AAAE29B00C7B8A6 /* LaunchAtLogin in Frameworks */,
 				BEC0F5A72AB961C900084098 /* SwiftWhisper in Frameworks */,
 				BED2FBF72A8D50D600ACF6FC /* AudioKit in Frameworks */,
 				BED2FBD12A83C54800ACF6FC /* KeyboardShortcuts in Frameworks */,
@@ -320,7 +318,6 @@
 				BED2FBD02A83C54800ACF6FC /* KeyboardShortcuts */,
 				BED2FBF62A8D50D600ACF6FC /* AudioKit */,
 				BE934FF82A95391B000B3841 /* Mixpanel */,
-				BE6AAAB62AAAE29B00C7B8A6 /* LaunchAtLogin */,
 				BEC0F5A32AB9427400084098 /* Zip */,
 				BEC0F5A62AB961C900084098 /* SwiftWhisper */,
 				BE4F30A02B54527D007B2D1C /* ComposableArchitecture */,
@@ -1041,11 +1038,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = BE4F309F2B54527D007B2D1C /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
 			productName = ComposableArchitecture;
-		};
-		BE6AAAB62AAAE29B00C7B8A6 /* LaunchAtLogin */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = BE6AAAB52AAAE29B00C7B8A6 /* XCRemoteSwiftPackageReference "LaunchAtLogin-Modern" */;
-			productName = LaunchAtLogin;
 		};
 		BE934FF82A95391B000B3841 /* Mixpanel */ = {
 			isa = XCSwiftPackageProductDependency;
