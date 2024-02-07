@@ -338,7 +338,6 @@
 				TargetAttributes = {
 					BE676BEA2B7087BD005C4446 = {
 						CreatedOnToolsVersion = 15.2;
-						TestTargetID = BEECD9662A81FB08000D6833;
 					};
 					BEA373EB2B70892C0056D24F = {
 						CreatedOnToolsVersion = 15.2;
@@ -364,7 +363,6 @@
 				BED2FBCF2A83C54800ACF6FC /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */,
 				BED2FBF52A8D50D600ACF6FC /* XCRemoteSwiftPackageReference "AudioKit" */,
 				BE934FF72A95391B000B3841 /* XCRemoteSwiftPackageReference "mixpanel-swift" */,
-				BE6AAAB52AAAE29B00C7B8A6 /* XCRemoteSwiftPackageReference "LaunchAtLogin-Modern" */,
 				BEC0F5A22AB9427400084098 /* XCRemoteSwiftPackageReference "Zip" */,
 				BEC0F5A52AB961C900084098 /* XCRemoteSwiftPackageReference "SwiftWhisper" */,
 				BE4F309F2B54527D007B2D1C /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
@@ -586,13 +584,14 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.brevoort.SonicJotUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = SonicJot;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -611,13 +610,14 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.brevoort.SonicJotUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = SonicJot;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Development;
 		};
@@ -636,12 +636,13 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.brevoort.SonicJotUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = SonicJot;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -973,14 +974,6 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 1.6.0;
-			};
-		};
-		BE6AAAB52AAAE29B00C7B8A6 /* XCRemoteSwiftPackageReference "LaunchAtLogin-Modern" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/sindresorhus/LaunchAtLogin-Modern";
-			requirement = {
-				branch = main;
-				kind = branch;
 			};
 		};
 		BE934FF72A95391B000B3841 /* XCRemoteSwiftPackageReference "mixpanel-swift" */ = {
