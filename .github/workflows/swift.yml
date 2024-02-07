@@ -19,4 +19,4 @@ jobs:
     - name: Install dependencies
       run: xcodebuild -resolvePackageDependencies
     - name: Build and test
-      run: xcodebuild test -scheme SonicJot
+      run: xcodebuild test -scheme SonicJot -skipMacroValidation
