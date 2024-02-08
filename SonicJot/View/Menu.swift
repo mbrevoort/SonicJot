@@ -94,7 +94,7 @@ public struct MenuReducer: Reducer {
                 state.recordingState = .transcribing
                 return .run { send in
                     let url = try await recording.stop()
-                    await send(.startTranscription(url as URL))
+                    await send(.startTranscription(url))
                     if try settings.get().enableSounds {
                         sound.playStop()
                     }

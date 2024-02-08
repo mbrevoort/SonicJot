@@ -12,7 +12,7 @@ import AVFoundation
 @DependencyClient
 struct RecordingClient {
     var start: () async throws -> Void
-    var stop: () async throws -> NSURL
+    var stop: () async throws -> URL
 }
 
 extension DependencyValues {
@@ -72,7 +72,7 @@ public class RecordingService : NSObject, AVAudioRecorderDelegate {
         state = .Record
     }
     
-    public func stop() -> NSURL {
+    public func stop() -> URL {
         switch state {
         case .Record:
             recorder?.stop()
@@ -81,7 +81,7 @@ public class RecordingService : NSObject, AVAudioRecorderDelegate {
             break
         }
         state = .None
-        return url
+        return url as URL
     }
 
     // MARK: - Private Methods
@@ -116,11 +116,11 @@ extension RecordingClient: TestDependencyKey {
     
     public static let testValue = Self(
         start: { },
-        stop: { NSURL() }
+        stop: { NSURL() as URL }
     )
     
     static let noop = Self(
         start: { },
-        stop: { NSURL() }
+        stop: { NSURL() as URL }
     )
 }
