@@ -69,7 +69,6 @@ public struct MenuReducer: Reducer {
                 state.lastActivity = nil
                 return .run { send in
                     try await recording.start()
-                    menuProxy.replaceIcon(.recording)
                     if try settings.get().enableSounds {
                         sound.playStart()
                     }
@@ -82,7 +81,7 @@ public struct MenuReducer: Reducer {
                 
                 state.recordingState = .stopped
                 return .run { send in
-                    menuProxy.replaceIcon(.stopped)
+                    menuProxy.replaceIcon(.ready)
                     let url = try await recording.stop()
                     try recording.delete(url)
                 }
@@ -104,7 +103,6 @@ public struct MenuReducer: Reducer {
             case let .startTranscription(url):
                 return .run { send in
                     do {
-                        menuProxy.replaceIcon(.transcribing)
                         let result = try await transcription.transcribe(url)
                         await send(.completeTransription(result))
                         
@@ -149,7 +147,7 @@ public struct MenuReducer: Reducer {
             case .transcriptionServiceReady:
                 state.recordingState = .stopped
                 return .run { send in
-                    menuProxy.replaceIcon(.stopped)
+                    menuProxy.replaceIcon(.ready)
                     let numWords = settings.totalWordCount()
                     await send(.updateTotalWords(numWords))
                 }
@@ -160,7 +158,6 @@ public struct MenuReducer: Reducer {
                 
             case .initialize:
                 return .run { send in
-                    menuProxy.replaceIcon(.initializing)
                     try await transcription.initialize()
                     await send(.transcriptionServiceReady)
                 }

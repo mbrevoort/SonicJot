@@ -20,10 +20,7 @@ struct MenuProxyClient {
     var setAppDelegate: (AppDelegate) -> Void
     
     enum RecordingStateIcon: String {
-        case recording = "waveform.circle.fill"
-        case transcribing = "hourglass.circle"
-        case transforming = "function"
-        case stopped = "waveform"
+        case ready = "waveform"
         case initializing = "waveform.slash"
     }
 }
