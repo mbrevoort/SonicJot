@@ -425,11 +425,13 @@ struct MenuStatus: View {
             recordingAnimation()
         } else if recordingState == .transcribing {
             transcriptionAnimation()
-        } else {
+        } else if totalWords > 0 {
             Text("\(totalWords) words")
                 .italic()
                 .padding(.trailing, 10)
                 .font(Font.system(.footnote))
+        } else {
+            EmptyView()
         }
     }
     

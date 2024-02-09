@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		BE2B7EA72AA2A56D00EE17C4 /* Clipboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2B7EA62AA2A56D00EE17C4 /* Clipboard.swift */; };
+		BE4069642B76CD9C00DC0528 /* ZipArchive in Frameworks */ = {isa = PBXBuildFile; productRef = BE4069632B76CD9C00DC0528 /* ZipArchive */; };
 		BE4F30A12B54527D007B2D1C /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = BE4F30A02B54527D007B2D1C /* ComposableArchitecture */; };
 		BE676BAB2B6F035C005C4446 /* About.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE676BAA2B6F035C005C4446 /* About.swift */; };
 		BE676BAD2B6F035E005C4446 /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE676BAC2B6F035E005C4446 /* Menu.swift */; };
@@ -20,7 +21,6 @@
 		BEA373EF2B70892C0056D24F /* SonicJotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA373EE2B70892C0056D24F /* SonicJotTests.swift */; };
 		BEC0F5A02AB0038800084098 /* boop2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BEC0F59E2AB0038800084098 /* boop2.mp3 */; };
 		BEC0F5A12AB0038800084098 /* boop1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BEC0F59F2AB0038800084098 /* boop1.mp3 */; };
-		BEC0F5A42AB9427400084098 /* Zip in Frameworks */ = {isa = PBXBuildFile; productRef = BEC0F5A32AB9427400084098 /* Zip */; };
 		BEC0F5A72AB961C900084098 /* SwiftWhisper in Frameworks */ = {isa = PBXBuildFile; productRef = BEC0F5A62AB961C900084098 /* SwiftWhisper */; };
 		BED2FBD12A83C54800ACF6FC /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = BED2FBD02A83C54800ACF6FC /* KeyboardShortcuts */; };
 		BED2FBDD2A86AFBF00ACF6FC /* error.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BED2FBDC2A86AFBF00ACF6FC /* error.mp3 */; };
@@ -42,13 +42,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		BE676BF12B7087BD005C4446 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BEECD95F2A81FB08000D6833 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = BEECD9662A81FB08000D6833;
-			remoteInfo = SonicJot;
-		};
 		BEA373F02B70892C0056D24F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BEECD95F2A81FB08000D6833 /* Project object */;
@@ -94,13 +87,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		BE676BE82B7087BD005C4446 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		BEA373E92B70892C0056D24F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -118,7 +104,7 @@
 				BEC0F5A72AB961C900084098 /* SwiftWhisper in Frameworks */,
 				BED2FBF72A8D50D600ACF6FC /* AudioKit in Frameworks */,
 				BED2FBD12A83C54800ACF6FC /* KeyboardShortcuts in Frameworks */,
-				BEC0F5A42AB9427400084098 /* Zip in Frameworks */,
+				BE4069642B76CD9C00DC0528 /* ZipArchive in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -298,9 +284,9 @@
 				BED2FBD02A83C54800ACF6FC /* KeyboardShortcuts */,
 				BED2FBF62A8D50D600ACF6FC /* AudioKit */,
 				BE934FF82A95391B000B3841 /* Mixpanel */,
-				BEC0F5A32AB9427400084098 /* Zip */,
 				BEC0F5A62AB961C900084098 /* SwiftWhisper */,
 				BE4F30A02B54527D007B2D1C /* ComposableArchitecture */,
+				BE4069632B76CD9C00DC0528 /* ZipArchive */,
 			);
 			productName = QuickScribe;
 			productReference = BEECD9672A81FB08000D6833 /* SonicJot.app */;
@@ -316,9 +302,6 @@
 				LastSwiftUpdateCheck = 1520;
 				LastUpgradeCheck = 1520;
 				TargetAttributes = {
-					BE676BEA2B7087BD005C4446 = {
-						CreatedOnToolsVersion = 15.2;
-					};
 					BEA373EB2B70892C0056D24F = {
 						CreatedOnToolsVersion = 15.2;
 						TestTargetID = BEECD9662A81FB08000D6833;
@@ -343,9 +326,9 @@
 				BED2FBCF2A83C54800ACF6FC /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */,
 				BED2FBF52A8D50D600ACF6FC /* XCRemoteSwiftPackageReference "AudioKit" */,
 				BE934FF72A95391B000B3841 /* XCRemoteSwiftPackageReference "mixpanel-swift" */,
-				BEC0F5A22AB9427400084098 /* XCRemoteSwiftPackageReference "Zip" */,
 				BEC0F5A52AB961C900084098 /* XCRemoteSwiftPackageReference "SwiftWhisper" */,
 				BE4F309F2B54527D007B2D1C /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
+				BE4069622B76CD9C00DC0528 /* XCRemoteSwiftPackageReference "ZipArchive" */,
 			);
 			productRefGroup = BEECD9682A81FB08000D6833 /* Products */;
 			projectDirPath = "";
@@ -358,13 +341,6 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		BE676BE92B7087BD005C4446 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		BEA373EA2B70892C0056D24F /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -389,13 +365,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		BE676BE72B7087BD005C4446 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		BEA373E82B70892C0056D24F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -431,11 +400,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		BE676BF22B7087BD005C4446 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = BEECD9662A81FB08000D6833 /* SonicJot */;
-			targetProxy = BE676BF12B7087BD005C4446 /* PBXContainerItemProxy */;
-		};
 		BEA373F12B70892C0056D24F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = BEECD9662A81FB08000D6833 /* SonicJot */;
@@ -860,6 +824,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		BE4069622B76CD9C00DC0528 /* XCRemoteSwiftPackageReference "ZipArchive" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ZipArchive/ZipArchive";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.5.5;
+			};
+		};
 		BE4F309F2B54527D007B2D1C /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture";
@@ -874,14 +846,6 @@
 			requirement = {
 				branch = master;
 				kind = branch;
-			};
-		};
-		BEC0F5A22AB9427400084098 /* XCRemoteSwiftPackageReference "Zip" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/marmelroy/Zip";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.0;
 			};
 		};
 		BEC0F5A52AB961C900084098 /* XCRemoteSwiftPackageReference "SwiftWhisper" */ = {
@@ -919,6 +883,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		BE4069632B76CD9C00DC0528 /* ZipArchive */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BE4069622B76CD9C00DC0528 /* XCRemoteSwiftPackageReference "ZipArchive" */;
+			productName = ZipArchive;
+		};
 		BE4F30A02B54527D007B2D1C /* ComposableArchitecture */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = BE4F309F2B54527D007B2D1C /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
@@ -928,11 +897,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = BE934FF72A95391B000B3841 /* XCRemoteSwiftPackageReference "mixpanel-swift" */;
 			productName = Mixpanel;
-		};
-		BEC0F5A32AB9427400084098 /* Zip */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = BEC0F5A22AB9427400084098 /* XCRemoteSwiftPackageReference "Zip" */;
-			productName = Zip;
 		};
 		BEC0F5A62AB961C900084098 /* SwiftWhisper */ = {
 			isa = XCSwiftPackageProductDependency;

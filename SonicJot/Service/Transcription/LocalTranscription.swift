@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftWhisper
 import AudioKit
-import Zip
+import ZipArchive
 
 final class LocalTranscription: TranscriptionBase, ObservableObject {
     @Published public private(set) var isInitialized: Bool = false
@@ -190,10 +190,7 @@ final class LocalTranscription: TranscriptionBase, ObservableObject {
             }
                         
             // unzip
-            try Zip.unzipFile(coreMLFileZipPath, destination: pathForAppSupportDirectory(), overwrite: true, password: "", progress: { (progress) -> () in
-                print(progress)
-            })
-            
+            try SSZipArchive.unzipFile(atPath: coreMLFileZipPath.absoluteString, toDestination: pathForAppSupportDirectory().absoluteString, overwrite: true, password: "")            
             
             print("Unzipped coreML file \(coreMLFilePath)")
             
