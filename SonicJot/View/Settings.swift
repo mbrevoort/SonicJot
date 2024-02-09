@@ -140,7 +140,7 @@ struct SettingsFeatureView: View {
                     }
                     
                     Spacer().frame(height:30)
-                    HStack {
+                    VStack {
                         Toggle(isOn: $store.enableOpenAI) {
                             Text("Use OpenAI for Transcription")
                         }
