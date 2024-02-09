@@ -13,6 +13,7 @@ import AVFoundation
 struct RecordingClient {
     var start: () async throws -> Void
     var stop: () async throws -> URL
+    var delete: (URL) throws -> Void
 }
 
 extension DependencyValues {
@@ -33,6 +34,9 @@ extension RecordingClient: DependencyKey {
             },
             stop: {
                 return service.stop()
+            },
+            delete: { url in
+                return try service.delete(url: url)
             }
         )
     }
@@ -83,6 +87,12 @@ public class RecordingService : NSObject, AVAudioRecorderDelegate {
         state = .None
         return url as URL
     }
+    
+    public func delete(url: URL) throws -> Void {
+            let fileManager = FileManager.default
+            try fileManager.removeItem(at: url)
+            return
+    }
 
     // MARK: - Private Methods
     
@@ -116,11 +126,13 @@ extension RecordingClient: TestDependencyKey {
     
     public static let testValue = Self(
         start: { },
-        stop: { NSURL() as URL }
+        stop: { NSURL() as URL },
+        delete: { url in }
     )
     
     static let noop = Self(
         start: { },
-        stop: { NSURL() as URL }
+        stop: { NSURL() as URL },
+        delete: { url in }
     )
 }

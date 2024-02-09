@@ -118,12 +118,7 @@ struct SettingsFeatureView: View {
                     } label: {
                         Text("Options")
                     }
-                    
-                    
-                    Group {
-                        
-                    }
-                    
+                                        
                     LabeledContent {
                         TextEditor(text: $store.prompt)
                             .lineLimit(3...20)
@@ -145,8 +140,11 @@ struct SettingsFeatureView: View {
                     }
                     
                     Spacer().frame(height:30)
-                    Toggle(isOn: $store.enableOpenAI) {
-                        Text("Use OpenAI for Transcription")
+                    HStack {
+                        Toggle(isOn: $store.enableOpenAI) {
+                            Text("Use OpenAI for Transcription")
+                        }
+                        Caption("An OpenAI account is required")
                     }
                     SecureField(text: $store.openAIToken) {
                         DisableableText("OpenAI API Key:", disabled: !$store.enableOpenAI.wrappedValue)

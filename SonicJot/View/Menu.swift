@@ -83,7 +83,8 @@ public struct MenuReducer: Reducer {
                 state.recordingState = .stopped
                 return .run { send in
                     menuProxy.replaceIcon(.stopped)
-                    _ = try await recording.stop()
+                    let url = try await recording.stop()
+                    try recording.delete(url)
                 }
                 
             case .completeTranscriptionClicked:
@@ -133,6 +134,9 @@ public struct MenuReducer: Reducer {
                         clipboard.paste()
                     }
                     settings.incrementTotalWordCount(lastActivity.words)
+                    
+                    // delete file (in future retain some history)
+                    try recording.delete(lastActivity.fileURL!)
                     await send(.transcriptionServiceReady)
                 }
                 
@@ -194,12 +198,14 @@ public struct MenuReducer: Reducer {
     struct LastActivity: Equatable {
         var isError: Bool = false
         var text: String
+        var fileURL: URL?
         var date: Date = Date()
         var words: Int = 0
         var duration: Double = 0.0
         
         init(transcriptionResult: TranscriptionResult) {
             self.text = transcriptionResult.text
+            self.fileURL = transcriptionResult.fileURL
             self.words = transcriptionResult.words
             self.duration = transcriptionResult.duration
             self.date = transcriptionResult.date

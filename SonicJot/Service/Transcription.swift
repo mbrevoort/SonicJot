@@ -55,7 +55,7 @@ extension TranscriptionClient: DependencyKey {
                 let numWords = words.count
                 eventTracking.transcription(provider, duration, numWords)
                 
-                return TranscriptionResult(text: text, words: numWords, duration: duration, date: Date())
+                return TranscriptionResult(text: text, fileURL: fileURL, words: numWords, duration: duration, date: Date())
             }
         )
     }
@@ -63,13 +63,14 @@ extension TranscriptionClient: DependencyKey {
 
 public struct TranscriptionResult: Equatable {
     var text: String
+    var fileURL: URL
     var words: Int
     var duration: Double
     var date: Date
     
     static func empty() -> Self {
-        return TranscriptionResult(text: "", words: 0, duration: 0.0, date: Date(timeIntervalSince1970: 0))
-    }    
+        return TranscriptionResult(text: "", fileURL: NSURL() as URL, words: 0, duration: 0.0, date: Date(timeIntervalSince1970: 0))
+    }
 }
 
 extension TranscriptionClient: TestDependencyKey {
