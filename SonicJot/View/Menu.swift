@@ -126,10 +126,11 @@ public struct MenuReducer: Reducer {
                     if currentSettings.enableSounds {
                         sound.playStop()
                     }
-                    clipboard.copy(result.text)
                     
                     if currentSettings.enableAutoPaste {
-                        clipboard.paste()
+                        await clipboard.pasteAndRestore(result.text)
+                    } else {
+                        clipboard.put(result.text)
                     }
                     settings.incrementTotalWordCount(lastActivity.words)
                     

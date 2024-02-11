@@ -104,7 +104,7 @@ struct SettingsFeatureView: View {
                     LabeledContent {
                         VStack(alignment: .leading) {
                             Toggle(isOn: $store.enableAutoPaste) {
-                                Text("Automatically paste transcription")
+                                Text("Automatically insert transcription")
                             }
                             
                             Caption("Must enable Accessibility Permissions for SonicJot when prompted")
