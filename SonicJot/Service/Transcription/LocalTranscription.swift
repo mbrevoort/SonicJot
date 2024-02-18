@@ -148,12 +148,12 @@ final class LocalTranscription: TranscriptionBase, ObservableObject {
         let path = try pathForAppSupportDirectory().appendingPathComponent(name)
         let coreMLFilePath = try pathForAppSupportDirectory().appendingPathComponent(coreMLName)
         let coreMLFileZipPath = try pathForAppSupportDirectory().appendingPathComponent("\(coreMLName).zip")
-        print("Local model path is \(path)")
+        print("Loading models: \nModel URL:   \(hostedModelURL)\nPath:        \(path)\nCoreML URL:  \(hostedCoreMLZipURL)\nCoreML Path: \(coreMLFilePath)")
         
         
         if !FileManager.default.fileExists(atPath: path.path) {
             // Download model file
-            print("Downloading model file")
+            print("Downloading model file...")
             try await withCheckedThrowingContinuation { (cont: CheckedContinuation<Void, Error>) -> Void in
                 URLSession.shared.downloadTask(with: URLRequest(url: hostedModelURL)) { url, _, error in
                     if let error {
@@ -173,7 +173,7 @@ final class LocalTranscription: TranscriptionBase, ObservableObject {
         
         if !FileManager.default.fileExists(atPath: coreMLFilePath.path) {
             // Download CoreML zip file
-            print("Downloading CoreML file")
+            print("Downloading CoreML file...")
             try await withCheckedThrowingContinuation { (cont: CheckedContinuation<Void, Error>) -> Void in
                 URLSession.shared.downloadTask(with: URLRequest(url: hostedCoreMLZipURL)) { url, _, error in
                     if let error {
@@ -181,7 +181,12 @@ final class LocalTranscription: TranscriptionBase, ObservableObject {
                     }
                     
                     do {
-                        try FileManager.default.copyItem(at: url!, to: coreMLFileZipPath)
+                        let fileManager = FileManager.default
+                        if fileManager.fileExists(atPath: coreMLFileZipPath.path) {
+                            // Remove existing zip file that exists
+                            try fileManager.removeItem(at: coreMLFileZipPath)
+                        }
+                        try fileManager.copyItem(at: url!, to: coreMLFileZipPath)
                         cont.resume()
                     } catch {
                         cont.resume(throwing: error)
@@ -190,7 +195,7 @@ final class LocalTranscription: TranscriptionBase, ObservableObject {
             }
                         
             // unzip
-            try SSZipArchive.unzipFile(atPath: coreMLFileZipPath.absoluteString, toDestination: pathForAppSupportDirectory().absoluteString, overwrite: true, password: "")            
+            try SSZipArchive.unzipFile(atPath: coreMLFileZipPath.path, toDestination: pathForAppSupportDirectory().path, overwrite: true, password: "")
             
             print("Unzipped coreML file \(coreMLFilePath)")
             
@@ -206,8 +211,8 @@ final class LocalTranscription: TranscriptionBase, ObservableObject {
         guard let appSupportDirectory = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first else {
             throw NSError(domain: "", code: 404, userInfo: [ NSLocalizedDescriptionKey: "Application Support directory not found"])
         }
-        
-        checkAndCreateDirectory(at: appSupportDirectory.absoluteString)
+                
+        checkAndCreateDirectory(at: appSupportDirectory.path)
         return appSupportDirectory
     }
     
