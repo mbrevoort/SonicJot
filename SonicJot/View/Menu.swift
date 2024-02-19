@@ -313,6 +313,12 @@ struct MenuView: View {
                 SettingsLink().buttonStyle(MenuStyle(title: "Settings"))
                 
                 Divider()
+
+                CheckForUpdatesView(store: Store(initialState: CheckForUpdatesReducer.State()) {
+                    CheckForUpdatesReducer()
+                }).buttonStyle(MenuStyle(title: "Check for Updates..."))
+                
+                Divider()
                 
                 Button(action: {
                     NSApplication.shared.terminate(nil)

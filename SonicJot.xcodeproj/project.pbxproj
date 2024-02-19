@@ -19,6 +19,8 @@
 		BE934FFF2A958BD6000B3841 /* EventTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE934FFE2A958BD6000B3841 /* EventTracking.swift */; };
 		BE9350012A959A10000B3841 /* Obfuscator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9350002A959A10000B3841 /* Obfuscator.swift */; };
 		BEA373EF2B70892C0056D24F /* SonicJotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA373EE2B70892C0056D24F /* SonicJotTests.swift */; };
+		BEBA9EBE2B82EE68009B4C67 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = BEBA9EBD2B82EE68009B4C67 /* Sparkle */; };
+		BEBA9EC02B82F250009B4C67 /* CheckForUpdates.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEBA9EBF2B82F250009B4C67 /* CheckForUpdates.swift */; };
 		BEC0F5A02AB0038800084098 /* boop2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BEC0F59E2AB0038800084098 /* boop2.mp3 */; };
 		BEC0F5A12AB0038800084098 /* boop1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BEC0F59F2AB0038800084098 /* boop1.mp3 */; };
 		BEC0F5A72AB961C900084098 /* SwiftWhisper in Frameworks */ = {isa = PBXBuildFile; productRef = BEC0F5A62AB961C900084098 /* SwiftWhisper */; };
@@ -64,6 +66,7 @@
 		BE9350002A959A10000B3841 /* Obfuscator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Obfuscator.swift; sourceTree = "<group>"; };
 		BEA373EC2B70892C0056D24F /* SonicJotTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SonicJotTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BEA373EE2B70892C0056D24F /* SonicJotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SonicJotTests.swift; sourceTree = "<group>"; };
+		BEBA9EBF2B82F250009B4C67 /* CheckForUpdates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckForUpdates.swift; sourceTree = "<group>"; };
 		BEC0F59E2AB0038800084098 /* boop2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = boop2.mp3; sourceTree = "<group>"; };
 		BEC0F59F2AB0038800084098 /* boop1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = boop1.mp3; sourceTree = "<group>"; };
 		BED2FBDC2A86AFBF00ACF6FC /* error.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = error.mp3; sourceTree = "<group>"; };
@@ -99,6 +102,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BE934FF92A95391B000B3841 /* Mixpanel in Frameworks */,
+				BEBA9EBE2B82EE68009B4C67 /* Sparkle in Frameworks */,
 				BEECD9802A82955E000D6833 /* OpenAI in Frameworks */,
 				BE4F30A12B54527D007B2D1C /* ComposableArchitecture in Frameworks */,
 				BEC0F5A72AB961C900084098 /* SwiftWhisper in Frameworks */,
@@ -117,6 +121,7 @@
 				BE676BAA2B6F035C005C4446 /* About.swift */,
 				BE676BAC2B6F035E005C4446 /* Menu.swift */,
 				BE676BAE2B6F0368005C4446 /* Settings.swift */,
+				BEBA9EBF2B82F250009B4C67 /* CheckForUpdates.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -287,6 +292,7 @@
 				BEC0F5A62AB961C900084098 /* SwiftWhisper */,
 				BE4F30A02B54527D007B2D1C /* ComposableArchitecture */,
 				BE4069632B76CD9C00DC0528 /* ZipArchive */,
+				BEBA9EBD2B82EE68009B4C67 /* Sparkle */,
 			);
 			productName = QuickScribe;
 			productReference = BEECD9672A81FB08000D6833 /* SonicJot.app */;
@@ -329,6 +335,7 @@
 				BEC0F5A52AB961C900084098 /* XCRemoteSwiftPackageReference "SwiftWhisper" */,
 				BE4F309F2B54527D007B2D1C /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
 				BE4069622B76CD9C00DC0528 /* XCRemoteSwiftPackageReference "ZipArchive" */,
+				BEBA9EBC2B82EE68009B4C67 /* XCRemoteSwiftPackageReference "Sparkle" */,
 			);
 			productRefGroup = BEECD9682A81FB08000D6833 /* Products */;
 			projectDirPath = "";
@@ -390,6 +397,7 @@
 				BE676BAD2B6F035E005C4446 /* Menu.swift in Sources */,
 				BE676BAB2B6F035C005C4446 /* About.swift in Sources */,
 				BE934FFF2A958BD6000B3841 /* EventTracking.swift in Sources */,
+				BEBA9EC02B82F250009B4C67 /* CheckForUpdates.swift in Sources */,
 				BE676BB72B700BF7005C4446 /* OpenAITranscription.swift in Sources */,
 				BED2FBFC2A8D682500ACF6FC /* Timer.swift in Sources */,
 				BE676BB52B700B4C005C4446 /* LocalTranscription.swift in Sources */,
@@ -848,6 +856,14 @@
 				kind = branch;
 			};
 		};
+		BEBA9EBC2B82EE68009B4C67 /* XCRemoteSwiftPackageReference "Sparkle" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sparkle-project/Sparkle";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.5.2;
+			};
+		};
 		BEC0F5A52AB961C900084098 /* XCRemoteSwiftPackageReference "SwiftWhisper" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mbrevoort/SwiftWhisper";
@@ -897,6 +913,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = BE934FF72A95391B000B3841 /* XCRemoteSwiftPackageReference "mixpanel-swift" */;
 			productName = Mixpanel;
+		};
+		BEBA9EBD2B82EE68009B4C67 /* Sparkle */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BEBA9EBC2B82EE68009B4C67 /* XCRemoteSwiftPackageReference "Sparkle" */;
+			productName = Sparkle;
 		};
 		BEC0F5A62AB961C900084098 /* SwiftWhisper */ = {
 			isa = XCSwiftPackageProductDependency;
