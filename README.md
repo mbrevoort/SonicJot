@@ -11,3 +11,4 @@ I'll share the link to the App Store here when it's approved. In the meantime, h
 ![SonicJot Menu](/screenshots/sonicjot-menu.png?raw=true "SonicJot Menu")
 
 ![SonicJot Settings](/screenshots/sonicjot-settings.png?raw=true "SonicJot Settings")
+
