@@ -9,8 +9,9 @@ import ComposableArchitecture
 import XCTest
 @testable import SonicJot
 
-@MainActor
+
 final class MenuTests: XCTestCase {
+    @MainActor
     func testMenuTranscription() async {
         let store = TestStore(initialState: MenuReducer.State()) {
             MenuReducer()
@@ -55,6 +56,7 @@ final class MenuTests: XCTestCase {
         }
     }
     
+    @MainActor
     func testMenuShortcutKeyTranscription() async {
         let store = TestStore(initialState: MenuReducer.State()) {
             MenuReducer()
@@ -102,6 +104,7 @@ final class MenuTests: XCTestCase {
         }
     }
     
+    @MainActor
     func testTranscriptionError() async {
         let store = TestStore(initialState: MenuReducer.State()) {
             MenuReducer()

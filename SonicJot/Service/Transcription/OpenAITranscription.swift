@@ -32,7 +32,7 @@ final class OpenAITranscription: TranscriptionBase, ObservableObject {
         return try await withCheckedThrowingContinuation { continuation in
             do {
                 let data = try Data(contentsOf: url as URL)
-                let query = AudioTranscriptionQuery(file: data, fileName: "audio.m4a", model: .whisper_1, prompt: self.prompt, language: self.language.rawValue)
+                let query = AudioTranscriptionQuery(file: data, fileType: AudioTranscriptionQuery.FileType(rawValue: "audio.m4a")!, model: .whisper_1, prompt: self.prompt, language: self.language.rawValue)
                 openAI.audioTranscriptions(query: query) { result in
                     switch result {
                     case .success(let data):
