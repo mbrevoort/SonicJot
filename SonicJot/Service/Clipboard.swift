@@ -92,7 +92,7 @@ class ClipboardService {
         keyCUp?.post(tap: .cgAnnotatedSessionEventTap)
         
         // Delay before reading from clipboard to overcome race condition
-        try! await Task.sleep(nanoseconds: UInt64(0.1 * Double(NSEC_PER_SEC)))
+        try! await Task.sleep(nanoseconds: UInt64(0.35 * Double(NSEC_PER_SEC)))
         
         return self.read()
     }
@@ -115,7 +115,7 @@ class ClipboardService {
         self.paste()
         
         // there's a race condition with issue paste and setting a new value of the pasteboard
-        try! await Task.sleep(nanoseconds: UInt64(0.1 * Double(NSEC_PER_SEC)))
+        try! await Task.sleep(nanoseconds: UInt64(0.35 * Double(NSEC_PER_SEC)))
 
         // restore existing value
         self.restorePasteboardContents(with: existing)
